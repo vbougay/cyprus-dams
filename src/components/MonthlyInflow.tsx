@@ -1,9 +1,9 @@
 
 import React, { useEffect, useState } from 'react';
 import { yearlyInflowData } from '@/utils/data';
-import { Calendar, TrendingUp } from 'lucide-react';
+import { Calendar, ChevronDown, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
   ChartContainer,
   ChartTooltip,
@@ -70,19 +70,21 @@ const MonthlyInflow: React.FC = () => {
             <TrendingUp className="h-5 w-5 text-water-500" />
             <span>Monthly Inflow</span>
           </div>
-          <Tabs defaultValue={selectedYear} className="w-48">
-            <TabsList className="grid grid-cols-2">
-              {years.slice(0, 2).map(year => (
-                <TabsTrigger 
-                  key={year} 
-                  value={year}
-                  onClick={() => setSelectedYear(year)}
-                >
+          <Select 
+            defaultValue={selectedYear} 
+            onValueChange={(value) => setSelectedYear(value)}
+          >
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Select Year" />
+            </SelectTrigger>
+            <SelectContent>
+              {years.map(year => (
+                <SelectItem key={year} value={year}>
                   {year}
-                </TabsTrigger>
+                </SelectItem>
               ))}
-            </TabsList>
-          </Tabs>
+            </SelectContent>
+          </Select>
         </CardTitle>
       </CardHeader>
       
