@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { getReportDate } from '@/utils/data';
-import { Drop } from 'lucide-react';
+import { Droplets } from 'lucide-react';
 
 const Header: React.FC = () => {
   return (
@@ -9,7 +9,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-3">
-            <Drop className="w-10 h-10 text-water-500 animate-float" />
+            <Droplets className="w-10 h-10 text-water-500 animate-float" />
             <div>
               <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-water-600 to-water-400 bg-clip-text text-transparent">
                 Cyprus Reservoir Visualizer

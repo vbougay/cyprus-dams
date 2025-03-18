@@ -25,7 +25,7 @@ export interface Reservoir {
   region: ReservoirRegion;
 }
 
-export type ReservoirRegion = 'Southern Conveyor' | 'Paphos' | 'Chrysochou' | 'Nicosia' | 'Recharge/Other';
+export type ReservoirRegion = 'Southern Conveyor' | 'Paphos' | 'Chrysochou' | 'Nicosia' | 'Recharge/Other' | 'Total';
 
 export interface RegionTotal {
   region: ReservoirRegion;

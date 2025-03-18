@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { ChevronDown, ChevronUp, Drop } from 'lucide-react';
+import { ChevronDown, ChevronUp, Droplets } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -58,7 +58,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Drop className="h-5 w-5 text-water-500" />
+            <Droplets className="h-5 w-5 text-water-500" />
             <span>{regionTotal.region}</span>
           </div>
           <div className="text-sm font-normal text-gray-500">
