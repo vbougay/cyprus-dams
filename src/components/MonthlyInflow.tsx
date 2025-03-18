@@ -125,7 +125,7 @@ const MonthlyInflow: React.FC = () => {
                     return null;
                   }}
                 />
-                <Legend />
+                <Legend verticalAlign="top" height={36} />
                 <Bar 
                   dataKey="currentYear" 
                   name={`Year ${selectedYear}`}

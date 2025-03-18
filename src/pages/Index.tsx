@@ -109,8 +109,6 @@ const Index: React.FC = () => {
           
           <TabsContent value="dashboard" className="animate-fade-in">
             <div className="space-y-8">
-              <MonthlyInflow />
-              
               <Card className="bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 p-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2">
@@ -142,6 +140,8 @@ const Index: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
+              
+              <MonthlyInflow />
             </div>
           </TabsContent>
           
@@ -168,7 +168,7 @@ const Index: React.FC = () => {
       <footer className="border-t border-gray-200 py-6 bg-white/60 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
           <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">Data from Cyprus Water Development Department</a></p>
-          <p className="mt-2">Last updated on 3/17/25. Contact me at v@bougay.com</p>
+          <p className="mt-2">Last updated on 3/17/25. Contact me at <a href="mailto:v@bougay.com">v@bougay.com</a></p>
         </div>
       </footer>
     </div>
