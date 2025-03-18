@@ -42,10 +42,10 @@ const MonthlyInflow: React.FC = () => {
     // Find the selected year data and previous year data
     const currentYearData = yearlyInflowData.find(data => data.year === selectedYear);
     
-    // For comparison, find the previous year's data
-    const previousYearIndex = yearlyInflowData.findIndex(data => data.year === selectedYear) + 1;
-    const previousYearData = previousYearIndex < yearlyInflowData.length ? 
-      yearlyInflowData[previousYearIndex] : null;
+    // For comparison, find the previous year's data based on actual year value
+    const currentYearParts = selectedYear.split('/');
+    const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
+    const previousYearData = yearlyInflowData.find(data => data.year === previousYearValue);
 
     if (!currentYearData) return;
 
@@ -113,12 +113,16 @@ const MonthlyInflow: React.FC = () => {
                       return (
                         <div className="bg-white p-2 border border-gray-200 rounded shadow-md">
                           <p className="font-medium">{label}</p>
-                          {payload.map((entry, index) => (
-                            <p key={index} style={{ color: entry.color }}>
-                              {entry.name === 'currentYear' ? `Year ${selectedYear}` : 'Previous Year'}: 
-                              {' '}{(entry.value as number).toFixed(3)} MCM
-                            </p>
-                          ))}
+                          {payload.map((entry, index) => {
+                            const currentYearParts = selectedYear.split('/');
+                            const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
+                            return (
+                              <p key={index} style={{ color: entry.color }}>
+                                {entry.name === 'currentYear' ? `Year ${selectedYear}` : `Year ${previousYearValue}`}: 
+                                {' '}{(entry.value as number).toFixed(3)} MCM
+                              </p>
+                            );
+                          })}
                         </div>
                       );
                     }
@@ -135,7 +139,7 @@ const MonthlyInflow: React.FC = () => {
                 />
                 <Bar 
                   dataKey="previousYear" 
-                  name="Previous Year"
+                  name={`Year ${parseInt(selectedYear.split('/')[0]) - 1}/${parseInt(selectedYear.split('/')[1]) - 1}`}
                   fill="#94a3b8" 
                   radius={[4, 4, 0, 0]} 
                   animationDuration={1000}
