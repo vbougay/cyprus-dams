@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow } from '@/components';
+import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, ReservoirMap } from '@/components';
 import { 
   reservoirData, 
   getReservoirsByRegion, 
@@ -9,13 +8,12 @@ import {
 } from '@/utils/data';
 import { RegionTotal, ReservoirRegion } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Droplets, Database, BarChart } from 'lucide-react';
+import { Droplets, Database, BarChart, Map } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index: React.FC = () => {
   const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
   const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
-  const [activeTab, setActiveTab] = useState<string>('dashboard');
   
   useEffect(() => {
     // Calculate the data once on component mount and store in state
@@ -77,10 +75,11 @@ const Index: React.FC = () => {
           </Card>
         </div>
         
-        <Tabs defaultValue="dashboard" onValueChange={setActiveTab} className="mb-8">
-          <TabsList className="w-full max-w-md mx-auto grid grid-cols-3 mb-8">
+        <Tabs defaultValue="dashboard" className="mb-8">
+          <TabsList className="w-full max-w-md mx-auto grid grid-cols-4 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="regions">By Region</TabsTrigger>
+            <TabsTrigger value="map">Map</TabsTrigger>
             <TabsTrigger value="table">Data Table</TabsTrigger>
           </TabsList>
           
@@ -130,6 +129,10 @@ const Index: React.FC = () => {
                 ))}
               </RegionSummary>
             ))}
+          </TabsContent>
+          
+          <TabsContent value="map" className="animate-fade-in">
+            <ReservoirMap />
           </TabsContent>
           
           <TabsContent value="table" className="animate-fade-in">
