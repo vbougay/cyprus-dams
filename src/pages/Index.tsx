@@ -167,8 +167,8 @@ const Index: React.FC = () => {
       
       <footer className="border-t border-gray-200 py-6 bg-white/60 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
-          <p>Data from Cyprus Water Development Department</p>
-          <p className="mt-2">Last updated on 3/17/25</p>
+          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">Data from Cyprus Water Development Department</a></p>
+          <p className="mt-2">Last updated on 3/17/25. Contact me at v@bougay.com</p>
         </div>
       </footer>
     </div>
