@@ -97,15 +97,18 @@ const Index: React.FC = () => {
                 </CardHeader>
                 
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
                     {grandTotal && (
-                      <RegionSummary
-                        regionTotal={grandTotal}
-                        showReservoirs={false}
-                      />
+                      <div className="w-full h-full">
+                        <RegionSummary
+                          regionTotal={grandTotal}
+                          showReservoirs={false}
+                          className="h-full"
+                        />
+                      </div>
                     )}
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       {reservoirData
                         .sort((a, b) => b.capacity - a.capacity)
                         .slice(0, 4)

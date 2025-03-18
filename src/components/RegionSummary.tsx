@@ -10,12 +10,14 @@ interface RegionSummaryProps {
   regionTotal: RegionTotal;
   showReservoirs?: boolean;
   children?: React.ReactNode;
+  className?: string;
 }
 
 const RegionSummary: React.FC<RegionSummaryProps> = ({ 
   regionTotal, 
   showReservoirs = true,
-  children 
+  children,
+  className = ''
 }) => {
   const cardRef = useRef<HTMLDivElement>(null);
   
@@ -56,7 +58,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   if (!regionTotal) return null;
   
   return (
-    <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all ${cardBgColor}`}>
+    <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all ${cardBgColor} ${className}`}>
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
