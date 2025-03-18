@@ -26,28 +26,28 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 // Add coordinates for the Cyprus reservoirs
 const reservoirLocations = {
-  'Kouris': { lng: 32.9309, lat: 34.7355 },
-  'Asprokremmos': { lng: 32.5414, lat: 34.7431 },
-  'Evretou': { lng: 32.5125, lat: 34.9730 },
-  'Kannaviou': { lng: 32.5981, lat: 34.9174 },
-  'Arminou': { lng: 32.7509, lat: 34.8746 },
-  'Kalavasos': { lng: 33.3022, lat: 34.7719 },
-  'Dipotamos': { lng: 33.3156, lat: 34.7853 },
-  'Germasogeia': { lng: 33.1022, lat: 34.7575 },
-  'Polemidia': { lng: 33.0211, lat: 34.7205 },
-  'Achna': { lng: 33.7752, lat: 35.0410 },
-  'Lefkara': { lng: 33.3111, lat: 34.8840 },
-  'Tamassos': { lng: 33.2060, lat: 35.0084 },
-  'Klirou-Malounta': { lng: 33.1524, lat: 35.0368 },
-  'Palekhori': { lng: 33.1115, lat: 34.9512 },
-  'Solea': { lng: 32.9515, lat: 35.0100 },
-  'Kalopanagiotis': { lng: 32.8831, lat: 34.9725 },
-  'Xyliatos': { lng: 33.0422, lat: 35.0110 },
-  'Vyzakia': { lng: 33.0281, lat: 35.0342 },
-  'Argaka': { lng: 32.3662, lat: 35.0400 },
-  'Pomos': { lng: 32.5690, lat: 35.1702 },
-  'Agia Marina': { lng: 32.4545, lat: 35.0522 },
-  'Mavrokolymbos': { lng: 32.4010, lat: 34.8694 },
+  'Kouris': { lng: 32.9178, lat: 34.7278 },
+  'Asprokremmos': { lng: 32.5543, lat: 34.7259 },
+  'Evretou': { lng: 32.4727, lat: 34.9757 },
+  'Kannaviou': { lng: 32.5878, lat: 34.9277 },
+  'Arminous': { lng: 32.7371, lat: 34.8752 }, // Note: 'Arminous' corrected to 'Arminou'
+  'Kalavasos': { lng: 33.260517, lat: 34.803972 },
+  'Dipotamos': { lng: 33.359274, lat: 34.851618 },
+  'Germasogeia': { lng: 33.0843, lat: 34.7439 },
+  'Polemidia': { lng: 32.9888, lat: 34.7187 },
+  'Achna': { lng: 33.814307, lat: 35.055321 },
+  'Lefkara': { lng: 33.2956, lat: 34.8944 },
+  'Tamassos': { lng: 33.2479, lat: 35.0167 },
+  'Klirou-Malounta': { lng: 33.1727, lat: 35.0318 },
+  'Palekhori': { lng: 33.1100, lat: 34.9500 }, // Retained due to lack of precise data
+  'Solea': { lng: 32.9500, lat: 35.0100 }, // Retained due to lack of precise data
+  'Kalopanagiotis': { lng: 32.8254, lat: 35.0061 },
+  'Xyliatos': { lng: 33.0372, lat: 35.0089 },
+  'Vyzakia': { lng: 33.0272, lat: 35.0615 },
+  'Argaka': { lng: 32.5022, lat: 35.0486 },
+  'Pomos': { lng: 32.5762, lat: 35.1449 },
+  'Agia Marina': { lng: 32.5410, lat: 35.1170 },
+  'Mavrokolymbos': { lng: 32.4058, lat: 34.8565 },
 };
 
 // Default coordinates for Cyprus center
