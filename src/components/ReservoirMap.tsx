@@ -30,7 +30,7 @@ const reservoirLocations = {
   'Asprokremmos': { lng: 32.5543, lat: 34.7259 },
   'Evretou': { lng: 32.4727, lat: 34.9757 },
   'Kannaviou': { lng: 32.5878, lat: 34.9277 },
-  'Arminous': { lng: 32.7371, lat: 34.8752 }, // Note: 'Arminous' corrected to 'Arminou'
+  'Arminou': { lng: 32.7371, lat: 34.8752 },
   'Kalavasos': { lng: 33.260517, lat: 34.803972 },
   'Dipotamos': { lng: 33.359274, lat: 34.851618 },
   'Germasogeia': { lng: 33.0843, lat: 34.7439 },
@@ -42,7 +42,7 @@ const reservoirLocations = {
   'Palekhori': { lng: 33.1100, lat: 34.9500 }, // Retained due to lack of precise data
   'Solea': { lng: 32.9500, lat: 35.0100 }, // Retained due to lack of precise data
   'Kalopanagiotis': { lng: 32.8254, lat: 35.0061 },
-  'Xyliatos': { lng: 33.0372, lat: 35.0089 },
+  'Xyliatou': { lng: 33.0372, lat: 35.0089 },
   'Vyzakia': { lng: 33.0272, lat: 35.0615 },
   'Argaka': { lng: 32.5022, lat: 35.0486 },
   'Pomos': { lng: 32.5762, lat: 35.1449 },
