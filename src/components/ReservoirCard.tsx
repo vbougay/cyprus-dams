@@ -1,0 +1,78 @@
+
+import React from 'react';
+import { Reservoir } from '@/types';
+import { CapacityChart } from '@/components';
+import { DropletIcon, Droplets, TrendingUp, Calendar } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+interface ReservoirCardProps {
+  reservoir: Reservoir;
+}
+
+const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
+  const { name, capacity, inflow, storage, maxStorage } = reservoir;
+  
+  // Calculate storage difference compared to last year (in percentage points)
+  const storageDifference = storage.current.percentage - storage.lastYear.percentage;
+  
+  // Determine if storage is increasing or decreasing compared to last year
+  const isIncreasing = storageDifference > 0;
+  
+  return (
+    <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-100">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex justify-between items-center">
+          <span className="font-medium text-lg">{name}</span>
+          <div className="flex items-center gap-1.5 text-xs font-normal bg-water-50 text-water-700 px-2 py-1 rounded-full">
+            <DropletIcon size={12} />
+            <span>{capacity.toFixed(3)} MCM</span>
+          </div>
+        </CardTitle>
+      </CardHeader>
+      
+      <CardContent className="pb-4">
+        <div className="mb-4">
+          <CapacityChart data={reservoir} />
+        </div>
+        
+        <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
+          <div className="flex flex-col bg-gray-50 p-2 rounded-md">
+            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
+              <Droplets size={12} className="text-water-500" />
+              Recent Inflow
+            </div>
+            <div className="font-mono">{inflow.last24Hours.toFixed(3)} MCM</div>
+          </div>
+          
+          <div className="flex flex-col bg-gray-50 p-2 rounded-md">
+            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
+              <TrendingUp size={12} className="text-water-500" />
+              Total Inflow
+            </div>
+            <div className="font-mono">{inflow.totalSince.toFixed(3)} MCM</div>
+          </div>
+          
+          <div className="flex flex-col bg-gray-50 p-2 rounded-md col-span-2">
+            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
+              <Calendar size={12} className="text-water-500" />
+              Max Storage
+            </div>
+            <div className="font-mono flex justify-between">
+              <span>{maxStorage.amount.toFixed(3)} MCM</span>
+              <span className="text-gray-500">{maxStorage.date}</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-4 text-xs flex items-center justify-end gap-1">
+          <span className="text-gray-500">vs Last Year:</span>
+          <span className={`font-medium ${isIncreasing ? 'text-green-500' : 'text-red-500'}`}>
+            {isIncreasing ? '+' : ''}{storageDifference.toFixed(1)}%
+          </span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default ReservoirCard;
