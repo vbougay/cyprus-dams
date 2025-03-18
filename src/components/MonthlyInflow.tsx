@@ -1,11 +1,15 @@
 
 import React, { useEffect, useState } from 'react';
-import { YearlyInflowData } from '@/types';
 import { yearlyInflowData } from '@/utils/data';
 import { Calendar, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface ChartData {
   name: string;
@@ -16,9 +20,17 @@ interface ChartData {
 const MonthlyInflow: React.FC = () => {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('24/25');
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     prepareChartData();
+    
+    // Add a slight delay to ensure chart renders properly
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 200);
+    
+    return () => clearTimeout(timer);
   }, [selectedYear]);
 
   const prepareChartData = () => {
@@ -75,49 +87,60 @@ const MonthlyInflow: React.FC = () => {
       </CardHeader>
       
       <CardContent>
-        <div className="h-64 md:h-72 w-full mt-4">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={chartData}
-              margin={{ top: 10, right: 10, left: 0, bottom: 30 }}
-            >
-              <XAxis 
-                dataKey="name" 
-                tick={{ fontSize: 10 }}
-                angle={-45}
-                textAnchor="end"
-                interval={0}
-                tickMargin={10}
-              />
-              <YAxis tick={{ fontSize: 12 }} />
-              <Tooltip 
-                formatter={(value: number) => [`${value.toFixed(3)} MCM`, undefined]}
-                labelFormatter={(label) => `Month: ${label}`}
-                contentStyle={{
-                  backgroundColor: 'white',
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '0.375rem',
-                  padding: '0.5rem',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-                }}
-              />
-              <Legend />
-              <Bar 
-                dataKey="currentYear" 
-                name={`Year ${selectedYear}`}
-                fill="#0ea5e9" 
-                radius={[4, 4, 0, 0]} 
-                animationDuration={1000}
-              />
-              <Bar 
-                dataKey="previousYear" 
-                name="Previous Year"
-                fill="#94a3b8" 
-                radius={[4, 4, 0, 0]} 
-                animationDuration={1000}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+        <div className={`h-64 md:h-72 w-full mt-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          {chartData.length > 0 && (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={chartData}
+                margin={{ top: 10, right: 10, left: 0, bottom: 30 }}
+              >
+                <XAxis 
+                  dataKey="name" 
+                  angle={-45}
+                  textAnchor="end"
+                  interval={0}
+                  tickMargin={10}
+                  tick={{ fontSize: 10 }}
+                />
+                <YAxis 
+                  tick={{ fontSize: 12 }} 
+                />
+                <Tooltip 
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      return (
+                        <div className="bg-white p-2 border border-gray-200 rounded shadow-md">
+                          <p className="font-medium">{label}</p>
+                          {payload.map((entry, index) => (
+                            <p key={index} style={{ color: entry.color }}>
+                              {entry.name === 'currentYear' ? `Year ${selectedYear}` : 'Previous Year'}: 
+                              {' '}{(entry.value as number).toFixed(3)} MCM
+                            </p>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Legend />
+                <Bar 
+                  dataKey="currentYear" 
+                  name={`Year ${selectedYear}`}
+                  fill="#0ea5e9" 
+                  radius={[4, 4, 0, 0]} 
+                  animationDuration={1000}
+                />
+                <Bar 
+                  dataKey="previousYear" 
+                  name="Previous Year"
+                  fill="#94a3b8" 
+                  radius={[4, 4, 0, 0]} 
+                  animationDuration={1000}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          )}
         </div>
         
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">

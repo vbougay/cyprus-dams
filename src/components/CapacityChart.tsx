@@ -11,6 +11,17 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
   const chartRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    if (!chartRef.current) return;
+    
+    // Use a more reliable way to animate the chart
+    setTimeout(() => {
+      if (chartRef.current) {
+        chartRef.current.classList.remove('opacity-0');
+        chartRef.current.classList.add('opacity-100');
+      }
+    }, 100);
+    
+    // Add intersection observer for when scrolling into view
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -23,9 +34,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
       { threshold: 0.1 }
     );
 
-    if (chartRef.current) {
-      observer.observe(chartRef.current);
-    }
+    observer.observe(chartRef.current);
 
     return () => {
       if (chartRef.current) {
@@ -33,6 +42,12 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
       }
     };
   }, []);
+
+  // Ensure data is populated before rendering
+  if (!data || !data.storage) {
+    console.log('No data available for CapacityChart');
+    return null;
+  }
 
   const currentPercentage = data.storage.current.percentage;
   const lastYearPercentage = data.storage.lastYear.percentage;
@@ -49,7 +64,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
   const lastYearColor = getColor(lastYearPercentage);
   
   return (
-    <div ref={chartRef} className="opacity-0">
+    <div ref={chartRef} className="opacity-0 transition-opacity duration-500">
       <div className="flex items-center justify-center space-x-4">
         {/* Current percentage circle */}
         <div className="relative w-24 h-24 flex items-center justify-center">

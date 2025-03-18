@@ -22,6 +22,16 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   const cardRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
+    if (!cardRef.current) return;
+    
+    // Use a more reliable way to animate the card
+    setTimeout(() => {
+      if (cardRef.current) {
+        cardRef.current.classList.remove('opacity-0');
+        cardRef.current.classList.add('opacity-100');
+      }
+    }, 100);
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -34,9 +44,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
       { threshold: 0.1 }
     );
 
-    if (cardRef.current) {
-      observer.observe(cardRef.current);
-    }
+    observer.observe(cardRef.current);
 
     return () => {
       if (cardRef.current) {
@@ -53,12 +61,16 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
     return 'bg-green-50 border-green-100';
   };
 
+  // Double-check that regionTotal exists and has the expected structure
+  if (!regionTotal || !regionTotal.storage) {
+    console.log('Invalid regionTotal data in RegionSummary');
+    return null;
+  }
+  
   const cardBgColor = getBgColor(regionTotal.storage.current.percentage);
   
-  if (!regionTotal) return null;
-  
   return (
-    <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all ${cardBgColor} ${className}`}>
+    <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all duration-500 ${cardBgColor} ${className}`}>
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
