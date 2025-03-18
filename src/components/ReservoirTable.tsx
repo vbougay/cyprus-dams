@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
 import { Reservoir } from '@/types';
-import { reservoirData } from '@/utils/data';
-import { ChevronDown, ChevronUp, Filter, Search } from 'lucide-react';
+import { getReservoirsWithDrainDates } from '@/utils/data';
+import { ChevronDown, ChevronUp, Filter, Search, Timer } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,6 +27,7 @@ const ReservoirTable: React.FC = () => {
   const [sortField, setSortField] = useState<string>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
+  const reservoirData = getReservoirsWithDrainDates();
   
   // Define the columns for the table
   const columns: Column[] = [
@@ -94,6 +95,27 @@ const ReservoirTable: React.FC = () => {
       key: 'inflow',
       label: 'Total Inflow',
       render: (reservoir) => <span>{reservoir.inflow.totalSince.toFixed(3)} MCM</span>,
+      sortable: true,
+    },
+    {
+      key: 'drainDate',
+      label: 'Fully Drained By',
+      render: (reservoir) => {
+        const drainDate = reservoir.drainDate || 'Calculating...';
+        return (
+          <div className="flex items-center gap-1">
+            <Timer className="h-4 w-4 text-water-500" />
+            <span className={`
+              ${drainDate === 'Already Empty' ? 'text-red-500' : ''}
+              ${drainDate === 'Not Draining' ? 'text-green-500' : ''}
+              ${drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
+              ${!['Already Empty', 'Not Draining', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500' : ''}
+            `}>
+              {drainDate}
+            </span>
+          </div>
+        );
+      },
       sortable: true,
     },
   ];

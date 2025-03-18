@@ -1,10 +1,28 @@
 
-import React, { useEffect, useRef, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import React from 'react';
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { LatLngExpression } from 'leaflet';
+
+
 import { reservoirData } from '@/utils/data';
+import { Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Map } from 'lucide-react';
+
+// Fix Leaflet's default icon issue
+import icon from 'leaflet/dist/images/marker-icon.png';
+import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+
+const DefaultIcon = L.icon({
+  iconUrl: icon,
+  shadowUrl: iconShadow,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
 
 // Add coordinates for the Cyprus reservoirs
 const reservoirLocations = {
@@ -33,83 +51,9 @@ const reservoirLocations = {
 };
 
 // Default coordinates for Cyprus center
-const CYPRUS_CENTER = { lng: 33.00, lat: 35.00 };
+const CYPRUS_CENTER: LatLngExpression = [35.00, 33.00];
 
 const ReservoirMap: React.FC = () => {
-  const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [mapboxApiKey, setMapboxApiKey] = useState<string>('');
-  
-  useEffect(() => {
-    // Only initialize the map once we have an API key
-    if (!mapboxApiKey || !mapContainer.current) return;
-    
-    mapboxgl.accessToken = mapboxApiKey;
-    
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/outdoors-v12',
-      center: [CYPRUS_CENTER.lng, CYPRUS_CENTER.lat],
-      zoom: 9,
-    });
-
-    map.current.on('load', () => {
-      setMapLoaded(true);
-      
-      if (!map.current) return;
-      
-      // Add reservoirs as markers
-      reservoirData.forEach(reservoir => {
-        const location = reservoirLocations[reservoir.name as keyof typeof reservoirLocations];
-        if (!location) return;
-        
-        const percentage = reservoir.storage.current.percentage;
-        const color = getColorByPercentage(percentage);
-        const size = Math.max(20, Math.min(50, percentage / 2));
-        
-        // Create a custom marker element
-        const el = document.createElement('div');
-        el.className = 'reservoir-marker';
-        el.style.backgroundColor = color;
-        el.style.width = `${size}px`;
-        el.style.height = `${size}px`;
-        el.style.borderRadius = '50%';
-        el.style.border = '2px solid white';
-        el.style.boxShadow = '0 0 8px rgba(0, 0, 0, 0.3)';
-        el.style.cursor = 'pointer';
-        
-        // Add popup with reservoir info
-        const popup = new mapboxgl.Popup({ offset: 25 })
-          .setHTML(`
-            <div style="padding: 8px;">
-              <h3 style="margin: 0; font-weight: 600;">${reservoir.name}</h3>
-              <p style="margin: 0;">Region: ${reservoir.region}</p>
-              <p style="margin: 0;">Capacity: ${reservoir.capacity.toFixed(1)} MCM</p>
-              <p style="margin: 0;">Current: ${reservoir.storage.current.amount.toFixed(1)} MCM (${reservoir.storage.current.percentage.toFixed(1)}%)</p>
-              <p style="margin: 0;">Last Year: ${reservoir.storage.lastYear.amount.toFixed(1)} MCM (${reservoir.storage.lastYear.percentage.toFixed(1)}%)</p>
-              <p style="margin: 0;">Recent Inflow: ${reservoir.inflow.last24Hours.toFixed(3)} MCM</p>
-            </div>
-          `);
-        
-        // Add marker to map
-        new mapboxgl.Marker(el)
-          .setLngLat([location.lng, location.lat])
-          .setPopup(popup)
-          .addTo(map.current);
-      });
-      
-      // Add map controls
-      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
-      map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
-    });
-    
-    return () => {
-      if (map.current) {
-        map.current.remove();
-      }
-    };
-  }, [mapboxApiKey]);
   
   // Function to get color based on percentage
   const getColorByPercentage = (percentage: number): string => {
@@ -118,9 +62,38 @@ const ReservoirMap: React.FC = () => {
     if (percentage < 75) return '#facc15'; // yellow
     return '#22c55e'; // green
   };
-  
-  const handleApiKeyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMapboxApiKey(e.target.value);
+
+  // Function to create a custom marker icon
+  const createCustomMarkerIcon = (reservoir: Reservoir) => {
+    const percentage = reservoir.storage.current.percentage;
+    const capacity = reservoir.capacity;
+    
+    // Color based on percentage
+    const color = getColorByPercentage(percentage);
+    
+    // Size based on capacity (with logarithmic scaling)
+    const minSize = 15; // Minimum bubble size in pixels
+    const maxSize = 60; // Maximum bubble size in pixels
+    
+    // Find the largest reservoir capacity for scaling
+    const maxCapacity = Math.max(...reservoirData.map(r => r.capacity));
+    
+    // Scale logarithmically to handle wide range of reservoir sizes
+    const size = minSize + (Math.log(capacity + 1) / Math.log(maxCapacity + 1)) * (maxSize - minSize);
+    
+    return L.divIcon({
+      className: 'reservoir-marker',
+      html: `<div style="
+        background-color: ${color}; 
+        width: ${size}px; 
+        height: ${size}px; 
+        border-radius: 50%; 
+        border: 2px solid white; 
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+      "></div>`,
+      iconSize: [size, size],
+      iconAnchor: [size/2, size/2]
+    });
   };
 
   return (
@@ -133,37 +106,56 @@ const ReservoirMap: React.FC = () => {
       </CardHeader>
       
       <CardContent>
-        {!mapboxApiKey ? (
-          <div className="flex flex-col items-center justify-center space-y-4 p-8">
-            <p className="text-center text-gray-600">
-              To view the reservoir map, please enter your Mapbox API key below.
-              You can get a free API key by signing up at <a href="https://mapbox.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">mapbox.com</a>.
-            </p>
-            <div className="w-full max-w-md">
-              <input
-                type="text"
-                placeholder="Enter your Mapbox API key"
-                value={mapboxApiKey}
-                onChange={handleApiKeyChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-          </div>
-        ) : (
-          <div className="w-full h-[500px] rounded-md overflow-hidden relative">
-            <div ref={mapContainer} className="absolute inset-0" />
-            {!mapLoaded && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                <p>Loading map...</p>
-              </div>
-            )}
-          </div>
-        )}
+        <div className="w-full h-[500px] rounded-md overflow-hidden">
+          <MapContainer 
+            center={CYPRUS_CENTER}
+            zoom={9} 
+            style={{ height: '100%', width: '100%' }}
+            zoomControl={false}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <ZoomControl position="topright" />
+            
+            {reservoirData.map(reservoir => {
+              const location = reservoirLocations[reservoir.name as keyof typeof reservoirLocations];
+              if (!location) return null;
+              
+              const position: LatLngExpression = [location.lat, location.lng];
+              
+              return (
+                <Marker 
+                  key={reservoir.name}
+                  position={position}
+                  icon={createCustomMarkerIcon(reservoir)}
+                >
+                  <Popup>
+                    <div style={{ padding: '4px' }}>
+                      <h3 style={{ margin: '0', fontWeight: 600 }}>{reservoir.name}</h3>
+                      <p style={{ margin: '0' }}>Region: {reservoir.region}</p>
+                      <p style={{ margin: '0' }}>Capacity: {reservoir.capacity.toFixed(1)} MCM</p>
+                      <p style={{ margin: '0' }}>
+                        Current: {reservoir.storage.current.amount.toFixed(1)} MCM ({reservoir.storage.current.percentage.toFixed(1)}%)
+                      </p>
+                      <p style={{ margin: '0' }}>
+                        Last Year: {reservoir.storage.lastYear.amount.toFixed(1)} MCM ({reservoir.storage.lastYear.percentage.toFixed(1)}%)
+                      </p>
+                      <p style={{ margin: '0' }}>Recent Inflow: {reservoir.inflow.last24Hours.toFixed(3)} MCM</p>
+                    </div>
+                  </Popup>
+                </Marker>
+              );
+            })}
+          </MapContainer>
+        </div>
         
         <div className="mt-4 p-3 bg-blue-50 rounded-md">
           <p className="text-sm text-gray-600">
-            <strong>Note:</strong> This map shows all reservoirs in Cyprus. The size and color of each circle represents 
-            the current storage level. Click on a reservoir to see detailed information.
+            <strong>Note:</strong> This map shows all reservoirs in Cyprus. The size of each circle represents 
+            the reservoir's total capacity, while the color indicates the current storage level (red: &lt;25%, orange: 25-50%, 
+            yellow: 50-75%, green: &gt;75%). Click on a reservoir to see detailed information.
           </p>
         </div>
       </CardContent>

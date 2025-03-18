@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { Droplets } from 'lucide-react';
+import { Droplets, Timer } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -88,7 +88,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           <CapacityChart data={regionTotal} />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
             <div className="text-sm text-gray-500 mb-1">Current Storage</div>
             <div className="text-lg font-semibold">{regionTotal.storage.current.amount.toFixed(3)} MCM</div>
@@ -102,6 +102,23 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
             <div className="text-sm text-gray-500 mb-1">Recent Inflow</div>
             <div className="text-lg font-semibold">{regionTotal.inflow.last24Hours.toFixed(3)} MCM</div>
+          </div>
+          
+          <div className="bg-white/80 p-3 rounded-lg shadow-sm">
+            <div className="flex items-center gap-2">
+              <Timer className="h-4 w-4 text-water-500" />
+              <div className="text-sm text-gray-500">Fully Drained By</div>
+            </div>
+            <div className="text-lg font-semibold mt-1">
+              <span className={`
+                ${regionTotal.drainDate === 'Already Empty' ? 'text-red-500' : ''}
+                ${regionTotal.drainDate === 'Not Draining' ? 'text-green-500' : ''}
+                ${regionTotal.drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
+                ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(regionTotal.drainDate || '') ? 'text-amber-500' : ''}
+              `}>
+                {regionTotal.drainDate || 'Calculating...'}
+              </span>
+            </div>
           </div>
         </div>
         

@@ -23,6 +23,7 @@ export interface Reservoir {
     date: string;
   };
   region: ReservoirRegion;
+  drainDate?: string; // Forecasted date when the reservoir will be fully drained
 }
 
 export type ReservoirRegion = 'Southern Conveyor' | 'Paphos' | 'Chrysochou' | 'Nicosia' | 'Recharge/Other' | 'Total';
@@ -48,6 +49,7 @@ export interface RegionTotal {
     amount: number;
     date: string;
   };
+  drainDate?: string; // Forecasted date when the region will be fully drained
 }
 
 export interface MonthlyData {

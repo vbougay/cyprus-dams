@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, ReservoirMap } from '@/components';
 import { 
-  reservoirData, 
+  getReservoirsWithDrainDates, 
   getReservoirsByRegion, 
   calculateRegionTotals, 
   calculateGrandTotal 
 } from '@/utils/data';
-import { RegionTotal, ReservoirRegion } from '@/types';
+import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Map } from 'lucide-react';
+import { Droplets, Database, BarChart, Map, Timer } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index: React.FC = () => {
   const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
   const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
+  const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
   
   useEffect(() => {
     // Calculate the data once on component mount and store in state
@@ -22,10 +23,14 @@ const Index: React.FC = () => {
     
     const total = calculateGrandTotal();
     setGrandTotal(total);
+    
+    // Get reservoirs with drain dates
+    const reservoirsWithDrainDates = getReservoirsWithDrainDates();
+    setReservoirs(reservoirsWithDrainDates);
   }, []);
   
   const getReservoirs = (region: ReservoirRegion) => {
-    return getReservoirsByRegion(region);
+    return reservoirs.filter(reservoir => reservoir.region === region);
   };
   
   return (
@@ -33,7 +38,7 @@ const Index: React.FC = () => {
       <Header />
       
       <main className="container mx-auto px-4 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in">
             <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
               <Droplets className="h-8 w-8" />
@@ -73,6 +78,25 @@ const Index: React.FC = () => {
               </div>
             </CardContent>
           </Card>
+          
+          <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in" style={{ animationDelay: '300ms' }}>
+            <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
+              <Timer className="h-8 w-8" />
+            </div>
+            <CardContent className="flex flex-col justify-center p-4 w-full">
+              <div className="text-sm text-gray-500">Forecasted Fully Drained Date</div>
+              <div className="text-2xl font-bold">
+                <span className={`
+                  ${grandTotal?.drainDate === 'Already Empty' ? 'text-red-500' : ''}
+                  ${grandTotal?.drainDate === 'Not Draining' ? 'text-green-500' : ''}
+                  ${grandTotal?.drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
+                  ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500' : ''}
+                `}>
+                  {grandTotal?.drainDate || 'Calculating...'}
+                </span>
+              </div>
+            </CardContent>
+          </Card>
         </div>
         
         <Tabs defaultValue="dashboard" className="mb-8">
@@ -108,7 +132,7 @@ const Index: React.FC = () => {
                     )}
                     
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {reservoirData
+                      {reservoirs
                         .sort((a, b) => b.capacity - a.capacity)
                         .slice(0, 4)
                         .map((reservoir) => (
