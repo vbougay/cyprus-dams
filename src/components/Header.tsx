@@ -24,6 +24,13 @@ const Header: React.FC = () => {
             <div className="px-4 py-2 rounded-full bg-water-50 border border-water-100 text-water-700">
               <span className="font-mono">Last updated: {getReportDate()}</span>
             </div>
+            <div className="mt-2 text-center">
+            Subscribe to <a href="https://t.me/kiprozavodsk" className="text-water-600 hover:text-water-800 transition-colors underline">
+                 Кипрозаводск
+              </a>/<a href="https://www.tiktok.com/@kiprozavodsk" className="text-water-600 hover:text-water-800 transition-colors underline">
+                 Kiprozavodsk
+              </a>!
+            </div>
           </div>
         </div>
       </div>
