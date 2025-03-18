@@ -2,7 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { ChevronDown, ChevronUp, Droplets } from 'lucide-react';
+import { Droplets } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -53,6 +53,8 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
 
   const cardBgColor = getBgColor(regionTotal.storage.current.percentage);
   
+  if (!regionTotal) return null;
+  
   return (
     <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all ${cardBgColor}`}>
       <CardHeader className="pb-2">
@@ -89,7 +91,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           </div>
         </div>
         
-        {showReservoirs && (
+        {showReservoirs && children && (
           <Accordion type="single" collapsible className="mt-6">
             <AccordionItem value="reservoirs" className="border-b-0">
               <AccordionTrigger className="py-2 px-4 bg-white/50 rounded-md hover:bg-white/80 transition-colors">

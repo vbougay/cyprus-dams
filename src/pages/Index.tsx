@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow } from '@/components';
 import { 
@@ -17,6 +18,7 @@ const Index: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>('dashboard');
   
   useEffect(() => {
+    // Calculate the data once on component mount and store in state
     const totals = calculateRegionTotals();
     setRegionTotals(totals);
     
@@ -75,7 +77,7 @@ const Index: React.FC = () => {
           </Card>
         </div>
         
-        <Tabs defaultValue="dashboard" value={activeTab} onValueChange={setActiveTab} className="mb-8">
+        <Tabs defaultValue="dashboard" onValueChange={setActiveTab} className="mb-8">
           <TabsList className="w-full max-w-md mx-auto grid grid-cols-3 mb-8">
             <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
             <TabsTrigger value="regions">By Region</TabsTrigger>
@@ -118,9 +120,9 @@ const Index: React.FC = () => {
           </TabsContent>
           
           <TabsContent value="regions" className="space-y-8 animate-fade-in">
-            {regionTotals.map((regionTotal) => (
+            {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
               <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
-                {getReservoirs(regionTotal.region as ReservoirRegion).map((reservoir) => (
+                {getReservoirs(regionTotal.region).map((reservoir) => (
                   <ReservoirCard key={reservoir.name} reservoir={reservoir} />
                 ))}
               </RegionSummary>
