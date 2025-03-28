@@ -1,8 +1,8 @@
-
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { Droplets, Timer } from 'lucide-react';
+import { Droplets, Timer, Info } from 'lucide-react';
+import { getSummaryChanges, getCurrentDataSetId } from '@/utils/dataManager';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -69,6 +69,11 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   
   const cardBgColor = getBgColor(regionTotal.storage.current.percentage);
   
+  // Check if this is the Total region and if we have summary changes
+  const isTotal = regionTotal.region === 'Total';
+  const summaryChanges = isTotal ? getSummaryChanges() : null;
+  const showSummaryChanges = isTotal && summaryChanges && getCurrentDataSetId() === '28-MAR-2025';
+  
   return (
     <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all duration-500 ${cardBgColor} ${className}`}>
       <CardHeader className="pb-2">
@@ -121,6 +126,19 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
             </div>
           </div>
         </div>
+        
+        {/* Display summary changes if available */}
+        {showSummaryChanges && (
+          <div className="mt-6 bg-white/80 p-4 rounded-lg shadow-sm h-full">
+            <div className="flex items-center gap-2 mb-2">
+              <Info className="h-5 w-5 text-water-500" />
+              <h3 className="font-medium">Recent Changes Summary</h3>
+            </div>
+            <pre className="text-sm whitespace-pre-wrap bg-gray-50 p-3 rounded border border-gray-200 h-full">
+              {summaryChanges}
+            </pre>
+          </div>
+        )}
         
         {showReservoirs && children && (
           <Accordion type="single" collapsible className="mt-6">

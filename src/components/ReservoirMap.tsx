@@ -5,8 +5,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { LatLngExpression } from 'leaflet';
 
-
-import { reservoirData } from '@/utils/data';
+import { reservoirData } from '@/utils/dataManager';
+import { useDataContext } from '@/context/DataContext';
 import { Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Map } from 'lucide-react';
@@ -54,6 +54,7 @@ const reservoirLocations = {
 const CYPRUS_CENTER: LatLngExpression = [35.00, 33.00];
 
 const ReservoirMap: React.FC = () => {
+  const { currentDataSetId } = useDataContext();
   
   // Function to get color based on percentage
   const getColorByPercentage = (percentage: number): string => {
@@ -76,7 +77,7 @@ const ReservoirMap: React.FC = () => {
     const maxSize = 60; // Maximum bubble size in pixels
     
     // Find the largest reservoir capacity for scaling
-    const maxCapacity = Math.max(...reservoirData.map(r => r.capacity));
+    const maxCapacity = Math.max(...reservoirData().map(r => r.capacity));
     
     // Scale logarithmically to handle wide range of reservoir sizes
     const size = minSize + (Math.log(capacity + 1) / Math.log(maxCapacity + 1)) * (maxSize - minSize);
@@ -119,7 +120,7 @@ const ReservoirMap: React.FC = () => {
             />
             <ZoomControl position="topright" />
             
-            {reservoirData.map(reservoir => {
+            {reservoirData().map(reservoir => {
               const location = reservoirLocations[reservoir.name as keyof typeof reservoirLocations];
               if (!location) return null;
               

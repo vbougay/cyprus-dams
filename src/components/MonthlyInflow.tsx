@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
-import { yearlyInflowData } from '@/utils/data';
+import { yearlyInflowData } from '@/utils/dataManager';
+import { useDataContext } from '@/context/DataContext';
 import { Calendar, ChevronDown, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -21,6 +22,7 @@ const MonthlyInflow: React.FC = () => {
   const [chartData, setChartData] = useState<ChartData[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>('24/25');
   const [isVisible, setIsVisible] = useState(false);
+  const { currentDataSetId } = useDataContext();
 
   useEffect(() => {
     prepareChartData();
@@ -31,7 +33,7 @@ const MonthlyInflow: React.FC = () => {
     }, 200);
     
     return () => clearTimeout(timer);
-  }, [selectedYear]);
+  }, [selectedYear, currentDataSetId]);
 
   const prepareChartData = () => {
     const months = [
@@ -39,13 +41,16 @@ const MonthlyInflow: React.FC = () => {
       'April', 'May', 'June', 'July', 'Aug-Sep'
     ];
 
+    // Get the yearly inflow data from the data manager
+    const inflowData = yearlyInflowData();
+
     // Find the selected year data and previous year data
-    const currentYearData = yearlyInflowData.find(data => data.year === selectedYear);
+    const currentYearData = inflowData.find(data => data.year === selectedYear);
     
     // For comparison, find the previous year's data based on actual year value
     const currentYearParts = selectedYear.split('/');
     const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
-    const previousYearData = yearlyInflowData.find(data => data.year === previousYearValue);
+    const previousYearData = inflowData.find(data => data.year === previousYearValue);
 
     if (!currentYearData) return;
 
@@ -60,7 +65,7 @@ const MonthlyInflow: React.FC = () => {
   };
 
   // Available years for selection
-  const years = yearlyInflowData.map(data => data.year);
+  const years = yearlyInflowData().map(data => data.year);
 
   return (
     <Card className="bg-white/90 backdrop-blur-md shadow-lg border border-gray-200 p-1 animate-fade-in">
@@ -155,7 +160,7 @@ const MonthlyInflow: React.FC = () => {
             <span>Data from Cyprus Water Development Department</span>
           </div>
           <div className="text-sm font-medium text-water-600">
-            Total: {yearlyInflowData.find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
+            Total: {yearlyInflowData().find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
           </div>
         </div>
       </CardContent>

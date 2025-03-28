@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { Reservoir } from '@/types';
-import { getReservoirsWithDrainDates } from '@/utils/data';
+import { getReservoirsWithDrainDates } from '@/utils/dataManager';
+import { useDataContext } from '@/context/DataContext';
 import { ChevronDown, ChevronUp, Filter, Search, Timer } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -27,6 +28,7 @@ const ReservoirTable: React.FC = () => {
   const [sortField, setSortField] = useState<string>('name');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
+  const { currentDataSetId } = useDataContext();
   const reservoirData = getReservoirsWithDrainDates();
   
   // Define the columns for the table

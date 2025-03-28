@@ -5,7 +5,8 @@ import {
   getReservoirsByRegion, 
   calculateRegionTotals, 
   calculateGrandTotal 
-} from '@/utils/data';
+} from '@/utils/dataManager';
+import { useDataContext } from '@/context/DataContext';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Droplets, Database, BarChart, Map, Timer } from 'lucide-react';
@@ -15,9 +16,10 @@ const Index: React.FC = () => {
   const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
   const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
   const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
+  const { currentDataSetId } = useDataContext();
   
   useEffect(() => {
-    // Calculate the data once on component mount and store in state
+    // Calculate the data whenever the data set changes
     const totals = calculateRegionTotals();
     setRegionTotals(totals);
     
@@ -27,7 +29,7 @@ const Index: React.FC = () => {
     // Get reservoirs with drain dates
     const reservoirsWithDrainDates = getReservoirsWithDrainDates();
     setReservoirs(reservoirsWithDrainDates);
-  }, []);
+  }, [currentDataSetId]);
   
   const getReservoirs = (region: ReservoirRegion) => {
     return reservoirs.filter(reservoir => reservoir.region === region);
@@ -168,7 +170,7 @@ const Index: React.FC = () => {
       <footer className="border-t border-gray-200 py-6 bg-white/60 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
           <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">Data from Cyprus Water Development Department</a></p>
-          <p className="mt-2">Last updated on 3/17/25. Contact me at <a href="mailto:v@bougay.com">v@bougay.com</a></p>
+          <p className="mt-2">Contact me at <a href="mailto:v@bougay.com">v@bougay.com</a></p>
         </div>
       </footer>
     </div>
