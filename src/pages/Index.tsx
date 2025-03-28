@@ -106,7 +106,7 @@ const Index: React.FC = () => {
         </div>
         
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="w-full max-w-lg mx-auto grid grid-cols-4 mb-8">
+          <TabsList className="w-full max-w-xl mx-auto grid grid-cols-4 mb-8">
             <TabsTrigger value="dashboard">{t('dashboard')}</TabsTrigger>
             <TabsTrigger value="regions">{t('byRegion')}</TabsTrigger>
             <TabsTrigger value="map">{t('map')}</TabsTrigger>
