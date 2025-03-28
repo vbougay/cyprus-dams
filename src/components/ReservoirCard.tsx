@@ -4,7 +4,7 @@ import { Reservoir } from '@/types';
 import { CapacityChart } from '@/components';
 import { DropletIcon, Droplets, TrendingUp, Calendar, Timer } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
-import { useTranslation } from '@/utils/translations';
+import { useTranslation, translations } from '@/utils/translations';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ReservoirCardProps {
@@ -27,7 +27,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
     <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-100">
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
-          <span className="font-medium text-lg">{name}</span>
+          <span className="font-medium text-lg">{translations[language][name as keyof typeof translations.en] || name}</span>
           <div className="flex items-center gap-1.5 text-xs font-normal bg-water-50 text-water-700 px-2 py-1 rounded-full">
             <DropletIcon size={12} />
             <span>{capacity.toFixed(3)} MCM</span>

@@ -71,7 +71,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
     <div ref={chartRef} className="opacity-0 transition-opacity duration-500">
       <div className="flex items-center justify-center space-x-4">
         {/* Current percentage circle */}
-        <div className="relative w-24 h-24 flex items-center justify-center">
+        <div className="relative w-28 h-28 flex items-center justify-center">
           <svg className="w-full h-full" viewBox="0 0 100 100">
             {/* Background circle */}
             <circle
@@ -112,7 +112,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
             <div className="text-gray-400">{t('vsLastYear')}</div>
             
             {/* Last year percentage circle */}
-            <div className="relative w-24 h-24 flex items-center justify-center">
+            <div className="relative w-28 h-28 flex items-center justify-center">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 {/* Background circle */}
                 <circle
