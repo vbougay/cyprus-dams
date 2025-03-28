@@ -3,6 +3,8 @@ import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
 import { Droplets, Timer, Info } from 'lucide-react';
 import { getSummaryChanges, getCurrentDataSetId } from '@/utils/dataManager';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation } from '@/utils/translations';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -19,6 +21,8 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   children,
   className = ''
 }) => {
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   const cardRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
@@ -71,7 +75,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   
   // Check if this is the Total region and if we have summary changes
   const isTotal = regionTotal.region === 'Total';
-  const summaryChanges = isTotal ? getSummaryChanges() : null;
+  const summaryChanges = isTotal ? getSummaryChanges(language) : null;
   const showSummaryChanges = isTotal && summaryChanges && getCurrentDataSetId() === '28-MAR-2025';
   
   return (
@@ -80,10 +84,17 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Droplets className="h-5 w-5 text-water-500" />
-            <span>{regionTotal.region}</span>
+            <span>
+              {regionTotal.region === 'Southern Conveyor' ? t('southernConveyor') :
+               regionTotal.region === 'Paphos' ? t('paphos') :
+               regionTotal.region === 'Chrysochou' ? t('chrysochou') :
+               regionTotal.region === 'Nicosia' ? t('nicosia') :
+               regionTotal.region === 'Recharge/Other' ? t('rechargeOther') :
+               regionTotal.region === 'Total' ? 'Total' : regionTotal.region}
+            </span>
           </div>
           <div className="text-sm font-normal text-gray-500">
-            {regionTotal.capacity.toFixed(1)} MCM capacity
+            {regionTotal.capacity.toFixed(1)} MCM {t('capacity')}
           </div>
         </CardTitle>
       </CardHeader>
@@ -95,24 +106,24 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-4">
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
-            <div className="text-sm text-gray-500 mb-1">Current Storage</div>
+            <div className="text-sm text-gray-500 mb-1">{t('currentStorage')}</div>
             <div className="text-lg font-semibold">{regionTotal.storage.current.amount.toFixed(3)} MCM</div>
           </div>
           
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
-            <div className="text-sm text-gray-500 mb-1">Last Year</div>
+            <div className="text-sm text-gray-500 mb-1">{t('lastYear')}</div>
             <div className="text-lg font-semibold">{regionTotal.storage.lastYear.amount.toFixed(3)} MCM</div>
           </div>
           
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
-            <div className="text-sm text-gray-500 mb-1">Recent Inflow</div>
+            <div className="text-sm text-gray-500 mb-1">{t('recentInflow')}</div>
             <div className="text-lg font-semibold">{regionTotal.inflow.last24Hours.toFixed(3)} MCM</div>
           </div>
           
           <div className="bg-white/80 p-3 rounded-lg shadow-sm">
             <div className="flex items-center gap-2">
               <Timer className="h-4 w-4 text-water-500" />
-              <div className="text-sm text-gray-500">Fully Drained By</div>
+              <div className="text-sm text-gray-500">{t('fullyDrainedBy')}</div>
             </div>
             <div className="text-lg font-semibold mt-1">
               <span className={`
@@ -121,7 +132,10 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
                 ${regionTotal.drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
                 ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(regionTotal.drainDate || '') ? 'text-amber-500' : ''}
               `}>
-                {regionTotal.drainDate || 'Calculating...'}
+                {regionTotal.drainDate === 'Already Empty' ? t('alreadyEmpty') :
+                 regionTotal.drainDate === 'Not Draining' ? t('notDraining') :
+                 regionTotal.drainDate === 'Beyond 10 Years' ? t('beyondTenYears') :
+                 regionTotal.drainDate === 'Calculating...' ? t('calculating') : regionTotal.drainDate}
               </span>
             </div>
           </div>
@@ -132,7 +146,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           <div className="mt-6 bg-white/80 p-4 rounded-lg shadow-sm h-full">
             <div className="flex items-center gap-2 mb-2">
               <Info className="h-5 w-5 text-water-500" />
-              <h3 className="font-medium">Recent Changes Summary</h3>
+              <h3 className="font-medium">{t('changesTitle')}</h3>
             </div>
             <pre className="text-sm whitespace-pre-wrap bg-gray-50 p-3 rounded border border-gray-200 h-full">
               {summaryChanges}
@@ -144,7 +158,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           <Accordion type="single" collapsible className="mt-6">
             <AccordionItem value="reservoirs" className="border-b-0">
               <AccordionTrigger className="py-2 px-4 bg-white/50 rounded-md hover:bg-white/80 transition-colors">
-                <span className="text-sm font-medium text-gray-600">View Reservoirs</span>
+                <span className="text-sm font-medium text-gray-600">{t('viewReservoirs')}</span>
               </AccordionTrigger>
               <AccordionContent className="pt-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">

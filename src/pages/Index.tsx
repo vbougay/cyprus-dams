@@ -7,6 +7,8 @@ import {
   calculateGrandTotal 
 } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Droplets, Database, BarChart, Map, Timer } from 'lucide-react';
@@ -17,6 +19,8 @@ const Index: React.FC = () => {
   const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
   const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
   const { currentDataSetId } = useDataContext();
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   
   useEffect(() => {
     // Calculate the data whenever the data set changes
@@ -46,7 +50,7 @@ const Index: React.FC = () => {
               <Droplets className="h-8 w-8" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">Total Capacity</div>
+              <div className="text-sm text-gray-500">{t('totalCapacity')}</div>
               <div className="text-2xl font-bold">{grandTotal?.capacity.toFixed(1)} MCM</div>
             </CardContent>
           </Card>
@@ -56,7 +60,7 @@ const Index: React.FC = () => {
               <Database className="h-8 w-8" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">Current Storage</div>
+              <div className="text-sm text-gray-500">{t('currentStorage')}</div>
               <div className="text-2xl font-bold">
                 {grandTotal?.storage.current.amount.toFixed(1)} MCM
                 <span className="text-sm font-normal text-gray-500 ml-2">
@@ -71,11 +75,11 @@ const Index: React.FC = () => {
               <BarChart className="h-8 w-8" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">vs Last Year</div>
+              <div className="text-sm text-gray-500">{t('vsLastYear')}</div>
               <div className="text-2xl font-bold">
                 {((grandTotal?.storage.current.percentage || 0) - (grandTotal?.storage.lastYear.percentage || 0)).toFixed(1)}%
                 <span className="text-sm font-normal text-gray-500 ml-2">
-                  change
+                  {t('change')}
                 </span>
               </div>
             </CardContent>
@@ -86,7 +90,7 @@ const Index: React.FC = () => {
               <Timer className="h-8 w-8" />
             </div>
             <CardContent className="flex flex-col justify-center p-4 w-full">
-              <div className="text-sm text-gray-500">Forecasted Fully Drained Date</div>
+              <div className="text-sm text-gray-500">{t('forecastedDrainDate')}</div>
               <div className="text-2xl font-bold">
                 <span className={`
                   ${grandTotal?.drainDate === 'Already Empty' ? 'text-red-500' : ''}
@@ -102,11 +106,11 @@ const Index: React.FC = () => {
         </div>
         
         <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="w-full max-w-md mx-auto grid grid-cols-4 mb-8">
-            <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-            <TabsTrigger value="regions">By Region</TabsTrigger>
-            <TabsTrigger value="map">Map</TabsTrigger>
-            <TabsTrigger value="table">Data Table</TabsTrigger>
+          <TabsList className="w-full max-w-lg mx-auto grid grid-cols-4 mb-8">
+            <TabsTrigger value="dashboard">{t('dashboard')}</TabsTrigger>
+            <TabsTrigger value="regions">{t('byRegion')}</TabsTrigger>
+            <TabsTrigger value="map">{t('map')}</TabsTrigger>
+            <TabsTrigger value="table">{t('dataTable')}</TabsTrigger>
           </TabsList>
           
           <TabsContent value="dashboard" className="animate-fade-in">
@@ -115,7 +119,7 @@ const Index: React.FC = () => {
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2">
                     <Droplets className="h-5 w-5 text-water-500" />
-                    <span>Overall Reservoir Status</span>
+                    <span>{t('overallStatus')}</span>
                   </CardTitle>
                 </CardHeader>
                 
@@ -169,8 +173,8 @@ const Index: React.FC = () => {
       
       <footer className="border-t border-gray-200 py-6 bg-white/60 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center text-sm text-gray-500">
-          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">Data from Cyprus Water Development Department</a></p>
-          <p className="mt-2">Contact me at <a href="mailto:v@bougay.com">v@bougay.com</a></p>
+          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">{t('dataFrom')}</a></p>
+          <p className="mt-2">{t('contactMe')} <a href="mailto:v@bougay.com">v@bougay.com</a></p>
         </div>
       </footer>
     </div>

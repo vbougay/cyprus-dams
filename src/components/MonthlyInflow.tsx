@@ -1,7 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
 import { yearlyInflowData } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation, translations } from '@/utils/translations';
 import { Calendar, ChevronDown, TrendingUp } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -13,7 +14,8 @@ import {
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 interface ChartData {
-  name: string;
+  name: string; // Translated name for display
+  key: string; // Original key for data lookup
   currentYear: number;
   previousYear: number;
 }
@@ -23,6 +25,8 @@ const MonthlyInflow: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<string>('24/25');
   const [isVisible, setIsVisible] = useState(false);
   const { currentDataSetId } = useDataContext();
+  const { language } = useLanguage();
+  const t = useTranslation(language);
 
   useEffect(() => {
     prepareChartData();
@@ -33,12 +37,19 @@ const MonthlyInflow: React.FC = () => {
     }, 200);
     
     return () => clearTimeout(timer);
-  }, [selectedYear, currentDataSetId]);
+  }, [selectedYear, currentDataSetId, language]);
 
   const prepareChartData = () => {
-    const months = [
-      'October', 'November', 'December', 'January', 'February', 'March',
-      'April', 'May', 'June', 'July', 'Aug-Sep'
+    // Define month keys (in English) for data lookup
+    const monthKeys = [
+      "October", "November", "December", "January", "February", "March",
+      "April", "May", "June", "July", "Aug-Sep"
+    ];
+    
+    // Define corresponding translation keys for display
+    const monthTranslationKeys = [
+      'october', 'november', 'december', 'january', 'february', 'march',
+      'april', 'may', 'june', 'july', 'augustSeptember'
     ];
 
     // Get the yearly inflow data from the data manager
@@ -55,11 +66,16 @@ const MonthlyInflow: React.FC = () => {
     if (!currentYearData) return;
 
     // Create the chart data
-    const data: ChartData[] = months.map(month => ({
-      name: month,
-      currentYear: currentYearData.months[month] || 0,
-      previousYear: previousYearData ? previousYearData.months[month] || 0 : 0
-    }));
+    const data: ChartData[] = monthKeys.map((monthKey, index) => {
+      // Type-safe way to get translation key
+      const translationKey = monthTranslationKeys[index] as keyof typeof translations.en;
+      return {
+        name: t(translationKey), // Translated name for display
+        key: monthKey, // Original key for data lookup
+        currentYear: currentYearData.months[monthKey] || 0,
+        previousYear: previousYearData ? previousYearData.months[monthKey] || 0 : 0
+      };
+    });
 
     setChartData(data);
   };
@@ -73,14 +89,14 @@ const MonthlyInflow: React.FC = () => {
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-water-500" />
-            <span>Monthly Inflow</span>
+            <span>{t('monthlyInflow')}</span>
           </div>
           <Select 
             defaultValue={selectedYear} 
             onValueChange={(value) => setSelectedYear(value)}
           >
             <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Select Year" />
+              <SelectValue placeholder={t('selectYear')} />
             </SelectTrigger>
             <SelectContent>
               {years.map(year => (
@@ -123,7 +139,7 @@ const MonthlyInflow: React.FC = () => {
                             const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
                             return (
                               <p key={index} style={{ color: entry.color }}>
-                                {entry.name === 'currentYear' ? `Year ${selectedYear}` : `Year ${previousYearValue}`}: 
+                                {entry.name === 'currentYear' ? `${t('yearLabel')} ${selectedYear}` : `${t('yearLabel')} ${previousYearValue}`}: 
                                 {' '}{(entry.value as number).toFixed(3)} MCM
                               </p>
                             );
@@ -137,14 +153,14 @@ const MonthlyInflow: React.FC = () => {
                 <Legend verticalAlign="top" height={36} />
                 <Bar 
                   dataKey="currentYear" 
-                  name={`Year ${selectedYear}`}
+                  name={`${t('yearLabel')} ${selectedYear}`}
                   fill="#0ea5e9" 
                   radius={[4, 4, 0, 0]} 
                   animationDuration={1000}
                 />
                 <Bar 
                   dataKey="previousYear" 
-                  name={`Year ${parseInt(selectedYear.split('/')[0]) - 1}/${parseInt(selectedYear.split('/')[1]) - 1}`}
+                  name={`${t('yearLabel')} ${parseInt(selectedYear.split('/')[0]) - 1}/${parseInt(selectedYear.split('/')[1]) - 1}`}
                   fill="#94a3b8" 
                   radius={[4, 4, 0, 0]} 
                   animationDuration={1000}
@@ -157,10 +173,10 @@ const MonthlyInflow: React.FC = () => {
         <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
           <div className="flex items-center gap-1 text-sm text-gray-500">
             <Calendar className="h-4 w-4" />
-            <span>Data from Cyprus Water Development Department</span>
+            <span>{t('dataFrom')}</span>
           </div>
           <div className="text-sm font-medium text-water-600">
-            Total: {yearlyInflowData().find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
+            {t('totalLabel')}: {yearlyInflowData().find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
           </div>
         </div>
       </CardContent>

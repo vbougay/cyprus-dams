@@ -73,10 +73,10 @@ export const getReportDate = (): string => {
 
 // Get summary of changes between March 17 and March 28, 2025
 // Only available for the March 28, 2025 dataset
-export const getSummaryChanges = (): string | null => {
+export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string | null => {
   // Check if the current data module has the getSummaryChanges function
   if (currentDataSetId === '28-MAR-2025' && 'getSummaryChanges' in data28Mar) {
-    return data28Mar.getSummaryChanges();
+    return data28Mar.getSummaryChanges(language);
   }
   return null;
 };

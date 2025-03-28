@@ -1,8 +1,9 @@
-
 import React, { useState } from 'react';
 import { Reservoir } from '@/types';
 import { getReservoirsWithDrainDates } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation, translations } from '@/utils/translations';
 import { ChevronDown, ChevronUp, Filter, Search, Timer } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -29,30 +30,55 @@ const ReservoirTable: React.FC = () => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [selectedRegion, setSelectedRegion] = useState<string>('all');
   const { currentDataSetId } = useDataContext();
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   const reservoirData = getReservoirsWithDrainDates();
   
   // Define the columns for the table
   const columns: Column[] = [
     {
       key: 'name',
-      label: 'Reservoir',
-      render: (reservoir) => (
-        <div>
-          <span className="font-medium">{reservoir.name}</span>
-          <div className="text-xs text-gray-500">{reservoir.region}</div>
-        </div>
-      ),
+      label: t('reservoir'),
+      render: (reservoir) => {
+        // Get translations for reservoir name and region
+        // We need to check if the translations object has entries for these
+        const translatedName = (() => {
+          // Check if the name exists in translations
+          if (reservoir.name in translations[language]) {
+            // @ts-expect-error - We know this is a valid key at runtime
+            return t(reservoir.name);
+          }
+          return reservoir.name;
+        })();
+        
+        // Get translation for region
+        const translatedRegion = (() => {
+          // Check if the region exists in translations
+          if (reservoir.region in translations[language]) {
+            // @ts-expect-error - We know this is a valid key at runtime
+            return t(reservoir.region);
+          }
+          return reservoir.region;
+        })();
+        
+        return (
+          <div>
+            <span className="font-medium">{translatedName}</span>
+            <div className="text-xs text-gray-500">{translatedRegion}</div>
+          </div>
+        );
+      },
       sortable: true,
     },
     {
       key: 'capacity',
-      label: 'Capacity (MCM)',
+      label: t('capacityMCM'),
       render: (reservoir) => <span>{reservoir.capacity.toFixed(3)}</span>,
       sortable: true,
     },
     {
       key: 'storage',
-      label: 'Current Storage',
+      label: t('currentStorageShort'),
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.current.amount.toFixed(3)} MCM</div>
@@ -63,7 +89,7 @@ const ReservoirTable: React.FC = () => {
     },
     {
       key: 'storage',
-      label: 'Last Year',
+      label: t('lastYearShort'),
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.lastYear.amount.toFixed(3)} MCM</div>
@@ -74,7 +100,7 @@ const ReservoirTable: React.FC = () => {
     },
     {
       key: 'difference',
-      label: 'Change',
+      label: t('changeShort'),
       render: (reservoir) => {
         const diff = reservoir.storage.current.percentage - reservoir.storage.lastYear.percentage;
         const isPositive = diff >= 0;
@@ -89,21 +115,21 @@ const ReservoirTable: React.FC = () => {
     },
     {
       key: 'inflow',
-      label: 'Recent Inflow',
+      label: t('recentInflowShort'),
       render: (reservoir) => <span>{reservoir.inflow.last24Hours.toFixed(3)} MCM</span>,
       sortable: true,
     },
     {
       key: 'inflow',
-      label: 'Total Inflow',
+      label: t('totalInflow'),
       render: (reservoir) => <span>{reservoir.inflow.totalSince.toFixed(3)} MCM</span>,
       sortable: true,
     },
     {
       key: 'drainDate',
-      label: 'Fully Drained By',
+      label: t('fullyDrainedByShort'),
       render: (reservoir) => {
-        const drainDate = reservoir.drainDate || 'Calculating...';
+        const drainDate = reservoir.drainDate || t('calculating');
         return (
           <div className="flex items-center gap-1">
             <Timer className="h-4 w-4 text-water-500" />
@@ -113,7 +139,10 @@ const ReservoirTable: React.FC = () => {
               ${drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
               ${!['Already Empty', 'Not Draining', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500' : ''}
             `}>
-              {drainDate}
+              {drainDate === 'Already Empty' ? t('alreadyEmpty') :
+               drainDate === 'Not Draining' ? t('notDraining') :
+               drainDate === 'Beyond 10 Years' ? t('beyondTenYears') :
+               drainDate === 'Calculating...' ? t('calculating') : drainDate}
             </span>
           </div>
         );
@@ -189,14 +218,14 @@ const ReservoirTable: React.FC = () => {
     <Card className="bg-white/90 backdrop-blur-md shadow-lg border border-gray-200 animate-fade-in">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between flex-wrap gap-4">
-          <span>Reservoir Data Table</span>
+          <span>{t('dataTable')}</span>
           
           <div className="flex items-center gap-2">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
               <Input
                 type="text"
-                placeholder="Search reservoirs..."
+                placeholder={t('searchReservoirs')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-8 h-9 md:w-48 bg-white"
@@ -207,11 +236,11 @@ const ReservoirTable: React.FC = () => {
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm" className="h-9">
                   <Filter className="h-4 w-4 mr-2" />
-                  Filter
+                  {t('filter')}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">
-                <DropdownMenuLabel>Filter by Region</DropdownMenuLabel>
+                <DropdownMenuLabel>{t('filterByRegion')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {regions.map((region) => (
                   <DropdownMenuItem
@@ -219,7 +248,14 @@ const ReservoirTable: React.FC = () => {
                     onClick={() => setSelectedRegion(region)}
                     className={selectedRegion === region ? 'bg-accent text-accent-foreground' : ''}
                   >
-                    {region === 'all' ? 'All Regions' : region}
+                    {region === 'all' ? t('allRegions') : (() => {
+                      // Try to get translation for region
+                      if (region in translations[language]) {
+                        // @ts-expect-error - We know this is a valid key at runtime
+                        return t(region);
+                      }
+                      return region;
+                    })()}
                   </DropdownMenuItem>
                 ))}
               </DropdownMenuContent>
@@ -271,7 +307,7 @@ const ReservoirTable: React.FC = () => {
         
         {sortedReservoirs.length === 0 && (
           <div className="flex items-center justify-center h-32 text-gray-500">
-            No reservoirs match your search criteria
+            {t('noReservoirs')}
           </div>
         )}
       </CardContent>

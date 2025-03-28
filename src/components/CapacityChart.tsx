@@ -1,6 +1,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal, Reservoir } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation } from '@/utils/translations';
 
 interface CapacityChartProps {
   data: RegionTotal | Reservoir;
@@ -9,6 +11,8 @@ interface CapacityChartProps {
 
 const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = true }) => {
   const chartRef = useRef<HTMLDivElement>(null);
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   
   useEffect(() => {
     if (!chartRef.current) return;
@@ -99,13 +103,13 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
             <span className={`text-xl font-bold ${currentColor}`}>{currentPercentage}%</span>
-            <span className="text-xs text-gray-500">Current</span>
+            <span className="text-xs text-gray-500">{t('currentVeryShort')}</span>
           </div>
         </div>
         
         {showComparison && (
           <>
-            <div className="text-gray-400">vs</div>
+            <div className="text-gray-400">{t('vsLastYear')}</div>
             
             {/* Last year percentage circle */}
             <div className="relative w-24 h-24 flex items-center justify-center">
@@ -140,7 +144,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className={`text-xl font-bold ${lastYearColor}`}>{lastYearPercentage}%</span>
-                <span className="text-xs text-gray-500">Last Year</span>
+                <span className="text-xs text-gray-500">{t('lastYearVeryShort')}</span>
               </div>
             </div>
           </>
@@ -148,7 +152,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
       </div>
       
       <div className="mt-4 text-center">
-        <div className="text-sm text-gray-500">Capacity</div>
+        <div className="text-sm text-gray-500">{t('capacityShort')}</div>
         <div className="text-lg font-medium">{data.capacity.toFixed(3)} MCM</div>
       </div>
     </div>
