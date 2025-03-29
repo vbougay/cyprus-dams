@@ -1,69 +1,92 @@
-# Welcome to your Lovable project
+# Cyprus Reservoir Visualizer
 
-## Project info
+A comprehensive dashboard for monitoring and visualizing water reservoir data across Cyprus. This application provides real-time insights into reservoir capacities, current storage levels, historical comparisons, and forecasted drain dates.
 
-**URL**: https://lovable.dev/projects/05b11906-47d9-4140-af9b-7f5b81c94230
+## Features
 
-## How can I edit this code?
+- **Dashboard Overview**: At-a-glance view of key metrics including total capacity, current storage, year-over-year comparison, and forecasted drain dates
+- **Regional Breakdown**: Detailed information organized by geographical regions (Southern Conveyor, Paphos, Chrysochou, Nicosia, and Recharge/Other)
+- **Interactive Map**: Visual representation of all reservoirs across Cyprus with size indicating capacity and color indicating current storage level
+- **Data Table**: Comprehensive tabular data with filtering and search capabilities
+- **Monthly Inflow Charts**: Historical inflow data visualization with year-over-year comparison
+- **Multi-language Support**: Available in English, Greek (Ελληνικά), and Russian (Русский)
+- **Historical Data Comparison**: Compare current data with previous year's data and track changes over time
+- **Responsive Design**: Optimized for both desktop and mobile devices
 
-There are several ways of editing your application.
+## Technologies Used
 
-**Use Lovable**
+- **React**: Frontend library for building the user interface
+- **TypeScript**: Type-safe JavaScript for improved developer experience
+- **Vite**: Next-generation frontend tooling for faster development
+- **Tailwind CSS**: Utility-first CSS framework for styling
+- **shadcn/ui**: High-quality UI components built with Radix UI and Tailwind CSS
+- **Leaflet**: Interactive map library for displaying reservoir locations
+- **Recharts**: Composable charting library for data visualization
+- **React Router**: For navigation between different views
+- **React Context API**: For state management across the application
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/05b11906-47d9-4140-af9b-7f5b81c94230) and start prompting.
+## Data Source
 
-Changes made via Lovable will be committed automatically to this repo.
+All data is sourced from the [Cyprus Water Development Department](https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument) of the Ministry of Agriculture. The application currently includes data sets from:
 
-**Use your preferred IDE**
+- March 28, 2025
+- March 17, 2025
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+The data includes information about 21 reservoirs across Cyprus, including their capacity, current storage, inflow rates, and historical data.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Getting Started
 
-Follow these steps:
+### Prerequisites
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- Node.js (v16 or higher)
+- npm or bun
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Installation
 
-# Step 3: Install the necessary dependencies.
-npm i
+```bash
+# Clone the repository
+git clone <repository-url>
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+# Navigate to the project directory
+cd cyprus-dams
+
+# Install dependencies
+npm install
+# or
+bun install
 ```
 
-**Edit a file directly in GitHub**
+### Development
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Start the development server
+npm run dev
+# or
+bun run dev
+```
 
-**Use GitHub Codespaces**
+This will start the development server at `http://localhost:5173` (or another port if 5173 is in use).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Building for Production
 
-## What technologies are used for this project?
+```bash
+# Build the application
+npm run build
+# or
+bun run build
 
-This project is built with .
+# Preview the production build
+npm run preview
+# or
+bun run preview
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## Contact
 
-## How can I deploy this project?
+For questions, feedback, or contributions, please contact:
 
-Simply open [Lovable](https://lovable.dev/projects/05b11906-47d9-4140-af9b-7f5b81c94230) and click on Share -> Publish.
+- Email: [v@bougay.com](mailto:v@bougay.com)
 
-## I want to use a custom domain - is that possible?
+## License
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+This project is open source and available under the MIT License.
