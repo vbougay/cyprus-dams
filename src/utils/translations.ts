@@ -20,6 +20,16 @@ export const translations = {
     map: "Map",
     dataTable: "Data Table",
     
+    // Map
+    mapTitle: "Cyprus Reservoir Map",
+    mapNote: "This map shows all reservoirs in Cyprus. The size of each circle represents the reservoir's total capacity, while the color indicates the current storage level (red: <25%, orange: 25-50%, yellow: 50-75%, green: >75%). Click on a reservoir to see detailed information.",
+    mapRegion: "Region",
+    mapCapacity: "Capacity",
+    mapCurrent: "Current",
+    mapLastYear: "Last Year",
+    mapRecentInflow: "Recent Inflow",
+    mapNoteLabel: "Note",
+    
     // Cards
     overallStatus: "Overall Reservoir Status",
     
@@ -136,6 +146,16 @@ export const translations = {
     map: "Χάρτης",
     dataTable: "Πίνακας δεδομένων",
     
+    // Map
+    mapTitle: "Χάρτης Ταμιευτήρων Κύπρου",
+    mapNote: "Αυτός ο χάρτης δείχνει όλους τους ταμιευτήρες στην Κύπρο. Το μέγεθος κάθε κύκλου αντιπροσωπεύει τη συνολική χωρητικότητα του ταμιευτήρα, ενώ το χρώμα υποδεικνύει το τρέχον επίπεδο αποθήκευσης (κόκκινο: <25%, πορτοκαλί: 25-50%, κίτρινο: 50-75%, πράσινο: >75%). Κάντε κλικ σε έναν ταμιευτήρα για να δείτε λεπτομερείς πληροφορίες.",
+    mapRegion: "Περιοχή",
+    mapCapacity: "Χωρητικότητα",
+    mapCurrent: "Τρέχουσα",
+    mapLastYear: "Πέρυσι",
+    mapRecentInflow: "Πρόσφατη εισροή",
+    mapNoteLabel: "Σημείωση",
+    
     // Cards
     overallStatus: "Συνολική κατάσταση ταμιευτήρων",
     
@@ -251,6 +271,16 @@ export const translations = {
     byRegion: "Регионы",
     map: "Карта",
     dataTable: "Таблица данных",
+    
+    // Map
+    mapTitle: "Карта Водохранилищ Кипра",
+    mapNote: "Эта карта показывает все водохранилища на Кипре. Размер каждого круга представляет общую вместимость водохранилища, а цвет указывает на текущий уровень запаса (красный: <25%, оранжевый: 25-50%, желтый: 50-75%, зеленый: >75%). Нажмите на водохранилище, чтобы увидеть подробную информацию.",
+    mapRegion: "Регион",
+    mapCapacity: "Вместимость",
+    mapCurrent: "Текущий",
+    mapLastYear: "Прошлый год",
+    mapRecentInflow: "Недавний приток",
+    mapNoteLabel: "Примечание",
     
     // Cards
     overallStatus: "Общее Состояние Водохранилищ",

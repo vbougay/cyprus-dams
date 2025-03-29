@@ -7,6 +7,8 @@ import { LatLngExpression } from 'leaflet';
 
 import { reservoirData } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
+import { useLanguage } from '@/context/LanguageContext';
+import { useTranslation } from '@/utils/translations';
 import { Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Map } from 'lucide-react';
@@ -55,6 +57,8 @@ const CYPRUS_CENTER: LatLngExpression = [35.00, 33.00];
 
 const ReservoirMap: React.FC = () => {
   const { currentDataSetId } = useDataContext();
+  const { language } = useLanguage();
+  const t = useTranslation(language);
   
   // Function to get color based on percentage
   const getColorByPercentage = (percentage: number): string => {
@@ -102,7 +106,7 @@ const ReservoirMap: React.FC = () => {
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
           <Map className="h-5 w-5 text-water-500" />
-          <span>Cyprus Reservoir Map</span>
+          <span>{t('mapTitle')}</span>
         </CardTitle>
       </CardHeader>
       
@@ -135,15 +139,15 @@ const ReservoirMap: React.FC = () => {
                   <Popup>
                     <div style={{ padding: '4px' }}>
                       <h3 style={{ margin: '0', fontWeight: 600 }}>{reservoir.name}</h3>
-                      <p style={{ margin: '0' }}>Region: {reservoir.region}</p>
-                      <p style={{ margin: '0' }}>Capacity: {reservoir.capacity.toFixed(1)} MCM</p>
+                      <p style={{ margin: '0' }}>{t('mapRegion')}: {reservoir.region}</p>
+                      <p style={{ margin: '0' }}>{t('mapCapacity')}: {reservoir.capacity.toFixed(1)} MCM</p>
                       <p style={{ margin: '0' }}>
-                        Current: {reservoir.storage.current.amount.toFixed(1)} MCM ({reservoir.storage.current.percentage.toFixed(1)}%)
+                        {t('mapCurrent')}: {reservoir.storage.current.amount.toFixed(1)} MCM ({reservoir.storage.current.percentage.toFixed(1)}%)
                       </p>
                       <p style={{ margin: '0' }}>
-                        Last Year: {reservoir.storage.lastYear.amount.toFixed(1)} MCM ({reservoir.storage.lastYear.percentage.toFixed(1)}%)
+                        {t('mapLastYear')}: {reservoir.storage.lastYear.amount.toFixed(1)} MCM ({reservoir.storage.lastYear.percentage.toFixed(1)}%)
                       </p>
-                      <p style={{ margin: '0' }}>Recent Inflow: {reservoir.inflow.last24Hours.toFixed(3)} MCM</p>
+                      <p style={{ margin: '0' }}>{t('mapRecentInflow')}: {reservoir.inflow.last24Hours.toFixed(3)} MCM</p>
                     </div>
                   </Popup>
                 </Marker>
@@ -154,9 +158,7 @@ const ReservoirMap: React.FC = () => {
         
         <div className="mt-4 p-3 bg-blue-50 rounded-md">
           <p className="text-sm text-gray-600">
-            <strong>Note:</strong> This map shows all reservoirs in Cyprus. The size of each circle represents 
-            the reservoir's total capacity, while the color indicates the current storage level (red: &lt;25%, orange: 25-50%, 
-            yellow: 50-75%, green: &gt;75%). Click on a reservoir to see detailed information.
+            <strong>{t('mapNoteLabel')}:</strong> {t('mapNote')}
           </p>
         </div>
       </CardContent>
