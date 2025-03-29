@@ -123,53 +123,54 @@ export const translations = {
     subscribe: "Εγγραφείτε στο",
     
     // Dashboard
-    totalCapacity: "Συνολική Χωρητικότητα",
-    currentStorage: "Τρέχουσα Αποθήκευση",
-    vsLastYear: "vs Πέρυσι",
-    change: "αλλαγή",
-    forecastedDrainDate: "Προβλεπόμενη Ημερομηνία Πλήρους Αποστράγγισης",
+    totalCapacity: "Συνολική χωρητικότητα",
+    currentStorage: "Τρέχουσα αποθήκευση",
+    vs: "Έναντι",
+    vsLastYear: "Σε σύγκριση με πέρυσι",
+    change: "Μεταβολή",
+    forecastedDrainDate: "Προβλεπόμενη ημερομηνία πλήρους εξάντλησης",
     
     // Tabs
-    dashboard: "Πίνακας Ελέγχου",
-    byRegion: "Ανά Περιοχή",
+    dashboard: "Σύνοψη",
+    byRegion: "Ανά περιοχή",
     map: "Χάρτης",
-    dataTable: "Πίνακας Δεδομένων",
+    dataTable: "Πίνακας δεδομένων",
     
     // Cards
-    overallStatus: "Συνολική Κατάσταση Ταμιευτήρων",
+    overallStatus: "Συνολική κατάσταση ταμιευτήρων",
     
     // Region Summary
-    capacity: "χωρητικότητα",
+    capacity: "Χωρητικότητα",
     lastYear: "Πέρυσι",
-    recentInflow: "Πρόσφατη Εισροή",
-    fullyDrainedBy: "Πλήρης Αποστράγγιση Έως",
-    viewReservoirs: "Προβολή Ταμιευτήρων",
-    changesTitle: "Σύνοψη Πρόσφατων Αλλαγών",
+    recentInflow: "Πρόσφατη εισροή",
+    fullyDrainedBy: "Πλήρης εξάντληση έως",
+    viewReservoirs: "Προβολή ταμιευτήρων",
+    changesTitle: "Σύνοψη πρόσφατων αλλαγών",
     
     // Reservoir Table
     reservoir: "Ταμιευτήρας",
-    capacityMCM: "Χωρητικότητα (MCM)",
-    currentStorageShort: "Τρέχουσα Αποθήκευση",
+    capacityMCM: "Χωρητικότητα (εκατ. κ.μ.)",
+    currentStorageShort: "Τρέχουσα αποθήκευση",
     lastYearShort: "Πέρυσι",
-    changeShort: "Αλλαγή",
-    recentInflowShort: "Πρόσφατη Εισροή",
-    totalInflow: "Συνολική Εισροή",
-    fullyDrainedByShort: "Πλήρης Αποστράγγιση Έως",
+    changeShort: "Μεταβολή",
+    recentInflowShort: "Πρόσφατη εισροή",
+    totalInflow: "Συνολική εισροή",
+    fullyDrainedByShort: "Πλήρης εξάντληση έως",
     searchReservoirs: "Αναζήτηση ταμιευτήρων...",
     filter: "Φίλτρο",
-    filterByRegion: "Φίλτρο ανά Περιοχή",
-    allRegions: "Όλες οι Περιοχές",
-    noReservoirs: "Δεν υπάρχουν ταμιευτήρες που να ταιριάζουν με τα κριτήρια αναζήτησής σας",
+    filterByRegion: "Φίλτρο ανά περιοχή",
+    allRegions: "Όλες οι περιοχές",
+    noReservoirs: "Δεν βρέθηκαν ταμιευτήρες που να ταιριάζουν με τα κριτήρια αναζήτησης",
     
     // Drain dates
-    alreadyEmpty: "Ήδη Άδειο",
-    notDraining: "Δεν Αποστραγγίζεται",
-    beyondTenYears: "Πέρα από 10 Χρόνια",
+    alreadyEmpty: "Ήδη άδειο",
+    notDraining: "Δεν εξαντλείται",
+    beyondTenYears: "Πέραν των 10 ετών",
     calculating: "Υπολογισμός...",
     
     // Footer
     dataFrom: "Δεδομένα από το Τμήμα Αναπτύξεως Υδάτων Κύπρου",
-    contactMe: "Επικοινωνήστε μαζί μου στο",
+    contactMe: "Επικοινωνία στο",
     
     // Region names
     southernConveyor: "Νότιος Αγωγός",
@@ -221,11 +222,11 @@ export const translations = {
     augustSeptember: "Αύγ-Σεπ",
     
     // ReservoirCard
-    maxStorage: "Μέγιστη Αποθήκευση",
-    vsLastYearColon: "vs Πέρυσι:",
+    maxStorage: "Μέγιστη αποθήκευση",
+    vsLastYearColon: "Σε σύγκριση με πέρυσι:",
     
     // Chart labels (compact)
-    currentVeryShort: "Τρέχουσα",
+    currentVeryShort: "Τώρα",
     lastYearVeryShort: "Πέρυσι",
     capacityShort: "Χωρητ.",
     
