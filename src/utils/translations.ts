@@ -9,6 +9,7 @@ export const translations = {
     // Dashboard
     totalCapacity: "Total Capacity",
     currentStorage: "Current Storage",
+    vs: "vs",
     vsLastYear: "vs Last Year",
     change: "change",
     forecastedDrainDate: "Forecasted Fully Drained Date",
@@ -228,13 +229,128 @@ export const translations = {
     lastYearVeryShort: "Πέρυσι",
     capacityShort: "Χωρητ.",
     
+  },
+  ru: {
+    // Header
+    appTitle: "Водохранилища Кипра",
+    ministry: "Департамент Водного Развития - Министерство Сельского Хозяйства",
+    selectDate: "Выбрать дату",
+    subscribe: "Подписаться на",
+    
+    // Dashboard
+    totalCapacity: "Общая вместимость",
+    currentStorage: "Текущий запас",
+    vsLastYear: "По сравнению с прошлым годом",
+    vs: "против",
+    change: "изменение",
+    forecastedDrainDate: "Прогнозируемая дата полного истощения",
+    
+    // Tabs
+    dashboard: "Сводка",
+    byRegion: "Регионы",
+    map: "Карта",
+    dataTable: "Таблица данных",
+    
+    // Cards
+    overallStatus: "Общее Состояние Водохранилищ",
+    
+    // Region Summary
+    capacity: "вместимость",
+    lastYear: "Год назад",
+    recentInflow: "Недавний приток",
+    fullyDrainedBy: "Полное истощение к",
+    viewReservoirs: "Просмотр водохранилищ",
+    changesTitle: "Сводка недавних изменений",
+    
+    // Reservoir Table
+    reservoir: "Водохранилище",
+    capacityMCM: "Вместимость (млн м³)",
+    currentStorageShort: "Текущий запас",
+    lastYearShort: "Прошлый год",
+    changeShort: "Изменение",
+    recentInflowShort: "Недавний приток",
+    totalInflow: "Общий приток",
+    fullyDrainedByShort: "Полное истощение к",
+    searchReservoirs: "Поиск водохранилищ...",
+    filter: "Фильтр",
+    filterByRegion: "Фильтр по Региону",
+    allRegions: "Все регионы",
+    noReservoirs: "Нет водохранилищ, соответствующих критериям поиска",
+    
+    // Drain dates
+    alreadyEmpty: "Уже пусто",
+    notDraining: "Не истощается",
+    beyondTenYears: "Более 10 Лет",
+    calculating: "Вычисление...",
+    
+    // Footer
+    dataFrom: "Данные Департамента Водного Развития Кипра",
+    contactMe: "Связаться со мной по",
+    
+    // Region names
+    southernConveyor: "Южный Конвейер",
+    paphos: "Пафос",
+    chrysochou: "Хрисоху",
+    nicosia: "Никосия",
+    rechargeOther: "Пополнение/Другое",
+    
+    // Reservoir names
+    Kouris: "Курис",
+    Kalavasos: "Калавасос",
+    Lefkara: "Лефкара",
+    Dipotamos: "Дипотамос",
+    Germasoyeia: "Гермасойя",
+    Arminou: "Арминоу",
+    Polemidia: "Полемидия",
+    Achna: "Ахна",
+    Asprokremmos: "Аспрокреммос",
+    Kannaviou: "Каннавиу",
+    Mavrokolymbos: "Мавроколимбос",
+    Evretou: "Эвретоу",
+    Argaka: "Аргака",
+    Pomos: "Помос",
+    "Agia Marina": "Агиа Марина",
+    Vyzakia: "Визакия",
+    Xyliatou: "Ксилиату",
+    Kalopanagiotis: "Калопанайотис",
+    Tamassos: "Тамассос",
+    "Klirou-Malounta": "Клиру-Малунта",
+    Solea: "Солея",
+    
+    // Monthly Inflow
+    monthlyInflow: "Ежемесячный Приток",
+    selectYear: "Выбрать год",
+    yearLabel: "Год",
+    totalLabel: "Всего",
+    
+    // Months
+    october: "Октябрь",
+    november: "Ноябрь",
+    december: "Декабрь",
+    january: "Январь",
+    february: "Февраль",
+    march: "Март",
+    april: "Апрель",
+    may: "Май",
+    june: "Июнь",
+    july: "Июль",
+    augustSeptember: "Авг-Сен",
+    
+    // ReservoirCard
+    maxStorage: "Макс. запас",
+    vsLastYearColon: "vs год назад:",
+    
+    // Chart labels (compact)
+    currentVeryShort: "Сейчас",
+    lastYearVeryShort: "Год назад",
+    capacityShort: "Вместимость",
   }
 };
 
 // No need to re-export translations as it's already exported above
 
 // Helper function to get translations
-export const useTranslation = (language: 'en' | 'gr') => {
+export const useTranslation = (language: 'en' | 'gr' | 'ru') => {
   return (key: keyof typeof translations.en): string => {
     return translations[language][key] || translations.en[key];
   };

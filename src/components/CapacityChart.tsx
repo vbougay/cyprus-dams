@@ -109,7 +109,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
         
         {showComparison && (
           <>
-            <div className="text-gray-400">{t('vsLastYear')}</div>
+            <div className="text-gray-400">{t('vs')}</div>
             
             {/* Last year percentage circle */}
             <div className="relative w-28 h-28 flex items-center justify-center">

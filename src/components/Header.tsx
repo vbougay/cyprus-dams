@@ -50,7 +50,7 @@ const Header: React.FC = () => {
               {/* Language Selector */}
               <Select 
                 value={language}
-                onValueChange={(value) => setLanguage(value as 'en' | 'gr')}
+                onValueChange={(value) => setLanguage(value as 'en' | 'gr' | 'ru')}
               >
                 <SelectTrigger className="w-[80px]">
                   <SelectValue>
@@ -71,6 +71,12 @@ const Header: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <Globe className="h-4 w-4" />
                       <span>GR</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="ru">
+                    <div className="flex items-center gap-2">
+                      <Globe className="h-4 w-4" />
+                      <span>RU</span>
                     </div>
                   </SelectItem>
                 </SelectContent>
