@@ -90,7 +90,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
                regionTotal.region === 'Chrysochou' ? t('chrysochou') :
                regionTotal.region === 'Nicosia' ? t('nicosia') :
                regionTotal.region === 'Recharge/Other' ? t('rechargeOther') :
-               regionTotal.region === 'Total' ? 'Total' : regionTotal.region}
+               regionTotal.region === 'Total' ? t('totalLabel') : regionTotal.region}
             </span>
           </div>
           <div className="text-sm font-normal text-gray-500">
