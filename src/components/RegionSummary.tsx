@@ -76,7 +76,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   // Check if this is the Total region and if we have summary changes
   const isTotal = regionTotal.region === 'Total';
   const summaryChanges = isTotal ? getSummaryChanges(language) : null;
-  const showSummaryChanges = isTotal && summaryChanges && getCurrentDataSetId() === '28-MAR-2025';
+  const showSummaryChanges = isTotal && summaryChanges && getCurrentDataSetId() != '17-MAR-2025';
   
   return (
     <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all duration-500 ${cardBgColor} ${className}`}>
