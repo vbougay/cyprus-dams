@@ -28,6 +28,10 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   useEffect(() => {
     if (!cardRef.current) return;
     
+    // Reset animation state when regionTotal changes
+    cardRef.current.classList.add('opacity-0');
+    cardRef.current.classList.remove('opacity-100', 'animate-fade-in-up');
+    
     // Use a more reliable way to animate the card
     setTimeout(() => {
       if (cardRef.current) {
@@ -55,7 +59,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
         observer.unobserve(cardRef.current);
       }
     };
-  }, []);
+  }, [regionTotal]); // Add regionTotal to dependency array to re-run when data changes
 
   // Get appropriate background color based on storage percentage
   const getBgColor = (percentage: number) => {
