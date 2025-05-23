@@ -15,15 +15,15 @@ import {
   getReservoirsWithDrainDates as getReservoirsWithDrainDatesUtil 
 } from './reservoirUtils';
 
-// Define available data sets with their dates
+// Define available data sets with their dates and module references
 export const availableDataSets = [
-  { id: '23-MAY-2025', label: 'May 23, 2025', value: '23-MAY-2025' },
-  { id: '16-MAY-2025', label: 'May 16, 2025', value: '16-MAY-2025' },
-  { id: '09-MAY-2025', label: 'May 9, 2025', value: '09-MAY-2025' },
-  { id: '28-APR-2025', label: 'April 28, 2025', value: '28-APR-2025' },
-  { id: '11-APR-2025', label: 'April 11, 2025', value: '11-APR-2025' },
-  { id: '28-MAR-2025', label: 'March 28, 2025', value: '28-MAR-2025' },
-  { id: '17-MAR-2025', label: 'March 17, 2025', value: '17-MAR-2025' },
+  { id: '23-MAY-2025', label: 'May 23, 2025', value: '23-MAY-2025', module: data23May },
+  { id: '16-MAY-2025', label: 'May 16, 2025', value: '16-MAY-2025', module: data16May },
+  { id: '09-MAY-2025', label: 'May 9, 2025', value: '09-MAY-2025', module: data09May },
+  { id: '28-APR-2025', label: 'April 28, 2025', value: '28-APR-2025', module: data28Apr },
+  { id: '11-APR-2025', label: 'April 11, 2025', value: '11-APR-2025', module: data11Apr },
+  { id: '28-MAR-2025', label: 'March 28, 2025', value: '28-MAR-2025', module: data28Mar },
+  { id: '17-MAR-2025', label: 'March 17, 2025', value: '17-MAR-2025', module: data17Mar },
 ];
 
 /**
@@ -33,13 +33,8 @@ let currentDataSetId = '23-MAY-2025';
 
 // Function to get the current data module
 const getCurrentDataModule = () => {
-  if (currentDataSetId === '23-MAY-2025') return data23May;
-  if (currentDataSetId === '16-MAY-2025') return data16May;
-  if (currentDataSetId === '09-MAY-2025') return data09May;
-  if (currentDataSetId === '28-APR-2025') return data28Apr;
-  if (currentDataSetId === '11-APR-2025') return data11Apr;
-  if (currentDataSetId === '28-MAR-2025') return data28Mar;
-  return data17Mar;
+  const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
+  return dataset?.module || data17Mar;
 };
 
 // Function to set the current data set
@@ -94,23 +89,11 @@ export const getReportDate = (): string => {
  * Returns summary for March 28, April 11, April 28, May 9, May 16, or May 23, 2025 if available.
  */
 export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string | null => {
-  if (currentDataSetId === '23-MAY-2025' && 'getSummaryChanges' in data23May) {
-    return data23May.getSummaryChanges(language);
-  }
-  if (currentDataSetId === '16-MAY-2025' && 'getSummaryChanges' in data16May) {
-    return data16May.getSummaryChanges(language);
-  }
-  if (currentDataSetId === '09-MAY-2025' && 'getSummaryChanges' in data09May) {
-    return data09May.getSummaryChanges(language);
-  }
-  if (currentDataSetId === '28-APR-2025' && 'getSummaryChanges' in data28Apr) {
-    return data28Apr.getSummaryChanges(language);
-  }
-  if (currentDataSetId === '11-APR-2025' && 'getSummaryChanges' in data11Apr) {
-    return data11Apr.getSummaryChanges(language);
-  }
-  if (currentDataSetId === '28-MAR-2025' && 'getSummaryChanges' in data28Mar) {
-    return data28Mar.getSummaryChanges(language);
+  const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
+  const currentModule = dataset?.module;
+  
+  if (currentModule && 'getSummaryChanges' in currentModule && typeof currentModule.getSummaryChanges === 'function') {
+    return currentModule.getSummaryChanges(language);
   }
   return null;
 };
