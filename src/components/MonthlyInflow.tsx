@@ -139,8 +139,7 @@ const MonthlyInflow: React.FC = () => {
                             const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
                             return (
                               <p key={index} style={{ color: entry.color }}>
-                                {entry.name === 'currentYear' ? `${t('yearLabel')} ${selectedYear}` : `${t('yearLabel')} ${previousYearValue}`}: 
-                                {' '}{(entry.value as number).toFixed(3)} MCM
+                                {entry.name }: {(entry.value as number).toFixed(3)} MCM
                               </p>
                             );
                           })}
