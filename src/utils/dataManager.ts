@@ -8,6 +8,7 @@ import * as data16May from './data-16-may-2025';
 import * as data23May from './data-23-may-2025';
 import * as data02Jun from './data-02-jun-2025';
 import * as data06Jun from './data-06-jun-2025';
+import * as data10Jun from './data-10-jun-2025';
 import {
   calculateDrainDate,
   calculateRegionDrainDate, 
@@ -19,6 +20,7 @@ import {
 
 // Define available data sets with their dates and module references
 export const availableDataSets = [
+  { id: '10-JUN-2025', label: 'June 10, 2025', value: '10-JUN-2025', module: data10Jun },
   { id: '06-JUN-2025', label: 'June 6, 2025', value: '06-JUN-2025', module: data06Jun },
   { id: '02-JUN-2025', label: 'June 2, 2025', value: '02-JUN-2025', module: data02Jun },
   { id: '23-MAY-2025', label: 'May 23, 2025', value: '23-MAY-2025', module: data23May },
@@ -31,9 +33,9 @@ export const availableDataSets = [
 ];
 
 /**
- * Default to the most recent data set (June 6, 2025)
+ * Default to the most recent data set (June 10, 2025)
  */
-let currentDataSetId = '06-JUN-2025';
+let currentDataSetId = '10-JUN-2025';
 
 // Function to get the current data module
 const getCurrentDataModule = () => {
@@ -90,7 +92,7 @@ export const getReportDate = (): string => {
 
 /**
  * Get summary of changes for the selected dataset.
- * Returns summary for March 28, April 11, April 28, May 9, May 16, May 23, or June 2, 2025 if available.
+ * Returns summary for March 28, April 11, April 28, May 9, May 16, May 23, June 2, June 6, or June 10, 2025 if available.
  */
 export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string | null => {
   const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
