@@ -158,15 +158,18 @@ export const calculateRegionTotals = (reservoirData: Reservoir[]): RegionTotal[]
 export const calculateGrandTotal = (reservoirData: Reservoir[]): RegionTotal => {
   const regionTotals = calculateRegionTotals(reservoirData);
   
-  const capacity = regionTotals.reduce((total, region) => total + region.capacity, 0);
+  // Exclude Recharge/Other from grand total calculation
+  const mainRegionTotals = regionTotals.filter(region => region.region !== 'Recharge/Other');
   
-  const inflowLast24Hours = regionTotals.reduce((total, region) => total + region.inflow.last24Hours, 0);
-  const inflowTotalSince = regionTotals.reduce((total, region) => total + region.inflow.totalSince, 0);
+  const capacity = mainRegionTotals.reduce((total, region) => total + region.capacity, 0);
   
-  const currentStorage = regionTotals.reduce((total, region) => total + region.storage.current.amount, 0);
+  const inflowLast24Hours = mainRegionTotals.reduce((total, region) => total + region.inflow.last24Hours, 0);
+  const inflowTotalSince = mainRegionTotals.reduce((total, region) => total + region.inflow.totalSince, 0);
+  
+  const currentStorage = mainRegionTotals.reduce((total, region) => total + region.storage.current.amount, 0);
   const currentPercentage = capacity > 0 ? (currentStorage / capacity) * 100 : 0;
   
-  const lastYearStorage = regionTotals.reduce((total, region) => total + region.storage.lastYear.amount, 0);
+  const lastYearStorage = mainRegionTotals.reduce((total, region) => total + region.storage.lastYear.amount, 0);
   const lastYearPercentage = capacity > 0 ? (lastYearStorage / capacity) * 100 : 0;
   
   // Find the most recent max storage date from all regions
