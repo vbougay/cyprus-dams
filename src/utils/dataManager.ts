@@ -11,6 +11,7 @@ import * as data06Jun from './data-06-jun-2025';
 import * as data10Jun from './data-10-jun-2025';
 import * as data17Jun from './data-17-jun-2025';
 import * as data27Jun from './data-27-jun-2025';
+import * as data28Jul from './data-28-jul-2025';
 import * as data18Jul from './data-18-jul-2025';
 import * as data04Jul from './data-04-jul-2025';
 import {
@@ -24,6 +25,7 @@ import {
 
 // Define available data sets with their dates and module references
 export const availableDataSets = [
+  { id: '28-JUL-2025', label: 'July 28, 2025', value: '28-JUL-2025', module: data28Jul },
   { id: '18-JUL-2025', label: 'July 18, 2025', value: '18-JUL-2025', module: data18Jul },
   { id: '04-JUL-2025', label: 'July 4, 2025', value: '04-JUL-2025', module: data04Jul },
   { id: '27-JUN-2025', label: 'June 27, 2025', value: '27-JUN-2025', module: data27Jun },
@@ -41,9 +43,9 @@ export const availableDataSets = [
 ];
 
 /**
- * Default to the most recent data set (July 18, 2025)
+ * Default to the most recent data set (July 28, 2025)
  */
-let currentDataSetId = '18-JUL-2025';
+let currentDataSetId = '28-JUL-2025';
 
 // Function to get the current data module
 const getCurrentDataModule = () => {
