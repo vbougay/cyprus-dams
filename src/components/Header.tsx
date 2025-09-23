@@ -32,7 +32,7 @@ const Header: React.FC = () => {
                 value={currentDataSetId}
                 onValueChange={(value) => setDataSet(value)}
               >
-                <SelectTrigger className="w-[200px]">
+                <SelectTrigger className="w-[240px]">
                   <SelectValue placeholder={t('selectDate')} />
                 </SelectTrigger>
                 <SelectContent>
