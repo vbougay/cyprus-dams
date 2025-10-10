@@ -2,6 +2,7 @@
 import React, { useEffect, useRef } from 'react';
 import { RegionTotal, Reservoir } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { useDataContext } from '@/context/DataContext';
 import { useTranslation } from '@/utils/translations';
 
 interface CapacityChartProps {
@@ -12,11 +13,19 @@ interface CapacityChartProps {
 const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = true }) => {
   const chartRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
+  const { isPlaying } = useDataContext();
   const t = useTranslation(language);
-  
+
   useEffect(() => {
     if (!chartRef.current) return;
-    
+
+    // Skip animations if in play mode
+    if (isPlaying) {
+      chartRef.current.classList.remove('opacity-0', 'animate-scale-in');
+      chartRef.current.classList.add('opacity-100');
+      return;
+    }
+
     // Use a more reliable way to animate the chart
     setTimeout(() => {
       if (chartRef.current) {
@@ -24,7 +33,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
         chartRef.current.classList.add('opacity-100');
       }
     }, 100);
-    
+
     // Add intersection observer for when scrolling into view
     const observer = new IntersectionObserver(
       (entries) => {
@@ -45,7 +54,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
         observer.unobserve(chartRef.current);
       }
     };
-  }, []);
+  }, [isPlaying]);
 
   // Ensure data is populated before rendering
   if (!data || !data.storage) {

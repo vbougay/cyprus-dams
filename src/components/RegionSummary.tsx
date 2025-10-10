@@ -4,6 +4,7 @@ import { CapacityChart } from '@/components';
 import { Droplets, Timer, Info } from 'lucide-react';
 import { getSummaryChanges, getCurrentDataSetId } from '@/utils/dataManager';
 import { useLanguage } from '@/context/LanguageContext';
+import { useDataContext } from '@/context/DataContext';
 import { useTranslation } from '@/utils/translations';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -15,23 +16,31 @@ interface RegionSummaryProps {
   className?: string;
 }
 
-const RegionSummary: React.FC<RegionSummaryProps> = ({ 
-  regionTotal, 
+const RegionSummary: React.FC<RegionSummaryProps> = ({
+  regionTotal,
   showReservoirs = true,
   children,
   className = ''
 }) => {
   const { language } = useLanguage();
+  const { isPlaying } = useDataContext();
   const t = useTranslation(language);
   const cardRef = useRef<HTMLDivElement>(null);
-  
+
   useEffect(() => {
     if (!cardRef.current) return;
-    
+
+    // Skip animations if in play mode
+    if (isPlaying) {
+      cardRef.current.classList.remove('opacity-0', 'animate-fade-in-up');
+      cardRef.current.classList.add('opacity-100');
+      return;
+    }
+
     // Reset animation state when regionTotal changes
     cardRef.current.classList.add('opacity-0');
     cardRef.current.classList.remove('opacity-100', 'animate-fade-in-up');
-    
+
     // Use a more reliable way to animate the card
     setTimeout(() => {
       if (cardRef.current) {
@@ -39,7 +48,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
         cardRef.current.classList.add('opacity-100');
       }
     }, 100);
-    
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -59,7 +68,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
         observer.unobserve(cardRef.current);
       }
     };
-  }, [regionTotal]); // Add regionTotal to dependency array to re-run when data changes
+  }, [regionTotal, isPlaying]); // Add isPlaying to dependency array
 
   // Get appropriate background color based on storage percentage
   const getBgColor = (percentage: number) => {

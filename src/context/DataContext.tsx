@@ -6,6 +6,8 @@ interface DataContextType {
   currentDataSetId: string;
   availableDataSets: { id: string; label: string; value: string }[];
   setDataSet: (dataSetId: string) => void;
+  isPlaying: boolean;
+  setIsPlaying: (isPlaying: boolean) => void;
 }
 
 // Create the context with default values
@@ -13,6 +15,8 @@ const DataContext = createContext<DataContextType>({
   currentDataSetId: getCurrentDataSetId(),
   availableDataSets: availableDataSets,
   setDataSet: () => {},
+  isPlaying: false,
+  setIsPlaying: () => {},
 });
 
 // Custom hook to use the data context
@@ -25,6 +29,7 @@ interface DataProviderProps {
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [currentDataSetId, setCurrentDataSetId] = useState<string>(getCurrentDataSetId());
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const setDataSet = (dataSetId: string) => {
     if (setCurrentDataSet(dataSetId)) {
@@ -38,6 +43,8 @@ export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
         currentDataSetId,
         availableDataSets,
         setDataSet,
+        isPlaying,
+        setIsPlaying,
       }}
     >
       {children}
