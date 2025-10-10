@@ -59,7 +59,7 @@ To add a new dataset from an Excel file (e.g., `data/[DATE]UK.xlsx`):
    const sheetName = workbook.SheetNames[0];
    const worksheet = workbook.Sheets[sheetName];
    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1, defval: ''});
-   // Examine rows 16-65 for reservoir data
+   // Examine rows for reservoir data
    "
    ```
 
