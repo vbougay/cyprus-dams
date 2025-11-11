@@ -21,9 +21,9 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 
 - Never create temporary script files (like parse-xlsx.js) - always use inline bash commands
 - Keep all ad-hoc scripts as one-liners or multi-line inline bash, not separate files
- 
+
  **Data Module Creation:**
- 
+
 - Follow existing data-*.ts patterns exactly
 - Ensure all 21 reservoirs are included with correct regional assignments
 - Compare to the latest previous dataset available
