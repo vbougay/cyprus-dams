@@ -82,7 +82,7 @@ const ReservoirTable: React.FC = () => {
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.current.amount.toFixed(3)} MCM</div>
-          <div className="text-xs text-gray-500">{reservoir.storage.current.percentage}%</div>
+          <div className="text-xs text-gray-500">{reservoir.storage.current.percentage.toFixed(1)}%</div>
         </div>
       ),
       sortable: true,
@@ -93,7 +93,7 @@ const ReservoirTable: React.FC = () => {
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.lastYear.amount.toFixed(3)} MCM</div>
-          <div className="text-xs text-gray-500">{reservoir.storage.lastYear.percentage}%</div>
+          <div className="text-xs text-gray-500">{reservoir.storage.lastYear.percentage.toFixed(1)}%</div>
         </div>
       ),
       sortable: true,

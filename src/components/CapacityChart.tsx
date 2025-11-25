@@ -111,7 +111,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className={`text-xl font-bold ${currentColor}`}>{currentPercentage}%</span>
+            <span className={`text-xl font-bold ${currentColor}`}>{currentPercentage.toFixed(1)}%</span>
             <span className="text-xs text-gray-500">{t('currentVeryShort')}</span>
           </div>
         </div>
@@ -152,7 +152,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className={`text-xl font-bold ${lastYearColor}`}>{lastYearPercentage}%</span>
+                <span className={`text-xl font-bold ${lastYearColor}`}>{lastYearPercentage.toFixed(1)}%</span>
                 <span className="text-xs text-gray-500">{t('lastYearVeryShort')}</span>
               </div>
             </div>
