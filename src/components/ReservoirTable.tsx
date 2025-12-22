@@ -215,7 +215,7 @@ const ReservoirTable: React.FC = () => {
   const regions = ['all', ...new Set(reservoirData.map((r) => r.region))];
   
   return (
-    <Card className="rounded-2xl animate-fade-in bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-lg">
+    <Card className="glass-card rounded-2xl animate-fade-in">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between flex-wrap gap-4">
           <span>{t('dataTable')}</span>

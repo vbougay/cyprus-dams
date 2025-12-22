@@ -45,7 +45,7 @@ const Index: React.FC = () => {
       
       <main className="container mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-8">
-          <Card className="flex rounded-2xl overflow-hidden animate-fade-in bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-md hover:shadow-lg transition-all duration-300">
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect">
             <div className="stat-card-icon flex-none">
               <Droplets className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
@@ -55,7 +55,7 @@ const Index: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="flex rounded-2xl overflow-hidden animate-fade-in bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-md hover:shadow-lg transition-all duration-300" style={{ animationDelay: '100ms' }}>
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '100ms' }}>
             <div className="stat-card-icon flex-none">
               <Database className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
@@ -70,7 +70,7 @@ const Index: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="flex rounded-2xl overflow-hidden animate-fade-in bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-md hover:shadow-lg transition-all duration-300" style={{ animationDelay: '200ms' }}>
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '200ms' }}>
             <div className="stat-card-icon flex-none">
               <BarChart className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
@@ -85,7 +85,7 @@ const Index: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="flex rounded-2xl overflow-hidden animate-fade-in bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-md hover:shadow-lg transition-all duration-300" style={{ animationDelay: '300ms' }}>
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '300ms' }}>
             <div className="stat-card-icon flex-none">
               <Timer className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
@@ -115,7 +115,7 @@ const Index: React.FC = () => {
 
           <TabsContent value="dashboard" className="animate-fade-in">
             <div className="space-y-8">
-              <Card className="rounded-2xl p-1 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-lg">
+              <Card className="glass-card rounded-2xl p-1">
                 <CardHeader className="pb-2">
                   <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
                     <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />

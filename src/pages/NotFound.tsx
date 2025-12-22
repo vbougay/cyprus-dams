@@ -15,7 +15,7 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background">
-      <div className="text-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg p-8 md:p-12 rounded-2xl max-w-md mx-4">
+      <div className="text-center glass-card p-8 md:p-12 rounded-2xl max-w-md mx-4">
         <div className="relative inline-block mb-6">
           <div className="absolute inset-0 bg-water-400/20 dark:bg-water-400/30 blur-xl rounded-full"></div>
           <Droplets className="relative w-16 h-16 text-water-500 dark:text-water-400 animate-float" />
