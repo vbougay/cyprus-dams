@@ -232,19 +232,31 @@
 /* Custom component styles */
 @layer components {
   .glass-card {
-    @apply bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-white/30 dark:border-white/10;
+    @apply bg-white/90 dark:bg-gray-900/80 backdrop-blur-xl border border-gray-200/50 dark:border-white/10;
     box-shadow:
-      0 4px 24px -4px rgba(14, 165, 233, 0.08),
-      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+      0 4px 24px -4px rgba(0, 0, 0, 0.06),
+      0 0 0 1px rgba(255, 255, 255, 0.5) inset;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .glass-card:hover {
-    @apply border-white/40 dark:border-white/20;
+  .dark .glass-card {
     box-shadow:
-      0 8px 32px -4px rgba(14, 165, 233, 0.12),
-      0 0 0 1px rgba(255, 255, 255, 0.15) inset;
+      0 4px 24px -4px rgba(0, 0, 0, 0.3),
+      0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  }
+
+  .glass-card:hover {
+    @apply border-gray-300/50 dark:border-white/20;
+    box-shadow:
+      0 8px 32px -4px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 255, 255, 0.6) inset;
     transform: translateY(-2px);
+  }
+
+  .dark .glass-card:hover {
+    box-shadow:
+      0 8px 32px -4px rgba(0, 0, 0, 0.4),
+      0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 
   .modern-card {
@@ -302,11 +314,11 @@
 
   .stat-card-icon {
     @apply flex items-center justify-center p-4 rounded-xl;
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(56, 189, 248, 0.15) 100%);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(56, 189, 248, 0.12) 100%);
   }
 
   .dark .stat-card-icon {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(56, 189, 248, 0.1) 100%);
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.15) 100%);
   }
 
   .glow-effect {
