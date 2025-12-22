@@ -24,61 +24,61 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
   const isIncreasing = storageDifference > 0;
   
   return (
-    <Card className="h-full overflow-hidden group hover:shadow-lg transition-shadow duration-300 bg-white/80 backdrop-blur-sm border border-gray-100">
+    <Card className="h-full overflow-hidden group hover:shadow-lg transition-all duration-300 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-xl">
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
-          <span className="font-medium text-lg">{translations[language][name as keyof typeof translations.en] || name}</span>
-          <div className="flex items-center gap-1.5 text-xs font-normal bg-water-50 text-water-700 px-2 py-1 rounded-full">
+          <span className="font-medium text-lg text-foreground">{translations[language][name as keyof typeof translations.en] || name}</span>
+          <div className="flex items-center gap-1.5 text-xs font-normal bg-water-50 dark:bg-water-900/30 text-water-700 dark:text-water-300 px-2 py-1 rounded-full">
             <DropletIcon size={12} />
             <span>{capacity.toFixed(3)} MCM</span>
           </div>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="pb-4">
         <div className="mb-4">
           <CapacityChart data={reservoir} />
         </div>
-        
+
         <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
-          <div className="flex flex-col bg-gray-50 p-2 rounded-md">
-            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Droplets size={12} className="text-water-500" />
+          <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg">
+            <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+              <Droplets size={12} className="text-water-500 dark:text-water-400" />
               {t('recentInflow')}
             </div>
-            <div className="font-mono">{inflow.last24Hours.toFixed(3)} MCM</div>
+            <div className="font-mono text-foreground">{inflow.last24Hours.toFixed(3)} MCM</div>
           </div>
-          
-          <div className="flex flex-col bg-gray-50 p-2 rounded-md">
-            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <TrendingUp size={12} className="text-water-500" />
+
+          <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg">
+            <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+              <TrendingUp size={12} className="text-water-500 dark:text-water-400" />
               {t('totalInflow')}
             </div>
-            <div className="font-mono">{inflow.totalSince.toFixed(3)} MCM</div>
+            <div className="font-mono text-foreground">{inflow.totalSince.toFixed(3)} MCM</div>
           </div>
-          
-          <div className="flex flex-col bg-gray-50 p-2 rounded-md col-span-2">
-            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Calendar size={12} className="text-water-500" />
+
+          <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg col-span-2">
+            <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+              <Calendar size={12} className="text-water-500 dark:text-water-400" />
               {t('maxStorage')}
             </div>
-            <div className="font-mono flex justify-between">
+            <div className="font-mono flex justify-between text-foreground">
               <span>{maxStorage.amount.toFixed(3)} MCM</span>
-              <span className="text-gray-500">{maxStorage.date}</span>
+              <span className="text-muted-foreground">{maxStorage.date}</span>
             </div>
           </div>
-          
-          <div className="flex flex-col bg-gray-50 p-2 rounded-md col-span-2 mt-2">
-            <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Timer size={12} className="text-water-500" />
+
+          <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg col-span-2 mt-2">
+            <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+              <Timer size={12} className="text-water-500 dark:text-water-400" />
               {t('fullyDrainedBy')}
             </div>
             <div className="font-mono flex justify-between">
               <span className={`
-                ${drainDate === 'Already Empty' ? 'text-red-500' : ''}
-                ${drainDate === 'Not Draining' ? 'text-green-500' : ''}
-                ${drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
-                ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(drainDate || '') ? 'text-amber-500' : ''}
+                ${drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
+                ${drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+                ${drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
+                ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
               `}>
                 {drainDate === 'Already Empty' ? t('alreadyEmpty') :
                  drainDate === 'Not Draining' ? t('notDraining') :
@@ -88,10 +88,10 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-4 text-xs flex items-center justify-end gap-1">
-          <span className="text-gray-500">{t('vsLastYearColon')}</span>
-          <span className={`font-medium ${isIncreasing ? 'text-green-500' : 'text-red-500'}`}>
+          <span className="text-muted-foreground">{t('vsLastYearColon')}</span>
+          <span className={`font-medium ${isIncreasing ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
             {isIncreasing ? '+' : ''}{storageDifference.toFixed(1)}%
           </span>
         </div>

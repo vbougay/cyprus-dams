@@ -5,6 +5,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
@@ -61,7 +62,7 @@ const Header: React.FC = () => {
   }, [isPlaying, currentIndex, availableDataSets, setDataSet]);
 
   return (
-    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 backdrop-blur-sm mb-4 md:mb-8 animate-fade-in">
+    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Desktop: Single Row Layout | Mobile: Title + Language Row */}
@@ -69,24 +70,28 @@ const Header: React.FC = () => {
             {/* Title and Language Row (Mobile) / Title Only (Desktop) */}
             <div className="w-full md:w-auto flex justify-between md:justify-start items-center">
               <div className="flex items-center gap-3">
-                <Droplets className="w-8 h-8 md:w-10 md:h-10 text-water-500 animate-float" />
+                <div className="relative">
+                  <div className="absolute inset-0 bg-water-400/20 dark:bg-water-400/30 blur-xl rounded-full"></div>
+                  <Droplets className="relative w-8 h-8 md:w-10 md:h-10 text-water-500 dark:text-water-400 animate-float" />
+                </div>
                 <div>
-                  <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-water-600 to-water-400 bg-clip-text text-transparent">
+                  <h1 className="text-2xl md:text-4xl font-bold gradient-text">
                     {t('appTitle')}
                   </h1>
-                  <p className="text-water-800/70 text-xs md:text-base mt-1">
+                  <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-base mt-1">
                     {t('ministry')}
                   </p>
                 </div>
               </div>
 
-              {/* Language Selector - visible on mobile in title row, hidden on desktop */}
-              <div className="md:hidden">
+              {/* Mobile controls - Theme toggle and Language selector */}
+              <div className="flex items-center gap-2 md:hidden">
+                <ThemeToggle />
                 <Select
                   value={language}
                   onValueChange={(value) => setLanguage(value as 'en' | 'gr' | 'ru')}
                 >
-                  <SelectTrigger className="w-[70px] h-8">
+                  <SelectTrigger className="w-[70px] h-8 bg-white/50 dark:bg-white/10 backdrop-blur-sm border-blue-100 dark:border-white/10">
                     <SelectValue>
                       <div className="flex items-center gap-1.5">
                         <Globe className="h-3.5 w-3.5" />
@@ -94,7 +99,7 @@ const Header: React.FC = () => {
                       </div>
                     </SelectValue>
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
                     <SelectItem value="en">
                       <div className="flex items-center gap-2">
                         <Globe className="h-4 w-4" />
@@ -122,13 +127,13 @@ const Header: React.FC = () => {
             <div className="flex flex-col items-center md:items-end gap-2">
               <div className="flex flex-row items-center gap-2">
                 {/* Date Navigation Controls */}
-                <div className="flex items-center gap-0.5 md:gap-1 bg-white/50 backdrop-blur-sm rounded-lg px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100">
+                <div className="flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={handleLast}
                     disabled={currentIndex >= availableDataSets.length - 1}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
                     title="Go to oldest date"
                   >
                     <ChevronsLeft className="h-4 w-4 md:h-5 md:w-5" />
@@ -139,7 +144,7 @@ const Header: React.FC = () => {
                     size="sm"
                     onClick={handlePrevious}
                     disabled={currentIndex >= availableDataSets.length - 1}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
                     title="Previous date"
                   >
                     <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
@@ -149,7 +154,7 @@ const Header: React.FC = () => {
                     variant="ghost"
                     size="sm"
                     onClick={togglePlayPause}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
                     title={isPlaying ? "Pause" : "Play"}
                   >
                     {isPlaying ? (
@@ -160,8 +165,8 @@ const Header: React.FC = () => {
                   </Button>
 
                   <div className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 min-w-[140px] md:min-w-[200px] justify-center">
-                    <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-water-600 flex-shrink-0" />
-                    <span className="text-xs md:text-sm font-medium text-water-800 whitespace-nowrap">
+                    <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-water-600 dark:text-water-400 flex-shrink-0" />
+                    <span className="text-xs md:text-sm font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
                       {currentDataSet?.label}
                     </span>
                   </div>
@@ -171,7 +176,7 @@ const Header: React.FC = () => {
                     size="sm"
                     onClick={handleNext}
                     disabled={currentIndex <= 0}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
                     title="Next date"
                   >
                     <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
@@ -182,20 +187,21 @@ const Header: React.FC = () => {
                     size="sm"
                     onClick={handleFirst}
                     disabled={currentIndex <= 0}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100"
+                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
                     title="Go to newest date"
                   >
                     <ChevronsRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
                 </div>
 
-                {/* Language Selector - visible on desktop only */}
-                <div className="hidden md:block">
+                {/* Desktop controls - Theme toggle and Language selector */}
+                <div className="hidden md:flex items-center gap-2">
+                  <ThemeToggle />
                   <Select
                     value={language}
                     onValueChange={(value) => setLanguage(value as 'en' | 'gr' | 'ru')}
                   >
-                    <SelectTrigger className="w-[80px] h-10">
+                    <SelectTrigger className="w-[80px] h-10 bg-white/50 dark:bg-white/10 backdrop-blur-sm border-blue-100 dark:border-white/10">
                       <SelectValue>
                         <div className="flex items-center gap-2">
                           <Globe className="h-4 w-4" />
@@ -203,7 +209,7 @@ const Header: React.FC = () => {
                         </div>
                       </SelectValue>
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
                       <SelectItem value="en">
                         <div className="flex items-center gap-2">
                           <Globe className="h-4 w-4" />
@@ -228,10 +234,10 @@ const Header: React.FC = () => {
               </div>
 
               {/* Subscribe Text - Below date controls for both mobile and desktop */}
-              <div className="text-center md:text-right text-xs md:text-sm">
-                {t('subscribe')} <a href="https://t.me/kiprozavodsk" className="text-water-600 hover:text-water-800 transition-colors underline">
+              <div className="text-center md:text-right text-xs md:text-sm text-muted-foreground">
+                {t('subscribe')} <a href="https://t.me/kiprozavodsk" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
                   Кипрозаводск
-                </a>/<a href="https://www.tiktok.com/@kiprozavodsk" className="text-water-600 hover:text-water-800 transition-colors underline">
+                </a>/<a href="https://www.tiktok.com/@kiprozavodsk" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
                   Kiprozavodsk
                 </a>!
               </div>
