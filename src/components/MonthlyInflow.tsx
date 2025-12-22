@@ -84,7 +84,7 @@ const MonthlyInflow: React.FC = () => {
   const years = yearlyInflowData().map(data => data.year);
 
   return (
-    <Card className="bg-white/90 backdrop-blur-md shadow-lg border border-gray-200 p-1 animate-fade-in">
+    <Card className="bg-white dark:bg-gray-900 backdrop-blur-md shadow-lg border border-gray-200 dark:border-gray-800 p-1 animate-fade-in">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">

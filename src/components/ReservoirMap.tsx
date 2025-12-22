@@ -102,7 +102,7 @@ const ReservoirMap: React.FC = () => {
   };
 
   return (
-    <Card className="glass-card rounded-2xl p-1">
+    <Card className="rounded-2xl p-1 bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-800 shadow-lg">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
           <Map className="h-5 w-5 text-water-500 dark:text-water-400" />
