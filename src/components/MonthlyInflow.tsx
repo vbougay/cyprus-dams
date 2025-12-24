@@ -84,15 +84,15 @@ const MonthlyInflow: React.FC = () => {
   const years = yearlyInflowData().map(data => data.year);
 
   return (
-    <Card className="bg-white/90 backdrop-blur-md shadow-lg border border-gray-200 p-1 animate-fade-in">
+    <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border border-gray-200 dark:border-gray-800 p-1 animate-fade-in">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5 text-water-500" />
+            <TrendingUp className="h-5 w-5 text-water-500 dark:text-water-400" />
             <span>{t('monthlyInflow')}</span>
           </div>
-          <Select 
-            defaultValue={selectedYear} 
+          <Select
+            defaultValue={selectedYear}
             onValueChange={(value) => setSelectedYear(value)}
           >
             <SelectTrigger className="w-[120px]">
@@ -108,7 +108,7 @@ const MonthlyInflow: React.FC = () => {
           </Select>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
         <div className={`h-64 md:h-72 w-full mt-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           {chartData.length > 0 && (
@@ -117,23 +117,27 @@ const MonthlyInflow: React.FC = () => {
                 data={chartData}
                 margin={{ top: 10, right: 10, left: 0, bottom: 30 }}
               >
-                <XAxis 
-                  dataKey="name" 
+                <XAxis
+                  dataKey="name"
                   angle={-45}
                   textAnchor="end"
                   interval={0}
                   tickMargin={10}
-                  tick={{ fontSize: 10 }}
+                  tick={{ fontSize: 10, fill: 'currentColor' }}
+                  stroke="currentColor"
+                  className="text-gray-600 dark:text-gray-400"
                 />
-                <YAxis 
-                  tick={{ fontSize: 12 }} 
+                <YAxis
+                  tick={{ fontSize: 12, fill: 'currentColor' }}
+                  stroke="currentColor"
+                  className="text-gray-600 dark:text-gray-400"
                 />
-                <Tooltip 
+                <Tooltip
                   content={({ active, payload, label }) => {
                     if (active && payload && payload.length) {
                       return (
-                        <div className="bg-white p-2 border border-gray-200 rounded shadow-md">
-                          <p className="font-medium">{label}</p>
+                        <div className="bg-white dark:bg-gray-800 p-2 border border-gray-200 dark:border-gray-700 rounded shadow-md">
+                          <p className="font-medium text-foreground">{label}</p>
                           {payload.map((entry, index) => {
                             const currentYearParts = selectedYear.split('/');
                             const previousYearValue = `${parseInt(currentYearParts[0]) - 1}/${parseInt(currentYearParts[1]) - 1}`;
@@ -150,31 +154,31 @@ const MonthlyInflow: React.FC = () => {
                   }}
                 />
                 <Legend verticalAlign="top" height={36} />
-                <Bar 
-                  dataKey="currentYear" 
+                <Bar
+                  dataKey="currentYear"
                   name={`${t('yearLabel')} ${selectedYear}`}
-                  fill="#0ea5e9" 
-                  radius={[4, 4, 0, 0]} 
+                  fill="#0ea5e9"
+                  radius={[4, 4, 0, 0]}
                   animationDuration={1000}
                 />
-                <Bar 
-                  dataKey="previousYear" 
+                <Bar
+                  dataKey="previousYear"
                   name={`${t('yearLabel')} ${parseInt(selectedYear.split('/')[0]) - 1}/${parseInt(selectedYear.split('/')[1]) - 1}`}
-                  fill="#94a3b8" 
-                  radius={[4, 4, 0, 0]} 
+                  fill="#94a3b8"
+                  radius={[4, 4, 0, 0]}
                   animationDuration={1000}
                 />
               </BarChart>
             </ResponsiveContainer>
           )}
         </div>
-        
-        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100">
-          <div className="flex items-center gap-1 text-sm text-gray-500">
+
+        <div className="flex items-center justify-between mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
+          <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
             <Calendar className="h-4 w-4" />
             <span>{t('dataFrom')}</span>
           </div>
-          <div className="text-sm font-medium text-water-600">
+          <div className="text-sm font-medium text-water-600 dark:text-water-400">
             {t('totalLabel')}: {yearlyInflowData().find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
           </div>
         </div>
