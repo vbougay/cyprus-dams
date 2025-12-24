@@ -40,63 +40,63 @@ const Index: React.FC = () => {
   };
   
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
       <Header />
       
       <main className="container mx-auto px-4 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in">
-            <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
-              <Droplets className="h-8 w-8" />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect">
+            <div className="stat-card-icon flex-none">
+              <Droplets className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">{t('totalCapacity')}</div>
-              <div className="text-2xl font-bold">{grandTotal?.capacity.toFixed(1)} MCM</div>
+              <div className="text-sm text-muted-foreground">{t('totalCapacity')}</div>
+              <div className="text-2xl font-bold text-foreground">{grandTotal?.capacity.toFixed(1)} MCM</div>
             </CardContent>
           </Card>
-          
-          <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in" style={{ animationDelay: '100ms' }}>
-            <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
-              <Database className="h-8 w-8" />
+
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '100ms' }}>
+            <div className="stat-card-icon flex-none">
+              <Database className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">{t('currentStorage')}</div>
-              <div className="text-2xl font-bold">
+              <div className="text-sm text-muted-foreground">{t('currentStorage')}</div>
+              <div className="text-2xl font-bold text-foreground">
                 {grandTotal?.storage.current.amount.toFixed(1)} MCM
-                <span className="text-sm font-normal text-gray-500 ml-2">
+                <span className="text-sm font-normal text-muted-foreground ml-2">
                   ({grandTotal?.storage.current.percentage.toFixed(1)}%)
                 </span>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
-              <BarChart className="h-8 w-8" />
+
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '200ms' }}>
+            <div className="stat-card-icon flex-none">
+              <BarChart className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
             <CardContent className="flex flex-col justify-center p-4">
-              <div className="text-sm text-gray-500">{t('vsLastYear')}</div>
-              <div className="text-2xl font-bold">
+              <div className="text-sm text-muted-foreground">{t('vsLastYear')}</div>
+              <div className="text-2xl font-bold text-foreground">
                 {((grandTotal?.storage.current.percentage || 0) - (grandTotal?.storage.lastYear.percentage || 0)).toFixed(1)}%
-                <span className="text-sm font-normal text-gray-500 ml-2">
+                <span className="text-sm font-normal text-muted-foreground ml-2">
                   {t('change')}
                 </span>
               </div>
             </CardContent>
           </Card>
-          
-          <Card className="glass-card flex shadow-sm hover:shadow-md transition-shadow duration-300 animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <div className="flex-none flex items-center justify-center p-4 bg-water-50 text-water-700">
-              <Timer className="h-8 w-8" />
+
+          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '300ms' }}>
+            <div className="stat-card-icon flex-none">
+              <Timer className="h-8 w-8 text-water-600 dark:text-water-400" />
             </div>
             <CardContent className="flex flex-col justify-center p-4 w-full">
-              <div className="text-sm text-gray-500">{t('forecastedDrainDate')}</div>
+              <div className="text-sm text-muted-foreground">{t('forecastedDrainDate')}</div>
               <div className="text-2xl font-bold">
                 <span className={`
-                  ${grandTotal?.drainDate === 'Already Empty' ? 'text-red-500' : ''}
-                  ${grandTotal?.drainDate === 'Not Draining' ? 'text-green-500' : ''}
-                  ${grandTotal?.drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
-                  ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500' : ''}
+                  ${grandTotal?.drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
+                  ${grandTotal?.drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+                  ${grandTotal?.drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
+                  ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
                 `}>
                   {grandTotal?.drainDate || 'Calculating...'}
                 </span>
@@ -105,20 +105,20 @@ const Index: React.FC = () => {
           </Card>
         </div>
         
-        <Tabs defaultValue="dashboard" className="mb-8">
-          <TabsList className="w-full max-w-xl mx-auto grid grid-cols-4 mb-8">
-            <TabsTrigger value="dashboard">{t('dashboard')}</TabsTrigger>
-            <TabsTrigger value="regions">{t('byRegion')}</TabsTrigger>
-            <TabsTrigger value="map">{t('map')}</TabsTrigger>
-            <TabsTrigger value="table">{t('dataTable')}</TabsTrigger>
+        <Tabs defaultValue="dashboard" className="mb-8 modern-tabs">
+          <TabsList className="w-full max-w-xl mx-auto grid grid-cols-4 mb-8 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/20 dark:border-white/10">
+            <TabsTrigger value="dashboard" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm rounded-lg transition-all">{t('dashboard')}</TabsTrigger>
+            <TabsTrigger value="regions" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm rounded-lg transition-all">{t('byRegion')}</TabsTrigger>
+            <TabsTrigger value="map" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm rounded-lg transition-all">{t('map')}</TabsTrigger>
+            <TabsTrigger value="table" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm rounded-lg transition-all">{t('dataTable')}</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value="dashboard" className="animate-fade-in">
             <div className="space-y-8">
-              <Card className="bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 p-1">
+              <Card className="glass-card rounded-2xl p-1">
                 <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2">
-                    <Droplets className="h-5 w-5 text-water-500" />
+                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
+                    <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
                     <span>{t('overallStatus')}</span>
                   </CardTitle>
                 </CardHeader>
@@ -171,10 +171,10 @@ const Index: React.FC = () => {
         </Tabs>
       </main>
       
-      <footer className="border-t border-gray-200 py-6 bg-white/60 backdrop-blur-md">
-        <div className="container mx-auto px-4 text-center text-sm text-gray-500">
-          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument">{t('dataFrom')}</a></p>
-          <p className="mt-2">{t('contactMe')} <a href="mailto:v@bougay.com">v@bougay.com</a></p>
+      <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>
+          <p className="mt-2">{t('contactMe')} <a href="mailto:v@bougay.com" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">v@bougay.com</a></p>
         </div>
       </footer>
     </div>

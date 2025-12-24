@@ -102,19 +102,19 @@ const ReservoirMap: React.FC = () => {
   };
 
   return (
-    <Card className="bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 p-1">
+    <Card className="glass-card rounded-2xl p-1">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center gap-2">
-          <Map className="h-5 w-5 text-water-500" />
+          <Map className="h-5 w-5 text-water-500 dark:text-water-400" />
           <span>{t('mapTitle')}</span>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent>
-        <div className="w-full h-[500px] rounded-md overflow-hidden">
-          <MapContainer 
+        <div className="w-full h-[500px] rounded-lg overflow-hidden">
+          <MapContainer
             center={CYPRUS_CENTER}
-            zoom={9} 
+            zoom={9}
             style={{ height: '100%', width: '100%' }}
             zoomControl={false}
           >
@@ -123,15 +123,15 @@ const ReservoirMap: React.FC = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <ZoomControl position="topright" />
-            
+
             {reservoirData().map(reservoir => {
               const location = reservoirLocations[reservoir.name as keyof typeof reservoirLocations];
               if (!location) return null;
-              
+
               const position: LatLngExpression = [location.lat, location.lng];
-              
+
               return (
-                <Marker 
+                <Marker
                   key={reservoir.name}
                   position={position}
                   icon={createCustomMarkerIcon(reservoir)}
@@ -155,10 +155,10 @@ const ReservoirMap: React.FC = () => {
             })}
           </MapContainer>
         </div>
-        
-        <div className="mt-4 p-3 bg-blue-50 rounded-md">
-          <p className="text-sm text-gray-600">
-            <strong>{t('mapNoteLabel')}:</strong> {t('mapNote')}
+
+        <div className="mt-4 p-3 bg-water-50 dark:bg-water-900/30 rounded-lg">
+          <p className="text-sm text-muted-foreground">
+            <strong className="text-foreground">{t('mapNoteLabel')}:</strong> {t('mapNote')}
           </p>
         </div>
       </CardContent>

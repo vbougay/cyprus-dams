@@ -64,7 +64,7 @@ const ReservoirTable: React.FC = () => {
         return (
           <div>
             <span className="font-medium">{translatedName}</span>
-            <div className="text-xs text-gray-500">{translatedRegion}</div>
+            <div className="text-xs text-muted-foreground">{translatedRegion}</div>
           </div>
         );
       },
@@ -82,7 +82,7 @@ const ReservoirTable: React.FC = () => {
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.current.amount.toFixed(3)} MCM</div>
-          <div className="text-xs text-gray-500">{reservoir.storage.current.percentage.toFixed(1)}%</div>
+          <div className="text-xs text-muted-foreground">{reservoir.storage.current.percentage.toFixed(1)}%</div>
         </div>
       ),
       sortable: true,
@@ -93,7 +93,7 @@ const ReservoirTable: React.FC = () => {
       render: (reservoir) => (
         <div>
           <div className="font-medium">{reservoir.storage.lastYear.amount.toFixed(3)} MCM</div>
-          <div className="text-xs text-gray-500">{reservoir.storage.lastYear.percentage.toFixed(1)}%</div>
+          <div className="text-xs text-muted-foreground">{reservoir.storage.lastYear.percentage.toFixed(1)}%</div>
         </div>
       ),
       sortable: true,
@@ -105,7 +105,7 @@ const ReservoirTable: React.FC = () => {
         const diff = reservoir.storage.current.percentage - reservoir.storage.lastYear.percentage;
         const isPositive = diff >= 0;
         return (
-          <div className={`flex items-center gap-1 ${isPositive ? 'text-green-500' : 'text-red-500'}`}>
+          <div className={`flex items-center gap-1 ${isPositive ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
             {isPositive ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             <span className="font-medium">{Math.abs(diff).toFixed(1)}%</span>
           </div>
@@ -132,12 +132,12 @@ const ReservoirTable: React.FC = () => {
         const drainDate = reservoir.drainDate || t('calculating');
         return (
           <div className="flex items-center gap-1">
-            <Timer className="h-4 w-4 text-water-500" />
+            <Timer className="h-4 w-4 text-water-500 dark:text-water-400" />
             <span className={`
-              ${drainDate === 'Already Empty' ? 'text-red-500' : ''}
-              ${drainDate === 'Not Draining' ? 'text-green-500' : ''}
-              ${drainDate === 'Beyond 10 Years' ? 'text-green-500' : ''}
-              ${!['Already Empty', 'Not Draining', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500' : ''}
+              ${drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
+              ${drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+              ${drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
+              ${!['Already Empty', 'Not Draining', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500 dark:text-amber-400' : ''}
             `}>
               {drainDate === 'Already Empty' ? t('alreadyEmpty') :
                drainDate === 'Not Draining' ? t('notDraining') :
@@ -215,31 +215,31 @@ const ReservoirTable: React.FC = () => {
   const regions = ['all', ...new Set(reservoirData.map((r) => r.region))];
   
   return (
-    <Card className="bg-white/90 backdrop-blur-md shadow-lg border border-gray-200 animate-fade-in">
+    <Card className="glass-card rounded-2xl animate-fade-in">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center justify-between flex-wrap gap-4">
           <span>{t('dataTable')}</span>
-          
+
           <div className="flex items-center gap-2">
             <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
                 placeholder={t('searchReservoirs')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-8 h-9 md:w-48 bg-white"
+                className="pl-8 h-9 md:w-48 bg-white/50 dark:bg-gray-800/50"
               />
             </div>
-            
+
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="h-9">
+                <Button variant="outline" size="sm" className="h-9 bg-white/50 dark:bg-gray-800/50">
                   <Filter className="h-4 w-4 mr-2" />
                   {t('filter')}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuContent align="end" className="w-48 backdrop-blur-md bg-white/90 dark:bg-gray-900/90">
                 <DropdownMenuLabel>{t('filterByRegion')}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {regions.map((region) => (
@@ -263,22 +263,22 @@ const ReservoirTable: React.FC = () => {
           </div>
         </CardTitle>
       </CardHeader>
-      
+
       <CardContent className="p-0 overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-t bg-gray-50">
+            <tr className="border-b border-t border-border bg-muted/50">
               {columns.map((column) => (
-                <th key={`${column.key}-${column.label}`} className="p-3 text-left text-sm font-medium text-gray-600">
+                <th key={`${column.key}-${column.label}`} className="p-3 text-left text-sm font-medium text-muted-foreground">
                   {column.sortable ? (
                     <button
                       onClick={() => handleSort(column.key.toString())}
-                      className="flex items-center gap-1 hover:text-gray-900"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
                     >
                       {column.label}
                       {sortField === column.key && (
-                        sortDirection === 'asc' ? 
-                          <ChevronUp className="h-3 w-3" /> : 
+                        sortDirection === 'asc' ?
+                          <ChevronUp className="h-3 w-3" /> :
                           <ChevronDown className="h-3 w-3" />
                       )}
                     </button>
@@ -291,12 +291,12 @@ const ReservoirTable: React.FC = () => {
           </thead>
           <tbody>
             {sortedReservoirs.map((reservoir) => (
-              <tr 
-                key={reservoir.name} 
-                className="border-b hover:bg-gray-50 transition-colors"
+              <tr
+                key={reservoir.name}
+                className="border-b border-border hover:bg-muted/50 transition-colors"
               >
                 {columns.map((column) => (
-                  <td key={`${reservoir.name}-${column.key}-${column.label}`} className="p-3 text-sm">
+                  <td key={`${reservoir.name}-${column.key}-${column.label}`} className="p-3 text-sm text-foreground">
                     {column.render(reservoir)}
                   </td>
                 ))}
@@ -304,9 +304,9 @@ const ReservoirTable: React.FC = () => {
             ))}
           </tbody>
         </table>
-        
+
         {sortedReservoirs.length === 0 && (
-          <div className="flex items-center justify-center h-32 text-gray-500">
+          <div className="flex items-center justify-center h-32 text-muted-foreground">
             {t('noReservoirs')}
           </div>
         )}
