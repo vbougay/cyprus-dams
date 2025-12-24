@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { Droplets, Timer, Info } from 'lucide-react';
+import { Droplets, Timer } from 'lucide-react';
 import { getSummaryChanges, getCurrentDataSetId } from '@/utils/dataManager';
 import { useLanguage } from '@/context/LanguageContext';
 import { useDataContext } from '@/context/DataContext';
@@ -156,14 +157,10 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
 
         {/* Display summary changes if available */}
         {showSummaryChanges && (
-          <div className="mt-6 bg-white/80 dark:bg-gray-800/50 p-4 rounded-xl shadow-sm h-full">
-            <div className="flex items-center gap-2 mb-2">
-              <Info className="h-5 w-5 text-water-500 dark:text-water-400" />
-              <h3 className="font-medium text-foreground">{t('changesTitle')}</h3>
+          <div className="mt-6 bg-white/80 dark:bg-gray-800/50 p-4 rounded-xl shadow-sm">
+            <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:mt-4 prose-headings:mb-2 prose-headings:text-foreground prose-p:my-2 prose-ul:my-2 prose-li:my-0.5 prose-strong:text-foreground">
+              <ReactMarkdown>{summaryChanges}</ReactMarkdown>
             </div>
-            <pre className="text-sm whitespace-pre-wrap bg-gray-50 dark:bg-gray-900/50 p-3 rounded-lg border border-gray-200 dark:border-gray-700 h-full text-foreground">
-              {summaryChanges}
-            </pre>
           </div>
         )}
 
