@@ -28,6 +28,7 @@ import * as data24Nov from './data-24-NOV-2025';
 import * as data05Dec from './data-05-DEC-2025';
 import * as data11Dec from './data-11-DEC-2025';
 import * as data15Dec from './data-15-DEC-2025';
+import * as data23Dec from './data-23-DEC-2025';
 import {
   calculateDrainDate,
   calculateRegionDrainDate,
@@ -39,6 +40,7 @@ import {
 
 // Define available data sets with their dates and module references
 export const availableDataSets = [
+  { id: '23-DEC-2025', label: 'December 23, 2025', value: '23-DEC-2025', module: data23Dec },
   { id: '15-DEC-2025', label: 'December 15, 2025', value: '15-DEC-2025', module: data15Dec },
   { id: '11-DEC-2025', label: 'December 11, 2025', value: '11-DEC-2025', module: data11Dec },
   { id: '05-DEC-2025', label: 'December 5, 2025', value: '05-DEC-2025', module: data05Dec },
@@ -71,14 +73,14 @@ export const availableDataSets = [
 ];
 
 /**
- * Default to the most recent data set (December 15, 2025)
+ * Default to the most recent data set (December 23, 2025)
  */
-let currentDataSetId = '15-DEC-2025';
+let currentDataSetId = '23-DEC-2025';
 
 // Function to get the current data module
 const getCurrentDataModule = () => {
   const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
-  return dataset?.module || data15Dec;
+  return dataset?.module || data23Dec;
 };
 
 // Function to set the current data set
