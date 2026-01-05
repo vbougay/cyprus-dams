@@ -62,7 +62,8 @@ const Header: React.FC = () => {
   }, [isPlaying, currentIndex, availableDataSets, setDataSet]);
 
   return (
-    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
+    <>
+    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-0 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Desktop: Single Row Layout | Mobile: Title + Language Row */}
@@ -126,8 +127,8 @@ const Header: React.FC = () => {
             {/* Desktop: Date Controls + Language with Subscribe below | Mobile: Date Controls Only */}
             <div className="flex flex-col items-center md:items-end gap-2">
               <div className="flex flex-row items-center gap-2">
-                {/* Date Navigation Controls */}
-                <div className="flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
+                {/* Date Navigation Controls - Hidden on mobile, shown as sticky bar instead */}
+                <div className="hidden md:flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -246,6 +247,77 @@ const Header: React.FC = () => {
         </div>
       </div>
     </header>
+
+    {/* Mobile Sticky Date Navigation Bar */}
+    <div className="md:hidden sticky top-0 z-50 w-full py-2 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10 mb-4">
+      <div className="flex items-center justify-center gap-0.5 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 py-1.5 border border-blue-100 dark:border-white/10 shadow-sm">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleLast}
+          disabled={currentIndex >= availableDataSets.length - 1}
+          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+          title="Go to oldest date"
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handlePrevious}
+          disabled={currentIndex >= availableDataSets.length - 1}
+          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+          title="Previous date"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={togglePlayPause}
+          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+          title={isPlaying ? "Pause" : "Play"}
+        >
+          {isPlaying ? (
+            <Pause className="h-3.5 w-3.5" />
+          ) : (
+            <Play className="h-3.5 w-3.5" />
+          )}
+        </Button>
+
+        <div className="flex items-center gap-1.5 px-2 min-w-[140px] justify-center">
+          <Calendar className="h-3.5 w-3.5 text-water-600 dark:text-water-400 flex-shrink-0" />
+          <span className="text-xs font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
+            {currentDataSet?.label}
+          </span>
+        </div>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleNext}
+          disabled={currentIndex <= 0}
+          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+          title="Next date"
+        >
+          <ChevronRight className="h-4 w-4" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleFirst}
+          disabled={currentIndex <= 0}
+          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+          title="Go to newest date"
+        >
+          <ChevronsRight className="h-4 w-4" />
+        </Button>
+      </div>
+    </div>
+    </>
   );
 };
 
