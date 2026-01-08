@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Droplets, Calendar, Globe, ChevronLeft, ChevronRight, Play, Pause, ChevronsLeft, ChevronsRight } from 'lucide-react';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -11,6 +11,10 @@ const Header: React.FC = () => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
   const { language, setLanguage } = useLanguage();
   const t = useTranslation(language);
+
+  // Track if the mobile date nav has scrolled out of view
+  const [showFixedNav, setShowFixedNav] = useState(false);
+  const mobileNavRef = useRef<HTMLDivElement>(null);
 
   // Find current dataset index
   const currentIndex = availableDataSets.findIndex(ds => ds.id === currentDataSetId);
@@ -61,9 +65,26 @@ const Header: React.FC = () => {
     return () => clearInterval(interval);
   }, [isPlaying, currentIndex, availableDataSets, setDataSet]);
 
+  // Intersection Observer to detect when mobile nav scrolls out of view
+  useEffect(() => {
+    const navElement = mobileNavRef.current;
+    if (!navElement) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Show fixed nav when the original nav is not visible
+        setShowFixedNav(!entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '0px' }
+    );
+
+    observer.observe(navElement);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
-    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-0 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
+    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Desktop: Single Row Layout | Mobile: Title + Language Row */}
@@ -127,8 +148,8 @@ const Header: React.FC = () => {
             {/* Desktop: Date Controls + Language with Subscribe below | Mobile: Date Controls Only */}
             <div className="flex flex-col items-center md:items-end gap-2">
               <div className="flex flex-row items-center gap-2">
-                {/* Date Navigation Controls - Hidden on mobile, shown as sticky bar instead */}
-                <div className="hidden md:flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
+                {/* Date Navigation Controls */}
+                <div ref={mobileNavRef} className="flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
                   <Button
                     variant="ghost"
                     size="sm"
@@ -248,8 +269,8 @@ const Header: React.FC = () => {
       </div>
     </header>
 
-    {/* Mobile Fixed Date Navigation Bar */}
-    <div className="md:hidden fixed top-0 left-0 right-0 z-50 py-2 px-4 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10">
+    {/* Mobile Fixed Date Navigation Bar - Only shows when original nav scrolls out of view */}
+    <div className={`md:hidden fixed top-0 left-0 right-0 z-50 py-2 px-4 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10 transition-transform duration-200 ${showFixedNav ? 'translate-y-0' : '-translate-y-full'}`}>
       <div className="flex items-center justify-center gap-0.5 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 py-1.5 border border-blue-100 dark:border-white/10 shadow-sm">
         <Button
           variant="ghost"

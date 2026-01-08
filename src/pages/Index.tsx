@@ -43,7 +43,7 @@ const Index: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
       <Header />
       
-      <main className="container mx-auto px-4 pb-16 pt-14 md:pt-0">
+      <main className="container mx-auto px-4 pb-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-8">
           <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect">
             <div className="stat-card-icon flex-none">
