@@ -248,8 +248,8 @@ const Header: React.FC = () => {
       </div>
     </header>
 
-    {/* Mobile Sticky Date Navigation Bar */}
-    <div className="md:hidden sticky top-0 z-50 w-full py-2 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10 mb-4">
+    {/* Mobile Fixed Date Navigation Bar */}
+    <div className="md:hidden fixed top-0 left-0 right-0 z-50 py-2 px-4 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10">
       <div className="flex items-center justify-center gap-0.5 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 py-1.5 border border-blue-100 dark:border-white/10 shadow-sm">
         <Button
           variant="ghost"
