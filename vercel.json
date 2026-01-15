@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "cyprus-dams.bougay.com"
+        }
+      ],
+      "destination": "https://fragmata.info/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "cyprus-dams.vercel.app"
+        }
+      ],
+      "destination": "https://fragmata.info/:path*",
+      "permanent": true
+    }
+  ]
+}
