@@ -60,7 +60,7 @@ export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
 ### Πρόσφατες Αλλαγές (9 Φεβρουαρίου - 16 Φεβρουαρίου 2026)
 
 **Γενική Επισκόπηση:**
-Η συνολική αποθήκευση αυξήθηκε στο 19.0% (56.9 ΕΚΜ) από 15.4% (46.1 ΕΚΜ). Οι εισροές Φεβρουαρίου έφτασαν τα 13.6 ΕΚΜ και η συνολική εισροή 2025/26 τα 28.423 ΕΚΜ. Μεταφέρθηκαν 3.91 ΕΚΜ από Αρμίνου προς Κούρη.
+Η συνολική αποθήκευση αυξήθηκε στο 17.2% (50.0 ΕΚΜ) από 13.7% (39.9 ΕΚΜ). Οι εισροές Φεβρουαρίου έφτασαν τα 13.6 ΕΚΜ και η συνολική εισροή 2025/26 τα 28.423 ΕΚΜ. Μεταφέρθηκαν 3.91 ΕΚΜ από Αρμίνου προς Κούρη.
 
 **Ανά Περιοχή:**
 - **Southern Conveyor:** 12.1% -> 14.7%
@@ -77,14 +77,14 @@ export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
 - **Klirou-Malounta:** 94.5% -> 100.0%
 
 **Εκτίμηση:**
-Ισχυρές εισροές στα μέσα Φεβρουαρίου βελτίωσαν όλους τους τομείς. Τα συνολικά αποθέματα (19.0%) παραμένουν χαμηλότερα από το περσινό επίπεδο (26.9%).
+Ισχυρές εισροές στα μέσα Φεβρουαρίου βελτίωσαν όλους τους τομείς. Τα συνολικά αποθέματα (17.2%) παραμένουν χαμηλότερα από το περσινό επίπεδο (25.9%).
 `;
   }
   return `
 ### Recent Changes (February 9 - February 16, 2026)
 
 **General Overview:**
-Total storage increased to 19.0% (56.9 MCM) from 15.4% (46.1 MCM). February inflows reached 13.6 MCM and total 2025/26 inflow reached 28.423 MCM. 3.91 MCM was transferred from Arminou to Kouris.
+Total storage increased to 17.2% (50.0 MCM) from 13.7% (39.9 MCM). February inflows reached 13.6 MCM and total 2025/26 inflow reached 28.423 MCM. 3.91 MCM was transferred from Arminou to Kouris.
 
 **By Region:**
 - **Southern Conveyor:** 12.1% -> 14.7%
@@ -101,6 +101,6 @@ Total storage increased to 19.0% (56.9 MCM) from 15.4% (46.1 MCM). February infl
 - **Klirou-Malounta:** 94.5% -> 100.0%
 
 **Assessment:**
-Strong mid-February inflows improved all regions. Overall storage (19.0%) remains below last year (26.9%).
+Strong mid-February inflows improved all regions. Overall storage (17.2%) remains below last year (25.9%).
 `;
 };
