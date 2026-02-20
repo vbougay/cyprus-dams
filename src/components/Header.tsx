@@ -84,7 +84,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-    <header className="w-full py-4 md:py-8 border-b border-blue-100/30 dark:border-white/10 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50">
+    <header className="relative w-full py-4 md:py-8 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50 overflow-visible">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Desktop: Single Row Layout | Mobile: Title + Language Row */}
@@ -266,6 +266,16 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Flowing water wave effect */}
+      <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 h-[28px] pointer-events-none z-10 overflow-hidden">
+        <svg className="absolute top-0 left-0 w-[200%] h-full animate-wave-flow" viewBox="0 0 1200 28" preserveAspectRatio="none">
+          <path d="M0,14 C150,28 350,0 600,14 C850,28 1050,0 1200,14 L1200,28 L0,28 Z" className="fill-water-400/50 dark:fill-water-400/30" />
+        </svg>
+        <svg className="absolute top-0 left-0 w-[200%] h-full animate-wave-flow-reverse" viewBox="0 0 1200 28" preserveAspectRatio="none">
+          <path d="M0,14 C200,0 400,28 600,14 C800,0 1000,28 1200,14 L1200,28 L0,28 Z" className="fill-water-500/35 dark:fill-water-500/20" />
+        </svg>
       </div>
     </header>
 

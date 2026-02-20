@@ -72,6 +72,8 @@
   --animate-shimmer: shimmer 2s infinite linear;
   --animate-glow: glow 2s infinite ease-in-out;
   --animate-gradient: gradient-shift 8s infinite ease-in-out;
+  --animate-wave-flow: wave-flow 8s infinite linear;
+  --animate-wave-flow-reverse: wave-flow-reverse 12s infinite linear;
 }
 
 @keyframes accordion-down {
@@ -123,6 +125,16 @@
 @keyframes gradient-shift {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+@keyframes wave-flow {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave-flow-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
 }
 
 @layer base {
@@ -372,6 +384,14 @@
 
   .modern-tabs [role="tab"][data-state="active"] {
     @apply bg-white dark:bg-gray-700 shadow-sm;
+  }
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-wave-flow,
+  .animate-wave-flow-reverse {
+    animation: none !important;
   }
 }
 
