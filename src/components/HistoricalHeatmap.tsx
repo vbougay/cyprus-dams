@@ -68,13 +68,13 @@ const REGIONS: RegionGroup[] = [
 
 function getCellColor(percentage: number | null, isDark: boolean): string {
   if (percentage === null) return isDark ? '#1f2937' : '#e5e7eb';
+  if (percentage >= 100) return isDark ? '#0e7490' : '#0ea5e9';
+  // Smooth red(0°) → yellow(60°) → green(120°) via HSL
   const p = Math.max(0, Math.min(100, percentage));
-  if (p >= 100) return isDark ? '#0e7490' : '#0ea5e9';
-  if (p <= 10) return isDark ? '#991b1b' : '#dc2626';
-  if (p <= 25) return isDark ? '#c2410c' : '#ea580c';
-  if (p <= 50) return isDark ? '#b45309' : '#f59e0b';
-  if (p <= 75) return isDark ? '#4d7c0f' : '#84cc16';
-  return isDark ? '#15803d' : '#22c55e';
+  const hue = (p / 100) * 120; // 0=red, 60=yellow, 120=green
+  const sat = isDark ? 65 : 75;
+  const lit = isDark ? 35 : 45;
+  return `hsl(${hue}, ${sat}%, ${lit}%)`;
 }
 
 interface TooltipData {
@@ -214,15 +214,15 @@ const HistoricalHeatmap: React.FC = () => {
             <span>{t('noData')}:</span>
             <div style={{ width: legendCellSize, height: legendCellSize, backgroundColor: getCellColor(null, isDark) }} />
             <span className="ml-1">0%</span>
-            <div className="flex gap-px">
-              {[5, 15, 35, 60, 85, 100].map(p => (
-                <div
-                  key={p}
-                  style={{ width: legendCellSize, height: legendCellSize, backgroundColor: getCellColor(p, isDark) }}
-                />
-              ))}
-            </div>
+            <div style={{
+              width: legendCellSize * 8,
+              height: legendCellSize,
+              borderRadius: 1,
+              background: `linear-gradient(to right, ${getCellColor(0, isDark)}, ${getCellColor(50, isDark)}, ${getCellColor(99, isDark)})`,
+            }} />
             <span>100%</span>
+            <div style={{ width: legendCellSize, height: legendCellSize, backgroundColor: getCellColor(100, isDark), marginLeft: 4 }} />
+            <span>Full</span>
           </div>
         </div>
       </CardHeader>
