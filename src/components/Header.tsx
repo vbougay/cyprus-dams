@@ -84,7 +84,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-    <header className="relative w-full py-4 md:py-8 backdrop-blur-md mb-4 md:mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50 overflow-visible">
+    <header className="relative w-full py-4 md:py-8 backdrop-blur-md mb-8 animate-fade-in bg-white/50 dark:bg-gray-900/50 overflow-visible">
       <div className="container mx-auto px-4">
         <div className="flex flex-col gap-3 md:gap-4">
           {/* Desktop: Single Row Layout | Mobile: Title + Language Row */}
