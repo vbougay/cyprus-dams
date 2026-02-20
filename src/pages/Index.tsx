@@ -14,7 +14,7 @@ import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Droplets, Database, BarChart, Map, Timer, TrendingUp, TrendingDown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -178,37 +178,33 @@ const Index: React.FC = () => {
 
           <TabsContent value="dashboard" className="animate-fade-in">
             <div className="space-y-8">
-              <Card className="glass-card rounded-2xl p-1">
-                <CardHeader className="pb-2">
-                  <CardTitle className="flex items-center gap-2 text-lg md:text-xl">
-                    <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
-                    <span>{t('overallStatus')}</span>
-                  </CardTitle>
-                </CardHeader>
+              <div>
+                <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
+                  <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
+                  <span>{t('overallStatus')}</span>
+                </h3>
 
-                <CardContent>
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-                    {grandTotal && (
-                      <div className="w-full h-full">
-                        <RegionSummary
-                          regionTotal={grandTotal}
-                          showReservoirs={false}
-                          className="h-full"
-                        />
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      {reservoirs
-                        .sort((a, b) => b.capacity - a.capacity)
-                        .slice(0, 4)
-                        .map((reservoir) => (
-                          <ReservoirCard key={reservoir.name} reservoir={reservoir} />
-                        ))}
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                  {grandTotal && (
+                    <div className="w-full h-full">
+                      <RegionSummary
+                        regionTotal={grandTotal}
+                        showReservoirs={false}
+                        className="h-full"
+                      />
                     </div>
+                  )}
+
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {reservoirs
+                      .sort((a, b) => b.capacity - a.capacity)
+                      .slice(0, 4)
+                      .map((reservoir) => (
+                        <ReservoirCard key={reservoir.name} reservoir={reservoir} />
+                      ))}
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
 
               <MonthlyInflow />
             </div>
