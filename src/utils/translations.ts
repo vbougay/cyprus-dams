@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata.info - Cyprus Reservoir Visualizer",
+    subtitle: "Fragmata.info – Cyprus Water Dam/Reservoir Data Visualizer",
     selectDate: "Select date",
     subscribe: "Subscribe to",
     
@@ -144,7 +144,7 @@ export const translations = {
   gr: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata.info - Οπτικοποίηση Ταμιευτήρων Κύπρου",
+    subtitle: "Fragmata.info – Οπτικοποίηση Δεδομένων Φραγμάτων/Ταμιευτήρων Κύπρου",
     selectDate: "Επιλογή ημερομηνίας",
     subscribe: "Εγγραφείτε στο",
     
@@ -286,7 +286,7 @@ export const translations = {
   ru: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata.info - Визуализация водохранилищ Кипра",
+    subtitle: "Fragmata.info – Визуализация данных плотин/водохранилищ Кипра",
     selectDate: "Выбрать дату",
     subscribe: "Подписаться на",
     
