@@ -2,7 +2,7 @@ export const translations = {
   en: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata - Cyprus Reservoir Visualizer",
+    subtitle: "Fragmata.info - Cyprus Reservoir Visualizer",
     selectDate: "Select date",
     subscribe: "Subscribe to",
     
@@ -137,12 +137,14 @@ export const translations = {
     // Historical Heatmap
     historicalLevels: "Historical Reservoir Levels",
     noData: "No data",
+    full: "Full",
+    fillLevel: "Fill",
 
   },
   gr: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata - Οπτικοποίηση Ταμιευτήρων Κύπρου",
+    subtitle: "Fragmata.info - Οπτικοποίηση Ταμιευτήρων Κύπρου",
     selectDate: "Επιλογή ημερομηνίας",
     subscribe: "Εγγραφείτε στο",
     
@@ -277,12 +279,14 @@ export const translations = {
     // Historical Heatmap
     historicalLevels: "Ιστορικά Επίπεδα Ταμιευτήρων",
     noData: "Χωρίς δεδομένα",
+    full: "Πλήρες",
+    fillLevel: "Πλήρωση",
 
   },
   ru: {
     // Header
     appTitle: "Φράγματα",
-    subtitle: "Fragmata - Визуализация водохранилищ Кипра",
+    subtitle: "Fragmata.info - Визуализация водохранилищ Кипра",
     selectDate: "Выбрать дату",
     subscribe: "Подписаться на",
     
@@ -417,6 +421,8 @@ export const translations = {
     // Historical Heatmap
     historicalLevels: "Исторические уровни водохранилищ",
     noData: "Нет данных",
+    full: "Полн.",
+    fillLevel: "Заполн.",
   }
 };
 

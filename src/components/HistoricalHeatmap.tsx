@@ -19,7 +19,7 @@ interface RegionGroup {
 
 const REGIONS: RegionGroup[] = [
   {
-    region: 'Southern Conveyor',
+    region: 'southernConveyor',
     reservoirs: [
       { key: 'kouris', name: 'Kouris', capacity: 115.0 },
       { key: 'kalavasos', name: 'Kalavasos', capacity: 17.1 },
@@ -32,7 +32,7 @@ const REGIONS: RegionGroup[] = [
     ],
   },
   {
-    region: 'Paphos',
+    region: 'paphos',
     reservoirs: [
       { key: 'asprokremmos', name: 'Asprokremmos', capacity: 52.375 },
       { key: 'kannaviou', name: 'Kannaviou', capacity: 17.168 },
@@ -40,7 +40,7 @@ const REGIONS: RegionGroup[] = [
     ],
   },
   {
-    region: 'Chrysochou',
+    region: 'chrysochou',
     reservoirs: [
       { key: 'evretou', name: 'Evretou', capacity: 24.0 },
       { key: 'argaka', name: 'Argaka', capacity: 0.99 },
@@ -49,7 +49,7 @@ const REGIONS: RegionGroup[] = [
     ],
   },
   {
-    region: 'Nicosia',
+    region: 'nicosia',
     reservoirs: [
       { key: 'vyzakia', name: 'Vyzakia', capacity: 1.69 },
       { key: 'xyliatos', name: 'Xyliatos', capacity: 1.43 },
@@ -57,7 +57,7 @@ const REGIONS: RegionGroup[] = [
     ],
   },
   {
-    region: 'Recharge',
+    region: 'rechargeOther',
     reservoirs: [
       { key: 'tamassos', name: 'Tamassos', capacity: 2.8 },
       { key: 'klirouMalounta', name: 'Klirou-Malounta', capacity: 2.0 },
@@ -222,7 +222,7 @@ const HistoricalHeatmap: React.FC = () => {
             }} />
             <span>100%</span>
             <div style={{ width: legendCellSize, height: legendCellSize, backgroundColor: getCellColor(100, isDark), marginLeft: 4 }} />
-            <span>Full</span>
+            <span>{t('full')}</span>
           </div>
         </div>
       </CardHeader>
@@ -281,7 +281,7 @@ const HistoricalHeatmap: React.FC = () => {
                       }}
                     >
                       <span className="text-[9px] sm:text-[10px] leading-tight text-gray-500 dark:text-gray-400">
-                        {group.region}
+                        {t(group.region)}
                       </span>
                     </div>
                   );
@@ -361,7 +361,7 @@ const HistoricalHeatmap: React.FC = () => {
                 className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-gray-300 flex-shrink-0"
                 style={{ width: LABEL_W }}
               >
-                Total
+                {t('totalLabel')}
               </span>
               <div className="flex-1 flex relative" style={{ height: 10 }}>
                 {gridData.totalPercentages.map((pct, dateIdx) => (
@@ -379,7 +379,7 @@ const HistoricalHeatmap: React.FC = () => {
                       if (!container) return;
                       const rect = container.getBoundingClientRect();
                       setTooltip({
-                        name: 'Total',
+                        name: t('totalLabel'),
                         date: gridData.dates[dateIdx],
                         storageMCM: gridData.totalRawValues[dateIdx],
                         percentage: pct,
@@ -430,11 +430,11 @@ const HistoricalHeatmap: React.FC = () => {
               {tooltip.percentage !== null ? (
                 <>
                   <div className="mt-1">
-                    <span className="text-gray-400">Fill: </span>
+                    <span className="text-gray-400">{t('fillLevel')}: </span>
                     <span className="font-medium">{tooltip.percentage.toFixed(1)}%</span>
                   </div>
                   <div>
-                    <span className="text-gray-400">Storage: </span>
+                    <span className="text-gray-400">{t('currentStorage')}: </span>
                     <span className="font-medium">{tooltip.storageMCM?.toFixed(2)} MCM</span>
                   </div>
                 </>
