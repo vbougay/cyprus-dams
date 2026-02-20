@@ -134,6 +134,10 @@ export const translations = {
     allSeasons: "All",
     outflowNotAvailable: "Outflow data is not available from the official data source.",
 
+    // Historical Heatmap
+    historicalLevels: "Historical Reservoir Levels",
+    noData: "No data",
+
   },
   gr: {
     // Header
@@ -270,6 +274,10 @@ export const translations = {
     allSeasons: "Όλα",
     outflowNotAvailable: "Τα δεδομένα εκροής δεν είναι διαθέσιμα από την επίσημη πηγή δεδομένων.",
 
+    // Historical Heatmap
+    historicalLevels: "Ιστορικά Επίπεδα Ταμιευτήρων",
+    noData: "Χωρίς δεδομένα",
+
   },
   ru: {
     // Header
@@ -405,6 +413,10 @@ export const translations = {
     cumulativeView: "Нарастающим итогом",
     allSeasons: "Все",
     outflowNotAvailable: "Данные об оттоке недоступны из официального источника данных.",
+
+    // Historical Heatmap
+    historicalLevels: "Исторические уровни водохранилищ",
+    noData: "Нет данных",
   }
 };
 
