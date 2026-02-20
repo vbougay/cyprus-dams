@@ -9,7 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import {
   BarChart, Bar, AreaChart, Area, LineChart, Line,
-  XAxis, YAxis, Tooltip, Legend,
+  XAxis, YAxis, Tooltip,
   ResponsiveContainer, ReferenceLine
 } from 'recharts';
 
@@ -214,8 +214,8 @@ const MonthlyInflow: React.FC = () => {
 
   return (
     <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border border-gray-200 dark:border-gray-800 p-1 animate-fade-in">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center justify-between flex-wrap gap-2">
+      <CardHeader className="pb-2 px-3 sm:px-6">
+        <CardTitle className="text-lg md:text-xl flex flex-col md:flex-row md:items-center md:justify-between gap-2">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5 text-water-500 dark:text-water-400" />
             <span>{t('monthlyInflow')}</span>
@@ -265,13 +265,13 @@ const MonthlyInflow: React.FC = () => {
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
-        <div className={`${isAllMode ? 'h-96 md:h-[27rem]' : 'h-64 md:h-72'} w-full mt-4 transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      <CardContent className="px-0 sm:px-6">
+        <div className={`${isAllMode ? 'h-[26rem] md:h-[29rem]' : 'h-64 md:h-72'} w-full mt-4 transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
 
           {/* CUMULATIVE — Single Season */}
           {viewMode === 'cumulative' && !isAllMode && cumulativeSingleData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={cumulativeSingleData} margin={{ top: 10, right: 10, left: 0, bottom: 30 }}>
+              <AreaChart data={cumulativeSingleData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <defs>
                   <linearGradient id="currentYearGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3} />
@@ -281,7 +281,6 @@ const MonthlyInflow: React.FC = () => {
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
-                <Legend verticalAlign="top" height={36} />
                 {renderReferenceLine}
                 <Area type="monotone" dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} stroke="#0ea5e9" strokeWidth={2.5} fill="url(#currentYearGradient)" animationDuration={1000} />
                 <Area type="monotone" dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} stroke="#94a3b8" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} />
@@ -292,7 +291,7 @@ const MonthlyInflow: React.FC = () => {
           {/* CUMULATIVE — All Seasons */}
           {viewMode === 'cumulative' && isAllMode && cumulativeAllData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={cumulativeAllData} margin={{ top: 10, right: 10, left: 0, bottom: 30 }}>
+              <AreaChart data={cumulativeAllData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <defs>
                   <linearGradient id="latestYearGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor={SEASON_COLORS[0]} stopOpacity={0.2} />
@@ -302,7 +301,6 @@ const MonthlyInflow: React.FC = () => {
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
-                <Legend verticalAlign="top" height={36} />
                 {renderReferenceLine}
                 {years.map((year, i) => (
                   <Area
@@ -324,11 +322,10 @@ const MonthlyInflow: React.FC = () => {
           {/* MONTHLY — Single Season (bars) */}
           {viewMode === 'monthly' && !isAllMode && singleSeasonData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={singleSeasonData} margin={{ top: 10, right: 10, left: 0, bottom: 30 }}>
+              <BarChart data={singleSeasonData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
-                <Legend verticalAlign="top" height={36} />
                 <Bar dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} fill="#0ea5e9" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 <Bar dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} fill="#94a3b8" radius={[4, 4, 0, 0]} animationDuration={1000} />
               </BarChart>
@@ -338,11 +335,10 @@ const MonthlyInflow: React.FC = () => {
           {/* MONTHLY — All Seasons (lines, since bars would be unreadable) */}
           {viewMode === 'monthly' && isAllMode && allSeasonsData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={allSeasonsData} margin={{ top: 10, right: 10, left: 0, bottom: 30 }}>
+              <LineChart data={allSeasonsData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
-                <Legend verticalAlign="top" height={36} />
                 {years.map((year, i) => (
                   <Line
                     key={year}
@@ -358,6 +354,29 @@ const MonthlyInflow: React.FC = () => {
                 ))}
               </LineChart>
             </ResponsiveContainer>
+          )}
+        </div>
+
+        {/* Custom legend rendered outside chart to avoid overlap with X-axis labels */}
+        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mt-2 text-xs px-3 sm:px-0">
+          {!isAllMode ? (
+            <>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block w-4 h-0.5 bg-[#0ea5e9] rounded" />
+                <span className="text-muted-foreground">{t('yearLabel')} {selectedYear}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <span className="inline-block w-4 h-0.5 bg-[#94a3b8] rounded" style={{ borderTop: '2px dashed #94a3b8', height: 0 }} />
+                <span className="text-muted-foreground">{t('yearLabel')} {previousYearLabel}</span>
+              </div>
+            </>
+          ) : (
+            years.map((year, i) => (
+              <div key={year} className="flex items-center gap-1.5">
+                <span className="inline-block w-4 h-0.5 rounded" style={{ backgroundColor: SEASON_COLORS[i % SEASON_COLORS.length] }} />
+                <span className="text-muted-foreground">{year}</span>
+              </div>
+            ))
           )}
         </div>
 
