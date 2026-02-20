@@ -317,7 +317,7 @@
   }
 
   .stat-card-icon {
-    @apply flex items-center justify-center p-4 rounded-xl;
+    @apply flex items-center justify-center rounded-xl;
     background: linear-gradient(135deg, rgba(14, 165, 233, 0.08) 0%, rgba(56, 189, 248, 0.12) 100%);
   }
 
