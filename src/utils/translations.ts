@@ -1,8 +1,8 @@
 export const translations = {
   en: {
     // Header
-    appTitle: "Cyprus Reservoir Visualizer",
-    ministry: "Water Development Department - Ministry of Agriculture",
+    appTitle: "Φράγματα",
+    subtitle: "Fragmata - Cyprus Reservoir Visualizer",
     selectDate: "Select date",
     subscribe: "Subscribe to",
     
@@ -137,8 +137,8 @@ export const translations = {
   },
   gr: {
     // Header
-    appTitle: "Οπτικοποίηση Ταμιευτήρων Κύπρου",
-    ministry: "Τμήμα Αναπτύξεως Υδάτων - Υπουργείο Γεωργίας",
+    appTitle: "Φράγματα",
+    subtitle: "Fragmata - Οπτικοποίηση Ταμιευτήρων Κύπρου",
     selectDate: "Επιλογή ημερομηνίας",
     subscribe: "Εγγραφείτε στο",
     
@@ -273,8 +273,8 @@ export const translations = {
   },
   ru: {
     // Header
-    appTitle: "Водохранилища Кипра",
-    ministry: "Департамент Водного Развития - Министерство Сельского Хозяйства",
+    appTitle: "Φράγματα",
+    subtitle: "Fragmata - Визуализация водохранилищ Кипра",
     selectDate: "Выбрать дату",
     subscribe: "Подписаться на",
     

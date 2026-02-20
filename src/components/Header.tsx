@@ -101,7 +101,7 @@ const Header: React.FC = () => {
                     {t('appTitle')}
                   </h1>
                   <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-base mt-1">
-                    {t('ministry')}
+                    {t('subtitle')}
                   </p>
                 </div>
               </div>

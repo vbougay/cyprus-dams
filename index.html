@@ -3,14 +3,79 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cyprus Reservoir Visualizer by Vladimir Bugay</title>
-    <meta name="description" content="When the water is going to end on Cyprus?" />
+    <title>Fragmata - Cyprus Reservoir Levels & Water Dashboard</title>
+    <meta name="description" content="Track water levels across 21 Cyprus reservoirs. Real-time storage capacity, inflow data, and drought forecasts for Kouris, Asprokremmos, Evretou and more. Παρακολούθηση φραγμάτων Κύπρου. Мониторинг водохранилищ Кипра." />
+    <meta name="keywords" content="Cyprus reservoir levels, Cyprus water shortage, Cyprus dam water levels, Cyprus drought, Cyprus water crisis, reservoir monitoring, Φράγματα Κύπρου, λειψυδρία Κύπρου, ταμιευτήρες Κύπρου, κρίση νερού Κύπρου, ξηρασία Κύπρου, Водохранилища Кипра, засуха на Кипре, уровень воды Кипр, нехватка воды Кипр, мониторинг водохранилищ" />
+    <meta name="theme-color" content="#0ea5e9" />
+    <link rel="canonical" href="https://fragmata.info/" />
+
+    <!-- Hreflang alternates -->
+    <link rel="alternate" hreflang="en" href="https://fragmata.info/" />
+    <link rel="alternate" hreflang="el" href="https://fragmata.info/" />
+    <link rel="alternate" hreflang="ru" href="https://fragmata.info/" />
+    <link rel="alternate" hreflang="x-default" href="https://fragmata.info/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fragmata.info/" />
+    <meta property="og:title" content="Fragmata - Cyprus Reservoir Levels & Water Dashboard" />
+    <meta property="og:description" content="Track water levels across 21 Cyprus reservoirs. Real-time storage capacity, inflow data, and drought forecasts." />
+    <meta property="og:image" content="https://fragmata.info/og-image.png" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="el_GR" />
+    <meta property="og:locale:alternate" content="ru_RU" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Fragmata - Cyprus Reservoir Levels & Water Dashboard" />
+    <meta name="twitter:description" content="Track water levels across 21 Cyprus reservoirs. Real-time storage capacity, inflow data, and drought forecasts." />
+    <meta name="twitter:image" content="https://fragmata.info/og-image.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Fragmata",
+      "alternateName": ["Φράγματα", "Cyprus Reservoir Dashboard"],
+      "description": "Track water levels across 21 Cyprus reservoirs. Real-time storage capacity, inflow data, and drought forecasts.",
+      "url": "https://fragmata.info",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "inLanguage": ["en", "el", "ru"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "about": {
+        "@type": "Dataset",
+        "name": "Cyprus Reservoir Data",
+        "description": "Water storage levels, inflow, and capacity data for 21 reservoirs across Cyprus",
+        "spatialCoverage": {
+          "@type": "Place",
+          "name": "Cyprus"
+        },
+        "temporalCoverage": "2025/..",
+        "provider": {
+          "@type": "GovernmentOrganization",
+          "name": "Cyprus Water Development Department",
+          "url": "https://www.moa.gov.cy/moa/wdd/"
+        }
+      }
+    }
+    </script>
   </head>
 
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Fragmata — Cyprus Reservoir Monitoring Dashboard</h1>
+      <p>Track water levels across 21 Cyprus reservoirs including Kouris, Asprokremmos, Evretou, Kalavasos, Lefkara, and more. Monitor storage capacity, inflow data, and drought forecasts for all regions: Southern Conveyor, Paphos, Chrysochou, Nicosia.</p>
+      <p>Παρακολούθηση φραγμάτων Κύπρου — Επίπεδα νερού, χωρητικότητα και εισροή για 21 ταμιευτήρες. Λειψυδρία Κύπρου, ξηρασία, κρίση νερού.</p>
+      <p>Мониторинг водохранилищ Кипра — Уровни воды, ёмкость и приток для 21 водохранилища. Засуха на Кипре, нехватка воды, запасы воды.</p>
+    </noscript>
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
