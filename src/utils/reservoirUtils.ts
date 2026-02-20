@@ -1,4 +1,4 @@
-import { Reservoir, ReservoirRegion, RegionTotal } from '../types';
+import { Reservoir, ReservoirRegion, RegionTotal, YearlyInflowData } from '../types';
 
 // Constants for drain date calculations
 export const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -90,6 +90,112 @@ export const calculateRegionDrainDate = (regionTotal: RegionTotal, reservoirs: R
   const year = drainDate.getFullYear();
   
   return `${month}/${year}`;
+};
+
+// Water year month keys (October through August-September)
+const WATER_YEAR_MONTH_KEYS = [
+  "October", "November", "December", "January", "February", "March",
+  "April", "May", "June", "July", "Aug-Sep"
+];
+
+// Map of month abbreviations from report date format to calendar month number (1-based)
+const MONTH_ABBREV_TO_NUMBER: Record<string, number> = {
+  'JAN': 1, 'FEB': 2, 'MAR': 3, 'APR': 4, 'MAY': 5, 'JUN': 6,
+  'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12
+};
+
+// Parse report date string like "16-FEB-2026" into components
+export const parseReportDate = (reportDate: string): { day: number; month: number; year: number } | null => {
+  const parts = reportDate.split('-');
+  if (parts.length !== 3) return null;
+  const day = parseInt(parts[0], 10);
+  const monthAbbrev = parts[1].toUpperCase();
+  const year = parseInt(parts[2], 10);
+  const month = MONTH_ABBREV_TO_NUMBER[monthAbbrev];
+  if (!month || isNaN(day) || isNaN(year)) return null;
+  return { day, month, year };
+};
+
+// Map calendar month (1-12) to water year index (Oct=0, Nov=1, ..., Sep=10)
+const calendarMonthToWaterYearIndex = (calMonth: number): number => {
+  if (calMonth >= 10) return calMonth - 10; // Oct=0, Nov=1, Dec=2
+  if (calMonth <= 7) return calMonth + 2;   // Jan=3, Feb=4, ..., Jul=9
+  return 10; // Aug and Sep both map to the combined "Aug-Sep" index
+};
+
+export interface YTDInflowResult {
+  currentYTD: number;
+  lastYearYTD: number;
+  percentChange: number | null; // null when last year YTD is 0
+  currentYear: string;
+  lastYear: string;
+}
+
+// Calculate YTD inflow comparison between current and previous water year
+export const calculateYTDInflow = (inflowData: YearlyInflowData[], reportDate: string): YTDInflowResult | null => {
+  const parsed = parseReportDate(reportDate);
+  if (!parsed) return null;
+
+  const waterYearIndex = calendarMonthToWaterYearIndex(parsed.month);
+  const monthsToInclude = WATER_YEAR_MONTH_KEYS.slice(0, waterYearIndex + 1);
+
+  // Determine water year strings (e.g., "25/26" and "24/25")
+  const waterYearStart = parsed.month >= 10 ? parsed.year : parsed.year - 1;
+  const pad = (n: number) => (n % 100).toString().padStart(2, '0');
+  const currentYearStr = `${pad(waterYearStart)}/${pad(waterYearStart + 1)}`;
+  const prevYearStr = `${pad(waterYearStart - 1)}/${pad(waterYearStart)}`;
+
+  const currentYearData = inflowData.find(d => d.year === currentYearStr);
+  const lastYearData = inflowData.find(d => d.year === prevYearStr);
+
+  if (!currentYearData || !lastYearData) return null;
+
+  const currentYTD = monthsToInclude.reduce((sum, m) => sum + (currentYearData.months[m] || 0), 0);
+  const lastYearYTD = monthsToInclude.reduce((sum, m) => sum + (lastYearData.months[m] || 0), 0);
+
+  const percentChange = lastYearYTD > 0
+    ? ((currentYTD / lastYearYTD) - 1) * 100
+    : null;
+
+  return {
+    currentYTD,
+    lastYearYTD,
+    percentChange,
+    currentYear: currentYearStr,
+    lastYear: prevYearStr,
+  };
+};
+
+export interface YTDOutflowResult {
+  currentOutflow: number;
+  lastYearOutflow: number;
+  percentChange: number | null;
+}
+
+// Calculate implied YTD outflow using water balance:
+// outflow = inflow_since_oct - (current_storage - oct_start_storage)
+export const calculateYTDOutflow = (
+  grandTotal: RegionTotal,
+  ytdInflow: YTDInflowResult,
+  octoberBaseline: { currentStorage: number; lastYearStorage: number }
+): YTDOutflowResult | null => {
+  // Current year: outflow = total inflow since Oct - storage increase since Oct
+  const currentOutflow = grandTotal.inflow.totalSince
+    - (grandTotal.storage.current.amount - octoberBaseline.currentStorage);
+
+  // Last year: outflow = last year YTD inflow - last year storage increase since Oct
+  const lastYearOutflow = ytdInflow.lastYearYTD
+    - (grandTotal.storage.lastYear.amount - octoberBaseline.lastYearStorage);
+
+  const percentChange = lastYearOutflow > 0
+    ? ((currentOutflow / lastYearOutflow) - 1) * 100
+    : null;
+
+  return {
+    currentOutflow: Math.max(0, currentOutflow),
+    lastYearOutflow: Math.max(0, lastYearOutflow),
+    percentChange,
+  };
 };
 
 // Group reservoirs by region

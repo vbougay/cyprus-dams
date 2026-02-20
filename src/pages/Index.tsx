@@ -1,50 +1,70 @@
 import React, { useState, useEffect } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, ReservoirMap } from '@/components';
-import { 
-  getReservoirsWithDrainDates, 
-  getReservoirsByRegion, 
-  calculateRegionTotals, 
-  calculateGrandTotal 
+import {
+  getReservoirsWithDrainDates,
+  getReservoirsByRegion,
+  calculateRegionTotals,
+  calculateGrandTotal,
+  yearlyInflowData,
+  getReportDate,
+  getOctoberBaselineStorage
 } from '@/utils/dataManager';
+import { calculateYTDInflow, calculateYTDOutflow, YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Map, Timer } from 'lucide-react';
+import { Droplets, Database, BarChart, Map, Timer, TrendingUp, TrendingDown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index: React.FC = () => {
   const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
   const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
   const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
+  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(null);
+  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(null);
   const { currentDataSetId } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
-  
+
   useEffect(() => {
     // Calculate the data whenever the data set changes
     const totals = calculateRegionTotals();
     setRegionTotals(totals);
-    
+
     const total = calculateGrandTotal();
     setGrandTotal(total);
-    
+
     // Get reservoirs with drain dates
     const reservoirsWithDrainDates = getReservoirsWithDrainDates();
     setReservoirs(reservoirsWithDrainDates);
+
+    // Calculate YTD inflow comparison
+    const inflowData = yearlyInflowData();
+    const reportDate = getReportDate();
+    const inflow = calculateYTDInflow(inflowData, reportDate);
+    setYtdInflow(inflow);
+
+    // Calculate YTD outflow
+    const octBaseline = getOctoberBaselineStorage();
+    if (inflow && octBaseline && total) {
+      setYtdOutflow(calculateYTDOutflow(total, inflow, octBaseline));
+    } else {
+      setYtdOutflow(null);
+    }
   }, [currentDataSetId]);
-  
+
   const getReservoirs = (region: ReservoirRegion) => {
     return reservoirs.filter(reservoir => reservoir.region === region);
   };
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
       <Header />
-      
+
       <main className="container mx-auto px-4 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 mb-4">
           <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect">
             <div className="stat-card-icon flex-none">
               <Droplets className="h-8 w-8 text-water-600 dark:text-water-400" />
@@ -104,7 +124,50 @@ const Index: React.FC = () => {
             </CardContent>
           </Card>
         </div>
-        
+
+        {/* YTD Inflow & Outflow cards */}
+        {(ytdInflow || ytdOutflow) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 mb-8">
+            {ytdInflow && (
+              <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '400ms' }}>
+                <div className="stat-card-icon flex-none">
+                  <TrendingUp className="h-6 w-6 text-blue-500 dark:text-blue-400" />
+                </div>
+                <CardContent className="flex flex-col justify-center p-3">
+                  <div className="text-xs text-muted-foreground">{t('ytdInflow')}</div>
+                  <div className="text-lg font-bold text-foreground">
+                    {ytdInflow.currentYTD.toFixed(1)} MCM
+                    {ytdInflow.percentChange !== null && (
+                      <span className={`text-xs font-semibold ml-1.5 ${ytdInflow.percentChange >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                        ({ytdInflow.percentChange >= 0 ? '+' : ''}{ytdInflow.percentChange.toFixed(1)}%)
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
+            {ytdOutflow && (
+              <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '500ms' }}>
+                <div className="stat-card-icon flex-none">
+                  <TrendingDown className="h-6 w-6 text-orange-500 dark:text-orange-400" />
+                </div>
+                <CardContent className="flex flex-col justify-center p-3">
+                  <div className="text-xs text-muted-foreground">{t('ytdOutflow')}</div>
+                  <div className="text-lg font-bold text-foreground">
+                    {ytdOutflow.currentOutflow.toFixed(1)} MCM
+                    {ytdOutflow.percentChange !== null && (
+                      <span className={`text-xs font-semibold ml-1.5 ${ytdOutflow.percentChange <= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                        ({ytdOutflow.percentChange >= 0 ? '+' : ''}{ytdOutflow.percentChange.toFixed(1)}%)
+                      </span>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
         <Tabs defaultValue="dashboard" className="mb-8 modern-tabs">
           <TabsList className="w-full max-w-xl mx-auto grid grid-cols-4 mb-8 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/20 dark:border-white/10">
             <TabsTrigger value="dashboard" className="data-[state=active]:bg-white dark:data-[state=active]:bg-gray-800 data-[state=active]:shadow-sm rounded-lg transition-all">{t('dashboard')}</TabsTrigger>
@@ -122,7 +185,7 @@ const Index: React.FC = () => {
                     <span>{t('overallStatus')}</span>
                   </CardTitle>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
                     {grandTotal && (
@@ -134,7 +197,7 @@ const Index: React.FC = () => {
                         />
                       </div>
                     )}
-                    
+
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       {reservoirs
                         .sort((a, b) => b.capacity - a.capacity)
@@ -146,11 +209,11 @@ const Index: React.FC = () => {
                   </div>
                 </CardContent>
               </Card>
-              
+
               <MonthlyInflow />
             </div>
           </TabsContent>
-          
+
           <TabsContent value="regions" className="space-y-8 animate-fade-in">
             {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
               <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
@@ -160,17 +223,17 @@ const Index: React.FC = () => {
               </RegionSummary>
             ))}
           </TabsContent>
-          
+
           <TabsContent value="map" className="animate-fade-in">
             <ReservoirMap />
           </TabsContent>
-          
+
           <TabsContent value="table" className="animate-fade-in">
             <ReservoirTable />
           </TabsContent>
         </Tabs>
       </main>
-      
+
       <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>

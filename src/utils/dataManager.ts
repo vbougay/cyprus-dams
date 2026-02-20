@@ -147,6 +147,33 @@ export const getReportDate = (): string => {
 };
 
 /**
+ * Get October baseline storage for water balance calculations.
+ * Returns grand total storage from the earliest October dataset,
+ * which serves as the season-start baseline.
+ * - `currentStorage` ≈ Oct of current water year (e.g., Oct 2025 for 25/26)
+ * - `lastYearStorage` ≈ Oct of previous water year (e.g., Oct 2024 for 24/25)
+ */
+export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearStorage: number } | null => {
+  // Find the earliest October dataset (closest to Oct 1st)
+  const octDataset = availableDataSets
+    .filter(ds => ds.id.includes('-OCT-'))
+    .sort((a, b) => {
+      // Sort by date ascending to get earliest October
+      const dayA = parseInt(a.id.split('-')[0]);
+      const dayB = parseInt(b.id.split('-')[0]);
+      return dayA - dayB;
+    })[0];
+
+  if (!octDataset) return null;
+
+  const octGrandTotal = calculateGrandTotalUtil(octDataset.module.reservoirData);
+  return {
+    currentStorage: octGrandTotal.storage.current.amount,
+    lastYearStorage: octGrandTotal.storage.lastYear.amount,
+  };
+};
+
+/**
  * Get summary of changes for the selected dataset.
  */
 export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string | null => {

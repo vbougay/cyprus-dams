@@ -123,7 +123,17 @@ export const translations = {
     currentVeryShort: "Current",
     lastYearVeryShort: "Last Year",
     capacityShort: "Capacity",
-    
+
+    // YTD Inflow & Cumulative
+    ytdInflow: "YTD Inflow",
+    ytdOutflow: "YTD Outflow (est.)",
+    thisYear: "This year",
+    lastYearLabel: "Last year",
+    monthlyView: "Monthly",
+    cumulativeView: "Cumulative",
+    allSeasons: "All",
+    outflowNotAvailable: "Outflow data is not available from the official data source.",
+
   },
   gr: {
     // Header
@@ -249,7 +259,17 @@ export const translations = {
     currentVeryShort: "Τώρα",
     lastYearVeryShort: "Πέρυσι",
     capacityShort: "Χωρητ.",
-    
+
+    // YTD Inflow & Cumulative
+    ytdInflow: "Εισροή ΑΕΕ",
+    ytdOutflow: "Εκροή ΑΕΕ (εκτ.)",
+    thisYear: "Φέτος",
+    lastYearLabel: "Πέρυσι",
+    monthlyView: "Μηνιαία",
+    cumulativeView: "Αθροιστική",
+    allSeasons: "Όλα",
+    outflowNotAvailable: "Τα δεδομένα εκροής δεν είναι διαθέσιμα από την επίσημη πηγή δεδομένων.",
+
   },
   ru: {
     // Header
@@ -375,6 +395,16 @@ export const translations = {
     currentVeryShort: "Сейчас",
     lastYearVeryShort: "Год назад",
     capacityShort: "Вместимость",
+
+    // YTD Inflow & Cumulative
+    ytdInflow: "Приток с нач. года",
+    ytdOutflow: "Отток с нач. года (оц.)",
+    thisYear: "Этот год",
+    lastYearLabel: "Прошлый год",
+    monthlyView: "По месяцам",
+    cumulativeView: "Нарастающим итогом",
+    allSeasons: "Все",
+    outflowNotAvailable: "Данные об оттоке недоступны из официального источника данных.",
   }
 };
 
