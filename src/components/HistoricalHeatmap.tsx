@@ -196,7 +196,7 @@ const HistoricalHeatmap: React.FC = () => {
 
   const formatDate = (dateStr: string) => {
     const d = new Date(dateStr);
-    return d.toLocaleDateString(language === 'gr' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', {
+    return d.toLocaleDateString(language === 'el' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', {
       day: 'numeric',
       month: 'short',
       year: 'numeric',

@@ -53,8 +53,8 @@ export const getReportDate = (): string => "05-JAN-2026";
 
 export const waterTransferred = { from: "Arminou", to: "Kouris", sinceOct: 1.02 };
 
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 ### Πρόσφατες Αλλαγές (29 Δεκεμβρίου 2025 - 5 Ιανουαρίου 2026)
 

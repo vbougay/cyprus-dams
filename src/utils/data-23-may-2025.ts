@@ -695,8 +695,8 @@ export const getReportDate = (): string => {
 /**
  * Summary of changes between May 16 and May 23, 2025
  */
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 Μεταξύ 16 Μαΐου και 23 Μαΐου 2025, οι ταμιευτήρες της Κύπρου συνέχισαν να παρουσιάζουν μείωση στην αποθήκευση νερού καθώς η ξηρή περίοδος προχωρά.
 

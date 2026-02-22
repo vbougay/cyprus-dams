@@ -438,7 +438,7 @@ export const yearlyInflowData: YearlyInflowData[] = [
 /**
  * Summary of changes between March 28 and April 11, 2025
  */
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
   // Only English provided for now
   return `
 Between March 28 and April 11, 2025, Cyprus's reservoirs experienced mostly modest changes as the wet season tapered off.

@@ -695,8 +695,8 @@ export const getReportDate = (): string => {
 /**
  * Summary of changes between June 10 and June 17, 2025
  */
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 Μεταξύ 10 και 17 Ιουνίου 2025, οι ταμιευτήρες της Κύπρου παρουσίασαν συνεχιζόμενη μείωση στην αποθήκευση νερού. Η συνολική αποθήκευση μειώθηκε από 20,9% σε 20,4%. Η εισροή για την περίοδο 2024/25 σημείωσε μικρή αύξηση από 18,649 ΕΚΜ σε 18,660 ΕΚΜ. Όλες οι περιοχές παρουσίασαν μείωση των επιπέδων του νερού, κάτι που συνάδει με την έναρξη της καλοκαιρινής περιόδου.
 `;

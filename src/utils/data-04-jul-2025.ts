@@ -695,8 +695,8 @@ export const getReportDate = (): string => {
 /**
  * Summary of changes between June 27 and July 4, 2025
  */
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 ### Πρόσφατες Αλλαγές (27 Ιουνίου - 4 Ιουλίου 2025)
 

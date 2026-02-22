@@ -696,8 +696,8 @@ export const getReportDate = (): string => {
 /**
  * Summary of changes between April 11 and April 28, 2025
  */
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 Μεταξύ 11 Απριλίου και 28 Απριλίου 2025, οι ταμιευτήρες της Κύπρου παρουσίασαν μικτές αλλαγές καθώς η ξηρή περίοδος ξεκίνησε.
 

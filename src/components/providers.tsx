@@ -9,8 +9,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
+import type { Locale } from "@/utils/locale";
 
-export function Providers({ children }: { children: React.ReactNode }) {
+export function Providers({ children, locale }: { children: React.ReactNode; locale: Locale }) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
@@ -22,7 +23,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableSystem
         disableTransitionOnChange
       >
-        <LanguageProvider>
+        <LanguageProvider initialLocale={locale}>
           <DataProvider>
             <TooltipProvider>
               <Toaster />

@@ -43,8 +43,8 @@ export const getReportDate = (): string => {
 
 };
 
-export const getSummaryChanges = (language: 'en' | 'gr' = 'en'): string => {
-  if (language === 'gr') {
+export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string => {
+  if (language === 'el') {
     return `
 ### Πρόσφατες Αλλαγές (28 Ιουλίου - 8 Αυγούστου 2025)
 

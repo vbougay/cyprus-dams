@@ -145,7 +145,7 @@ export const translations = {
     downloading: "Downloading...",
 
   },
-  gr: {
+  el: {
     // Header
     appTitle: "Φράγματα",
     subtitle: "Fragmata.info – Οπτικοποίηση Δεδομένων Φραγμάτων/Ταμιευτήρων Κύπρου",
@@ -441,7 +441,7 @@ export const translations = {
 // No need to re-export translations as it's already exported above
 
 // Helper function to get translations
-export const useTranslation = (language: 'en' | 'gr' | 'ru') => {
+export const useTranslation = (language: 'en' | 'el' | 'ru') => {
   return (key: keyof typeof translations.en): string => {
     return translations[language][key] || translations.en[key];
   };

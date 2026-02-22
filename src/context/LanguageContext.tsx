@@ -1,10 +1,9 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
-
-type Language = 'en' | 'gr' | 'ru';
+import type { Locale } from '@/utils/locale';
 
 interface LanguageContextType {
-  language: Language;
-  setLanguage: (language: Language) => void;
+  language: Locale;
+  setLanguage: (language: Locale) => void;
 }
 
 const LanguageContext = createContext<LanguageContextType>({
@@ -14,25 +13,21 @@ const LanguageContext = createContext<LanguageContextType>({
 
 export const useLanguage = () => useContext(LanguageContext);
 
-export const LanguageProvider: React.FC<{children: ReactNode}> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
-  
-  // Load saved language preference from localStorage
+export const LanguageProvider: React.FC<{children: ReactNode; initialLocale?: Locale}> = ({ children, initialLocale = 'en' }) => {
+  const [language, setLanguage] = useState<Locale>(initialLocale);
+
+  // Sync when initialLocale prop changes (e.g. navigation)
   useEffect(() => {
-    const savedLanguage = localStorage.getItem('language') as Language;
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'gr' || savedLanguage === 'ru')) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
-  
-  // Save language preference to localStorage
-  const handleSetLanguage = (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    localStorage.setItem('language', newLanguage);
-  };
-  
+    setLanguage(initialLocale);
+  }, [initialLocale]);
+
+  // Keep <html lang> in sync
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
+
   return (
-    <LanguageContext.Provider value={{ language, setLanguage: handleSetLanguage }}>
+    <LanguageContext.Provider value={{ language, setLanguage }}>
       {children}
     </LanguageContext.Provider>
   );

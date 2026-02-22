@@ -1,17 +1,45 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Droplets, Calendar, Globe, ChevronLeft, ChevronRight, Play, Pause, ChevronsLeft, ChevronsRight, Camera } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter, usePathname } from 'next/navigation';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
+import { defaultLocale, type Locale } from '@/utils/locale';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
-  const { language, setLanguage } = useLanguage();
+  const { language } = useLanguage();
   const t = useTranslation(language);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Compute locale-aware paths
+  const getLocalePath = useCallback((locale: Locale, path = '') => {
+    return locale === defaultLocale ? (path || '/') : `/${locale}${path}`;
+  }, []);
+
+  // Get current page path (without locale prefix)
+  const getPagePath = useCallback(() => {
+    const segments = pathname.split('/');
+    const maybeLocale = segments[1];
+    if (['en', 'el', 'ru'].includes(maybeLocale)) {
+      return '/' + segments.slice(2).join('/');
+    }
+    return pathname;
+  }, [pathname]);
+
+  const handleLanguageChange = useCallback((newLocale: string) => {
+    const pagePath = getPagePath();
+    // Normalize path: strip trailing slash for comparison, ensure root is ''
+    const normalizedPath = pagePath === '/' ? '' : pagePath.replace(/\/$/, '');
+    router.push(getLocalePath(newLocale as Locale, normalizedPath));
+  }, [router, getLocalePath, getPagePath]);
+
+  const mediaHref = getLocalePath(language, '/media');
 
   // Track if the mobile date nav has scrolled out of view
   const [showFixedNav, setShowFixedNav] = useState(false);
@@ -109,7 +137,7 @@ const Header: React.FC = () => {
 
               {/* Mobile controls - Media mode, Theme toggle and Language selector */}
               <div className="flex items-center gap-2 md:hidden">
-                <Link href="/media">
+                <Link href={mediaHref}>
                   <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
                     <Camera className="h-4 w-4" />
                   </Button>
@@ -117,7 +145,7 @@ const Header: React.FC = () => {
                 <ThemeToggle />
                 <Select
                   value={language}
-                  onValueChange={(value) => setLanguage(value as 'en' | 'gr' | 'ru')}
+                  onValueChange={handleLanguageChange}
                 >
                   <SelectTrigger className="w-[70px] h-8 bg-white/50 dark:bg-white/10 backdrop-blur-sm border-blue-100 dark:border-white/10">
                     <SelectValue>
@@ -134,10 +162,10 @@ const Header: React.FC = () => {
                         <span>EN</span>
                       </div>
                     </SelectItem>
-                    <SelectItem value="gr">
+                    <SelectItem value="el">
                       <div className="flex items-center gap-2">
                         <Globe className="h-4 w-4" />
-                        <span>GR</span>
+                        <span>EL</span>
                       </div>
                     </SelectItem>
                     <SelectItem value="ru">
@@ -224,7 +252,7 @@ const Header: React.FC = () => {
 
                 {/* Desktop controls - Media mode, Theme toggle and Language selector */}
                 <div className="hidden md:flex items-center gap-2">
-                  <Link href="/media">
+                  <Link href={mediaHref}>
                     <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
                       <Camera className="h-4 w-4" />
                     </Button>
@@ -232,7 +260,7 @@ const Header: React.FC = () => {
                   <ThemeToggle />
                   <Select
                     value={language}
-                    onValueChange={(value) => setLanguage(value as 'en' | 'gr' | 'ru')}
+                    onValueChange={handleLanguageChange}
                   >
                     <SelectTrigger className="w-[80px] h-10 bg-white/50 dark:bg-white/10 backdrop-blur-sm border-blue-100 dark:border-white/10">
                       <SelectValue>
@@ -249,10 +277,10 @@ const Header: React.FC = () => {
                           <span>EN</span>
                         </div>
                       </SelectItem>
-                      <SelectItem value="gr">
+                      <SelectItem value="el">
                         <div className="flex items-center gap-2">
                           <Globe className="h-4 w-4" />
-                          <span>GR</span>
+                          <span>EL</span>
                         </div>
                       </SelectItem>
                       <SelectItem value="ru">
