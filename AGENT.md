@@ -28,3 +28,13 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 - Ensure all 21 reservoirs are included with correct regional assignments
 - Compare to the latest previous dataset available
 - Update dataManager.ts imports AND availableDataSets array AND default dataset ID
+
+**Summary / Recent Changes (`getSummaryChanges`):**
+
+- Keep it concise — highlight only notable or important changes, not every region or reservoir
+- Lead with overall storage change (percentage and MCM)
+- Mention notable individual reservoir movements (large swings, transfers, overflows) — skip small incremental changes
+- Search the web for Cyprus water/reservoir/drought news from the past week and incorporate relevant context (government plans, drought status, weather events)
+- Add up to 3 media article links at the end under an "In the media" / "Στα μέσα" section
+- Write both English and Greek versions with the same structure
+- Tone: informative and factual, not verbose
