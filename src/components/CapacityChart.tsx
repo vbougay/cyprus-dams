@@ -64,6 +64,8 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
 
   const currentPercentage = data.storage.current.percentage;
   const lastYearPercentage = data.storage.lastYear.percentage;
+  const storageDifference = currentPercentage - lastYearPercentage;
+  const isIncreasing = storageDifference > 0;
   
   // Calculate colors based on percentage values
   const getColor = (percentage: number) => {
@@ -118,7 +120,12 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
         
         {showComparison && (
           <>
-            <div className="text-gray-400">{t('vs')}</div>
+            <div className="flex flex-col items-center">
+              <span className="text-gray-400">{t('vs')}</span>
+              <span className={`text-xs font-semibold ${isIncreasing ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
+                {isIncreasing ? '+' : ''}{storageDifference.toFixed(1)}%
+              </span>
+            </div>
             
             {/* Last year percentage circle */}
             <div className="relative w-28 h-28 flex items-center justify-center">
@@ -160,10 +167,6 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
         )}
       </div>
       
-      <div className="mt-4 text-center">
-        <div className="text-sm text-gray-500">{t('capacityShort')}</div>
-        <div className="text-lg font-medium">{data.capacity.toFixed(3)} MCM</div>
-      </div>
     </div>
   );
 };

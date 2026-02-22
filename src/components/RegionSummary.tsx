@@ -157,7 +157,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
 
         {/* Display summary changes if available */}
         {showSummaryChanges && (
-          <div className="mt-6 bg-white/80 dark:bg-gray-800/50 p-4 rounded-xl shadow-sm">
+          <div className="summary-changes mt-6 bg-white/80 dark:bg-gray-800/50 p-4 rounded-xl shadow-sm">
             <div className="prose prose-sm dark:prose-invert max-w-none prose-headings:mt-4 prose-headings:mb-2 prose-headings:text-foreground prose-p:my-2 prose-ul:my-2 prose-li:my-0.5 prose-strong:text-foreground">
               <ReactMarkdown>{summaryChanges}</ReactMarkdown>
             </div>

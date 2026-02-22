@@ -40,7 +40,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
           <CapacityChart data={reservoir} />
         </div>
 
-        <div className="grid grid-cols-2 gap-2 mt-4 text-sm">
+        <div className="card-details grid grid-cols-2 gap-2 mt-4 text-sm">
           <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg">
             <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
               <Droplets size={12} className="text-water-500 dark:text-water-400" />
@@ -67,8 +67,9 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
               <span className="text-muted-foreground">{maxStorage.date}</span>
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg col-span-2 mt-2">
+          <div className="card-drain-date flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg mt-2 text-sm">
             <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
               <Timer size={12} className="text-water-500 dark:text-water-400" />
               {t('fullyDrainedBy')}
@@ -87,14 +88,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
               </span>
             </div>
           </div>
-        </div>
 
-        <div className="mt-4 text-xs flex items-center justify-end gap-1">
-          <span className="text-muted-foreground">{t('vsLastYearColon')}</span>
-          <span className={`font-medium ${isIncreasing ? 'text-green-500 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-            {isIncreasing ? '+' : ''}{storageDifference.toFixed(1)}%
-          </span>
-        </div>
       </CardContent>
     </Card>
   );

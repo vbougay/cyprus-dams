@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Droplets, Calendar, Globe, ChevronLeft, ChevronRight, Play, Pause, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { Droplets, Calendar, Globe, ChevronLeft, ChevronRight, Play, Pause, ChevronsLeft, ChevronsRight, Camera } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
@@ -106,8 +107,13 @@ const Header: React.FC = () => {
                 </div>
               </div>
 
-              {/* Mobile controls - Theme toggle and Language selector */}
+              {/* Mobile controls - Media mode, Theme toggle and Language selector */}
               <div className="flex items-center gap-2 md:hidden">
+                <Link to="/media">
+                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
+                    <Camera className="h-4 w-4" />
+                  </Button>
+                </Link>
                 <ThemeToggle />
                 <Select
                   value={language}
@@ -216,8 +222,13 @@ const Header: React.FC = () => {
                   </Button>
                 </div>
 
-                {/* Desktop controls - Theme toggle and Language selector */}
+                {/* Desktop controls - Media mode, Theme toggle and Language selector */}
                 <div className="hidden md:flex items-center gap-2">
+                  <Link to="/media">
+                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
+                      <Camera className="h-4 w-4" />
+                    </Button>
+                  </Link>
                   <ThemeToggle />
                   <Select
                     value={language}

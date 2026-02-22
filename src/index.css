@@ -275,6 +275,22 @@
       0 0 0 1px rgba(255, 255, 255, 0.1) inset;
   }
 
+  /* Screenshot capture overrides - replace backdrop-blur with solid backgrounds */
+  .capturing .glass-card,
+  .capturing .glass-card:hover {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: rgb(255 255 255 / 0.97);
+  }
+  .dark .capturing .glass-card,
+  .dark .capturing .glass-card:hover {
+    background-color: rgb(17 24 39 / 0.97);
+  }
+  .capturing [class*="backdrop-blur"] {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .modern-card {
     @apply bg-white dark:bg-gray-900/80 rounded-2xl border border-gray-100 dark:border-gray-800;
     box-shadow:
@@ -413,4 +429,12 @@
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Media mode - hide secondary details for compact infographic layout */
+/* Outside @layer to ensure higher specificity than Tailwind utilities */
+.media-mode .card-details,
+.media-mode .card-vs-last-year,
+.media-mode .summary-changes {
+  display: none !important;
 }

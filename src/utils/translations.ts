@@ -140,6 +140,10 @@ export const translations = {
     full: "Full",
     fillLevel: "Fill",
 
+    // Media Mode
+    downloadImage: "Download as Image",
+    downloading: "Downloading...",
+
   },
   gr: {
     // Header
@@ -282,6 +286,10 @@ export const translations = {
     full: "Πλήρες",
     fillLevel: "Πλήρωση",
 
+    // Media Mode
+    downloadImage: "Λήψη ως Εικόνα",
+    downloading: "Γίνεται λήψη...",
+
   },
   ru: {
     // Header
@@ -423,6 +431,10 @@ export const translations = {
     noData: "Нет данных",
     full: "Полн.",
     fillLevel: "Заполн.",
+
+    // Media Mode
+    downloadImage: "Скачать как изображение",
+    downloading: "Загрузка...",
   }
 };
 
