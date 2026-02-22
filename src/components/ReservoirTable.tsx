@@ -24,6 +24,15 @@ interface Column {
   sortable?: boolean;
 }
 
+const regionKeyMap: Record<string, string> = {
+  'Southern Conveyor': 'southernConveyor',
+  'Paphos': 'paphos',
+  'Chrysochou': 'chrysochou',
+  'Nicosia': 'nicosia',
+  'Recharge/Other': 'rechargeOther',
+  'Total': 'total',
+};
+
 const ReservoirTable: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortField, setSortField] = useState<string>('name');
@@ -52,14 +61,8 @@ const ReservoirTable: React.FC = () => {
         })();
         
         // Get translation for region
-        const translatedRegion = (() => {
-          // Check if the region exists in translations
-          if (reservoir.region in translations[language]) {
-            // @ts-expect-error - We know this is a valid key at runtime
-            return t(reservoir.region);
-          }
-          return reservoir.region;
-        })();
+        const regionKey = regionKeyMap[reservoir.region];
+        const translatedRegion = regionKey ? t(regionKey as Parameters<typeof t>[0]) : reservoir.region;
         
         return (
           <div>
@@ -249,12 +252,8 @@ const ReservoirTable: React.FC = () => {
                     className={selectedRegion === region ? 'bg-accent text-accent-foreground' : ''}
                   >
                     {region === 'all' ? t('allRegions') : (() => {
-                      // Try to get translation for region
-                      if (region in translations[language]) {
-                        // @ts-expect-error - We know this is a valid key at runtime
-                        return t(region);
-                      }
-                      return region;
+                      const key = regionKeyMap[region];
+                      return key ? t(key as Parameters<typeof t>[0]) : region;
                     })()}
                   </DropdownMenuItem>
                 ))}

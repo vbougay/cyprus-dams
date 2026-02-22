@@ -178,7 +178,7 @@ export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearS
 /**
  * Get summary of changes for the selected dataset.
  */
-export const getSummaryChanges = (language: 'en' | 'el' = 'en'): string | null => {
+export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string | null => {
   const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
   const currentModule = dataset?.module;
   

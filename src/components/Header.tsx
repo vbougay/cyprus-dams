@@ -10,6 +10,23 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+const monthAbbrToIndex: Record<string, number> = {
+  JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+  JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11,
+};
+
+const localeMap: Record<string, string> = { en: 'en-US', el: 'el-GR', ru: 'ru-RU' };
+
+function formatDataSetDate(id: string, language: string): string {
+  const [day, monthAbbr, year] = id.split('-');
+  const monthIdx = monthAbbrToIndex[monthAbbr];
+  if (monthIdx === undefined) return id;
+  const date = new Date(parseInt(year), monthIdx, parseInt(day));
+  return new Intl.DateTimeFormat(localeMap[language] || 'en-US', {
+    year: 'numeric', month: 'long', day: 'numeric',
+  }).format(date);
+}
+
 const Header: React.FC = () => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
   const { language } = useLanguage();
@@ -223,7 +240,7 @@ const Header: React.FC = () => {
                   <div className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 min-w-[140px] md:min-w-[200px] justify-center">
                     <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-water-600 dark:text-water-400 flex-shrink-0" />
                     <span className="text-xs md:text-sm font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
-                      {currentDataSet?.label}
+                      {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
                     </span>
                   </div>
 
@@ -360,7 +377,7 @@ const Header: React.FC = () => {
         <div className="flex items-center gap-1.5 px-2 min-w-[140px] justify-center">
           <Calendar className="h-3.5 w-3.5 text-water-600 dark:text-water-400 flex-shrink-0" />
           <span className="text-xs font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
-            {currentDataSet?.label}
+            {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
           </span>
         </div>
 

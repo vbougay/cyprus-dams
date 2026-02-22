@@ -162,9 +162,9 @@ export const translations = {
     
     // Tabs
     dashboard: "Σύνοψη",
-    byRegion: "Ανά περιοχή",
+    byRegion: "Περιοχές",
     map: "Χάρτης",
-    dataTable: "Πίνακας δεδομένων",
+    dataTable: "Δεδομένα",
     
     // Map
     mapTitle: "Χάρτης Ταμιευτήρων Κύπρου",
@@ -310,7 +310,7 @@ export const translations = {
     dashboard: "Сводка",
     byRegion: "Регионы",
     map: "Карта",
-    dataTable: "Таблица данных",
+    dataTable: "Данные",
     
     // Map
     mapTitle: "Карта Водохранилищ Кипра",
