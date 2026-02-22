@@ -5,10 +5,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 Development commands:
-- `npm run dev` or `bun run dev` - Start development server at http://localhost:5173
-- `npm run build` or `bun run build` - Build for production
-- `npm run preview` or `bun run preview` - Preview production build
-- `npm run lint` or `bun run lint` - Run ESLint for code quality checks
+- `pnpm dev` - Start development server
+- `pnpm build` - Build for production
+- `pnpm build:dev` - Build in development mode
+- `pnpm preview` - Preview production build
+- `pnpm lint` - Run ESLint for code quality checks
 
 ## Architecture Overview
 
@@ -17,20 +18,22 @@ This is a React-based Cyprus reservoir monitoring dashboard built with TypeScrip
 ### Key Architectural Patterns
 
 **Data Management System**: The core architecture revolves around a dynamic data management system in `src/utils/dataManager.ts`. This module:
-- Manages multiple datasets (from March 2025 to September 2025) as individual modules
+- Manages multiple datasets (from March 2025 to February 2026) as individual modules
 - Provides a unified API that switches between datasets dynamically
 - Uses the `availableDataSets` array to define all available data sources
-- Defaults to the most recent dataset ('22-SEP-2025')
+- Defaults to the most recent dataset ('16-FEB-2026')
 - All data access goes through this central manager, not direct imports
 
 **Context-Based State Management**:
-- `DataContext` manages current dataset selection across the app
+- `DataContext` manages current dataset selection and animated playback state (`isPlaying`) across the app
 - `LanguageContext` handles multi-language support (English, Greek, Russian)
 - Both contexts wrap the entire application in `App.tsx`
 
 **Component Structure**:
-- Main page: `src/pages/Index.tsx` with tabbed interface (Dashboard, Regions, Map, Table)
-- Reusable components in `src/components/` for charts, maps, tables, and cards
+- Pages: `src/pages/Index.tsx` (main tabbed dashboard), `src/pages/MediaPage.tsx` (media export), `src/pages/NotFound.tsx` (404)
+- Routes: `/` → Index, `/media` → MediaPage, `*` → NotFound
+- Main page tabs: Dashboard, By Region, Map, Data Table
+- Reusable components in `src/components/` for charts, maps, tables, cards, heatmaps, and headers
 - UI components from shadcn/ui in `src/components/ui/`
 
 ### Data Flow
@@ -38,7 +41,7 @@ This is a React-based Cyprus reservoir monitoring dashboard built with TypeScrip
 1. **Data Sources**: Raw Excel files in `/data/` directory containing reservoir data
 2. **Data Modules**: Each dataset is converted to a TypeScript module in `src/utils/data-*.ts`
 3. **Data Manager**: `dataManager.ts` provides unified access to current dataset
-4. **Utilities**: `reservoirUtils.ts` contains calculation functions for drain dates, region totals, etc.
+4. **Utilities**: `reservoirUtils.ts` contains calculation functions for drain dates, region totals, water balance (`getOctoberBaselineStorage`), etc.
 5. **Components**: Use hooks like `useDataContext()` to access current data
 
 ### Key Features Implementation
@@ -107,6 +110,7 @@ Core types defined in `src/types/index.ts`:
 - `Reservoir`: Individual reservoir data structure
 - `ReservoirRegion`: Regional classification system
 - `RegionTotal`: Aggregated regional data
+- `MonthlyData`: Monthly inflow data point
 - `YearlyInflowData`: Historical inflow data structure
 
 ### Important Notes
