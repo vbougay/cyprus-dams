@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, HistoricalHeatmap } from '@/components';
+import { NewsTicker } from '@/components/NewsTicker';
 import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
 import {
   getReservoirsWithDrainDates,
@@ -188,6 +189,7 @@ export function DashboardClient({
 
           <TabsContent value="dashboard" className="animate-fade-in">
             <div className="space-y-8">
+              <NewsTicker />
               <HistoricalHeatmap />
               <div>
                 <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">

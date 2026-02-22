@@ -215,61 +215,59 @@ export default async function LocaleLayout({
 
   return (
     <>
-      <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebApplication",
-              name: "Fragmata",
-              alternateName: meta[locale].alternateName,
-              description: meta[locale].description,
-              url: localeUrl(locale),
-              applicationCategory: "UtilitiesApplication",
-              operatingSystem: "Any",
-              inLanguage: locale,
-              offers: {
-                "@type": "Offer",
-                price: "0",
-                priceCurrency: "EUR",
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            name: "Fragmata",
+            alternateName: meta[locale].alternateName,
+            description: meta[locale].description,
+            url: localeUrl(locale),
+            applicationCategory: "UtilitiesApplication",
+            operatingSystem: "Any",
+            inLanguage: locale,
+            offers: {
+              "@type": "Offer",
+              price: "0",
+              priceCurrency: "EUR",
+            },
+            about: {
+              "@type": "Dataset",
+              name: meta[locale].datasetName,
+              description: meta[locale].datasetDescription,
+              spatialCoverage: {
+                "@type": "Place",
+                name: "Cyprus",
               },
-              about: {
-                "@type": "Dataset",
-                name: meta[locale].datasetName,
-                description: meta[locale].datasetDescription,
-                spatialCoverage: {
-                  "@type": "Place",
-                  name: "Cyprus",
-                },
-                temporalCoverage: "2025/..",
-                provider: {
-                  "@type": "GovernmentOrganization",
-                  name: "Cyprus Water Development Department",
-                  url: "https://www.moa.gov.cy/moa/wdd/",
-                },
+              temporalCoverage: "2025/..",
+              provider: {
+                "@type": "GovernmentOrganization",
+                name: "Cyprus Water Development Department",
+                url: "https://www.moa.gov.cy/moa/wdd/",
               },
-            }),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: meta[locale].faq.map((item) => ({
-                "@type": "Question",
-                name: item.question,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: item.answer,
-                },
-              })),
-            }),
-          }}
-        />
-      </head>
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: meta[locale].faq.map((item) => ({
+              "@type": "Question",
+              name: item.question,
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: item.answer,
+              },
+            })),
+          }),
+        }}
+      />
       <Providers locale={locale}>
         {children}
       </Providers>

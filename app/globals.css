@@ -74,6 +74,7 @@
   --animate-gradient: gradient-shift 8s infinite ease-in-out;
   --animate-wave-flow: wave-flow 8s infinite linear;
   --animate-wave-flow-reverse: wave-flow-reverse 12s infinite linear;
+  --animate-ticker-scroll: ticker-scroll 40s infinite linear;
 }
 
 @keyframes accordion-down {
@@ -135,6 +136,11 @@
 @keyframes wave-flow-reverse {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
+}
+
+@keyframes ticker-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 @layer base {
@@ -406,7 +412,8 @@
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-wave-flow,
-  .animate-wave-flow-reverse {
+  .animate-wave-flow-reverse,
+  .animate-ticker-scroll {
     animation: none !important;
   }
 }
@@ -428,6 +435,10 @@
   
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
+  }
+
+  .mask-ticker {
+    mask-image: linear-gradient(to right, transparent, black 2rem, black calc(100% - 2rem), transparent);
   }
 }
 
