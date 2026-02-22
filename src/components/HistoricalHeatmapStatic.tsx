@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect } from 'react';
+import React, { useMemo, useRef, useEffect, useState } from 'react';
 import { historicalStorageData, HistoricalStorageEntry } from '@/utils/historicalStorageData';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
@@ -98,8 +98,11 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
   const { theme } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const isDark = theme === 'dark' ||
-    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  const isDark = mounted
+    ? (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches))
+    : false;
 
   const gridData = useMemo(() => {
     let data = historicalStorageData;
@@ -180,7 +183,7 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
 
       // Region label
       ctx.fillStyle = isDark ? '#9ca3af' : '#6b7280';
-      ctx.fillText(t(group.region), 0, y + blockH / 2);
+      ctx.fillText(t(group.region as any), 0, y + blockH / 2);
 
       // Cells
       for (let ri = 0; ri < group.reservoirs.length; ri++) {

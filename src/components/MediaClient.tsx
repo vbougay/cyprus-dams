@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from 'react';
 import { toBlob } from 'html-to-image';
 import { ReservoirCard, CapacityChart, MonthlyInflow } from '@/components';
@@ -21,12 +23,26 @@ import { RegionTotal, Reservoir } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
 import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown } from 'lucide-react';
 
-const MediaPage: React.FC = () => {
-  const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
-  const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
-  const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
-  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(null);
-  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(null);
+interface MediaClientProps {
+  initialReservoirs: Reservoir[];
+  initialRegionTotals: RegionTotal[];
+  initialGrandTotal: RegionTotal;
+  initialYtdInflow: YTDInflowResult | null;
+  initialYtdOutflow: YTDOutflowResult | null;
+}
+
+export function MediaClient({
+  initialReservoirs,
+  initialRegionTotals,
+  initialGrandTotal,
+  initialYtdInflow,
+  initialYtdOutflow,
+}: MediaClientProps) {
+  const [regionTotals, setRegionTotals] = useState<RegionTotal[]>(initialRegionTotals);
+  const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(initialGrandTotal);
+  const [reservoirs, setReservoirs] = useState<Reservoir[]>(initialReservoirs);
+  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(initialYtdInflow);
+  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(initialYtdOutflow);
   const [isDownloading, setIsDownloading] = useState(false);
   const { currentDataSetId, availableDataSets } = useDataContext();
   const { language } = useLanguage();
@@ -92,7 +108,6 @@ const MediaPage: React.FC = () => {
         />
 
         <main className="container mx-auto px-4 pb-16">
-          {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6 mb-8">
             <Card className="glass-card flex rounded-2xl overflow-hidden glow-effect">
               <div className="stat-card-icon flex-none p-3 sm:p-4">
@@ -194,9 +209,7 @@ const MediaPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Dashboard Content */}
           <div className="space-y-8">
-            {/* Total: donut charts + historical heatmap */}
             <div>
               <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
                 <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
@@ -215,7 +228,6 @@ const MediaPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Reservoir cards in a single row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {reservoirs
                 .sort((a, b) => b.capacity - a.capacity)
@@ -236,7 +248,6 @@ const MediaPage: React.FC = () => {
         </footer>
       </div>
 
-      {/* Download button - outside capture area so it won't appear in the image */}
       <div className="fixed bottom-6 right-6 z-50">
         <Button
           onClick={handleDownload}
@@ -254,6 +265,4 @@ const MediaPage: React.FC = () => {
       </div>
     </div>
   );
-};
-
-export default MediaPage;
+}

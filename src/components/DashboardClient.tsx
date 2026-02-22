@@ -1,8 +1,10 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
-import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, ReservoirMap, HistoricalHeatmap } from '@/components';
+import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, HistoricalHeatmap } from '@/components';
+import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
 import {
   getReservoirsWithDrainDates,
-  getReservoirsByRegion,
   calculateRegionTotals,
   calculateGrandTotal,
   yearlyInflowData,
@@ -15,38 +17,49 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Map, Timer, TrendingUp, TrendingDown } from 'lucide-react';
+import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const Index: React.FC = () => {
-  const [regionTotals, setRegionTotals] = useState<RegionTotal[]>([]);
-  const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(null);
-  const [reservoirs, setReservoirs] = useState<Reservoir[]>([]);
-  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(null);
-  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(null);
+interface DashboardClientProps {
+  initialReservoirs: Reservoir[];
+  initialRegionTotals: RegionTotal[];
+  initialGrandTotal: RegionTotal;
+  initialYtdInflow: YTDInflowResult | null;
+  initialYtdOutflow: YTDOutflowResult | null;
+}
+
+export function DashboardClient({
+  initialReservoirs,
+  initialRegionTotals,
+  initialGrandTotal,
+  initialYtdInflow,
+  initialYtdOutflow,
+}: DashboardClientProps) {
+  const [regionTotals, setRegionTotals] = useState<RegionTotal[]>(initialRegionTotals);
+  const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(initialGrandTotal);
+  const [reservoirs, setReservoirs] = useState<Reservoir[]>(initialReservoirs);
+  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(initialYtdInflow);
+  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(initialYtdOutflow);
   const { currentDataSetId } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
 
   useEffect(() => {
-    // Calculate the data whenever the data set changes
+    // Re-compute data when dataset changes (skip initial render since we have SSR data)
     const totals = calculateRegionTotals();
     setRegionTotals(totals);
 
     const total = calculateGrandTotal();
     setGrandTotal(total);
 
-    // Get reservoirs with drain dates
     const reservoirsWithDrainDates = getReservoirsWithDrainDates();
     setReservoirs(reservoirsWithDrainDates);
 
-    // Calculate YTD inflow comparison
     const inflowData = yearlyInflowData();
     const reportDate = getReportDate();
     const inflow = calculateYTDInflow(inflowData, reportDate);
     setYtdInflow(inflow);
 
-    // Calculate YTD outflow
     const octBaseline = getOctoberBaselineStorage();
     if (inflow && octBaseline && total) {
       setYtdOutflow(calculateYTDOutflow(total, inflow, octBaseline));
@@ -124,7 +137,6 @@ const Index: React.FC = () => {
             </CardContent>
           </Card>
 
-          {/* YTD Inflow & Outflow: side by side on mobile, stacked in 5th column on desktop */}
           <div className="col-span-2 md:col-span-1 grid grid-cols-2 md:grid-cols-1 gap-3">
             {ytdInflow && (
               <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect flex-1" style={{ animationDelay: '400ms' }}>
@@ -220,7 +232,7 @@ const Index: React.FC = () => {
           </TabsContent>
 
           <TabsContent value="map" className="animate-fade-in">
-            <ReservoirMap />
+            <ReservoirMapWrapper />
           </TabsContent>
 
           <TabsContent value="table" className="animate-fade-in">
@@ -237,6 +249,4 @@ const Index: React.FC = () => {
       </footer>
     </div>
   );
-};
-
-export default Index;
+}

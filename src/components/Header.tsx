@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Droplets, Calendar, Globe, ChevronLeft, ChevronRight, Play, Pause, ChevronsLeft, ChevronsRight, Camera } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
@@ -109,7 +109,7 @@ const Header: React.FC = () => {
 
               {/* Mobile controls - Media mode, Theme toggle and Language selector */}
               <div className="flex items-center gap-2 md:hidden">
-                <Link to="/media">
+                <Link href="/media">
                   <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
                     <Camera className="h-4 w-4" />
                   </Button>
@@ -224,7 +224,7 @@ const Header: React.FC = () => {
 
                 {/* Desktop controls - Media mode, Theme toggle and Language selector */}
                 <div className="hidden md:flex items-center gap-2">
-                  <Link to="/media">
+                  <Link href="/media">
                     <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
                       <Camera className="h-4 w-4" />
                     </Button>

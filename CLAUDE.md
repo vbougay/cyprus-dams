@@ -5,15 +5,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 Development commands:
-- `pnpm dev` - Start development server
+- `pnpm dev` - Start Next.js development server (port 8080)
 - `pnpm build` - Build for production
-- `pnpm build:dev` - Build in development mode
-- `pnpm preview` - Preview production build
+- `pnpm start` - Start production server
 - `pnpm lint` - Run ESLint for code quality checks
 
 ## Architecture Overview
 
-This is a React-based Cyprus reservoir monitoring dashboard built with TypeScript, Vite, and Tailwind CSS. The application visualizes water reservoir data across Cyprus with multi-language support.
+This is a React-based Cyprus reservoir monitoring dashboard built with TypeScript, Next.js App Router, and Tailwind CSS. The application visualizes water reservoir data across Cyprus with multi-language support and server-side rendering for SEO.
 
 ### Key Architectural Patterns
 
@@ -27,11 +26,18 @@ This is a React-based Cyprus reservoir monitoring dashboard built with TypeScrip
 **Context-Based State Management**:
 - `DataContext` manages current dataset selection and animated playback state (`isPlaying`) across the app
 - `LanguageContext` handles multi-language support (English, Greek, Russian)
-- Both contexts wrap the entire application in `App.tsx`
+- Both contexts wrap the entire application via `src/components/providers.tsx` (imported by `app/layout.tsx`)
+
+**Next.js App Router Structure**:
+- `app/layout.tsx` — Root Server Component, imports `providers.tsx` (the `"use client"` boundary)
+- `app/page.tsx` — Homepage Server Component, imports `DashboardClient.tsx`
+- `app/media/page.tsx` — Media page Server Component, imports `MediaClient.tsx`
+- `app/not-found.tsx` — 404 page (Server Component, no client boundary needed)
+- `app/robots.ts`, `app/sitemap.ts` — SEO route handlers
+- Only 3 files have `"use client"`: `providers.tsx`, `DashboardClient.tsx`, `MediaClient.tsx` — all other components inherit the client boundary
 
 **Component Structure**:
-- Pages: `src/pages/Index.tsx` (main tabbed dashboard), `src/pages/MediaPage.tsx` (media export), `src/pages/NotFound.tsx` (404)
-- Routes: `/` → Index, `/media` → MediaPage, `*` → NotFound
+- Client components: `src/components/DashboardClient.tsx` (main tabbed dashboard), `src/components/MediaClient.tsx` (media export)
 - Main page tabs: Dashboard, By Region, Map, Data Table
 - Reusable components in `src/components/` for charts, maps, tables, cards, heatmaps, and headers
 - UI components from shadcn/ui in `src/components/ui/`
@@ -117,6 +123,7 @@ Core types defined in `src/types/index.ts`:
 
 - The app uses absolute imports with `@/` alias pointing to `src/`
 - ESLint is configured but unused variables are disabled
-- Development server runs on port 8080 (configured in vite.config.ts)
+- Development server runs on port 8080 (configured in `package.json` via `next dev --port 8080`)
 - The application expects specific data structure from Cyprus Water Development Department
 - All reservoir calculations (drain dates, totals) are computed client-side using utility functions
+- Global styles are in `app/globals.css` (imported by `app/layout.tsx`)

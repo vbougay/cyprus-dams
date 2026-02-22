@@ -5,6 +5,7 @@ export { default as ReservoirTable } from './ReservoirTable';
 export { default as RegionSummary } from './RegionSummary';
 export { default as CapacityChart } from './CapacityChart';
 export { default as MonthlyInflow } from './MonthlyInflow';
-export { default as ReservoirMap } from './ReservoirMap';
+// ReservoirMap must be loaded via ReservoirMapWrapper (dynamic import, ssr: false)
+// to avoid "window is not defined" from Leaflet during SSR
 export { default as HistoricalHeatmap } from './HistoricalHeatmap';
 export { default as MediaHeader } from './MediaHeader';

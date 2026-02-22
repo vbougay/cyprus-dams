@@ -102,8 +102,11 @@ const HistoricalHeatmap: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [tooltip, setTooltip] = useState<TooltipData | null>(null);
 
-  const isDark = theme === 'dark' ||
-    (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+  const isDark = mounted
+    ? (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches))
+    : false;
 
   const gridData = useMemo(() => {
     const dates = historicalStorageData.map(d => d.date);
@@ -281,7 +284,7 @@ const HistoricalHeatmap: React.FC = () => {
                       }}
                     >
                       <span className="text-[9px] sm:text-[10px] leading-tight text-gray-500 dark:text-gray-400">
-                        {t(group.region)}
+                        {t(group.region as any)}
                       </span>
                     </div>
                   );
