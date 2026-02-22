@@ -38,3 +38,13 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 - Add up to 3 media article links at the end under an "In the media" / "Στα μέσα" section
 - Write both English and Greek versions with the same structure
 - Tone: informative and factual, not verbose
+
+**News Ticker Refresh:**
+
+The dashboard has a scrolling news ticker showing recent water crisis articles. Keep it current on each data update:
+
+- Search the web for recent Cyprus water/reservoir/drought articles in all three languages (EN, EL, RU)
+- Update `src/utils/newsArticles.ts` — add new articles following the existing `{ title, url, lang, source }` format
+- Update `NEWS.md` to keep it in sync (grouped by language: English, Russian, Greek)
+- Keep the list reasonable — cap at ~10 articles per language, removing older or less relevant ones
+- Prefer articles from established Cyprus outlets (Cyprus Mail, Politis, AlphaNews, Европа Кипр, Вестник Кипра, etc.)
