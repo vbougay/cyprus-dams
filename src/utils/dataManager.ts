@@ -44,8 +44,10 @@ import {
   getReservoirsByRegion as getReservoirsByRegionUtil,
   calculateRegionTotals as calculateRegionTotalsUtil,
   calculateGrandTotal as calculateGrandTotalUtil,
-  getReservoirsWithDrainDates as getReservoirsWithDrainDatesUtil
+  getReservoirsWithDrainDates as getReservoirsWithDrainDatesUtil,
+  parseReportDate
 } from './reservoirUtils';
+import { historicalStorageData, HistoricalStorageEntry } from './historicalStorageData';
 
 // Define available data sets with their dates and module references
 export const availableDataSets = [
@@ -148,30 +150,53 @@ export const getReportDate = (): string => {
   return getCurrentDataModule().getReportDate();
 };
 
+// Main reservoir keys (excluding Recharge/Other: tamassos, klirouMalounta, solea)
+// These match the regions included in calculateGrandTotal (Southern Conveyor, Paphos, Chrysochou, Nicosia)
+const MAIN_RESERVOIR_KEYS: (keyof HistoricalStorageEntry)[] = [
+  'kouris', 'kalavasos', 'lefkara', 'dipotamos', 'germasoyeia',
+  'arminou', 'polemidia', 'asprokremmos', 'evretou', 'kannaviou',
+  'mavrokolympos', 'vyzakia', 'xyliatos', 'argaka', 'pomos',
+  'kalopanagiotis', 'agiaMarina', 'achna'
+];
+
+/**
+ * Look up October storage from historical data for a given year.
+ * Uses the earliest October entry (closest to Oct 1st) and sums
+ * main reservoirs only (excluding Recharge/Other).
+ */
+function getOctoberStorageFromHistorical(year: number): number | null {
+  const prefix = `${year}-10`;
+  const octEntries = historicalStorageData.filter(entry => entry.date.startsWith(prefix));
+  if (octEntries.length === 0) return null;
+
+  const entry = octEntries[0]; // earliest Oct entry (data is chronological)
+  return MAIN_RESERVOIR_KEYS.reduce((sum, key) => sum + ((entry[key] as number | null) ?? 0), 0);
+}
+
 /**
  * Get October baseline storage for water balance calculations.
- * Returns grand total storage from the earliest October dataset,
- * which serves as the season-start baseline.
- * - `currentStorage` ≈ Oct of current water year (e.g., Oct 2025 for 25/26)
- * - `lastYearStorage` ≈ Oct of previous water year (e.g., Oct 2024 for 24/25)
+ * Uses historical storage data to find the correct October baseline
+ * for the water year of the currently selected dataset.
+ * - `currentStorage` = Oct start of current water year
+ * - `lastYearStorage` = Oct start of previous water year (null if unavailable)
  */
-export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearStorage: number } | null => {
-  // Find the earliest October dataset (closest to Oct 1st)
-  const octDataset = availableDataSets
-    .filter(ds => ds.id.includes('-OCT-'))
-    .sort((a, b) => {
-      // Sort by date ascending to get earliest October
-      const dayA = parseInt(a.id.split('-')[0]);
-      const dayB = parseInt(b.id.split('-')[0]);
-      return dayA - dayB;
-    })[0];
+export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearStorage: number | null } | null => {
+  // Use dataset ID (always DD-MMM-YYYY format) instead of report date
+  // which may use inconsistent formats in older data files
+  const parsed = parseReportDate(currentDataSetId);
+  if (!parsed) return null;
 
-  if (!octDataset) return null;
+  // Determine water year: Oct–Sep cycle
+  const waterYearStart = parsed.month >= 10 ? parsed.year : parsed.year - 1;
 
-  const octGrandTotal = calculateGrandTotalUtil(octDataset.module.reservoirData);
+  const currentBaseline = getOctoberStorageFromHistorical(waterYearStart);
+  if (currentBaseline === null) return null;
+
+  const lastYearBaseline = getOctoberStorageFromHistorical(waterYearStart - 1);
+
   return {
-    currentStorage: octGrandTotal.storage.current.amount,
-    lastYearStorage: octGrandTotal.storage.lastYear.amount,
+    currentStorage: currentBaseline,
+    lastYearStorage: lastYearBaseline,
   };
 };
 

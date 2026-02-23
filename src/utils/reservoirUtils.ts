@@ -104,16 +104,30 @@ const MONTH_ABBREV_TO_NUMBER: Record<string, number> = {
   'JUL': 7, 'AUG': 8, 'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12
 };
 
-// Parse report date string like "16-FEB-2026" into components
+// Parse report date string into components
+// Supports "DD-MMM-YYYY" (e.g., "16-FEB-2026") and "M/DD/YY" (e.g., "7/28/25")
 export const parseReportDate = (reportDate: string): { day: number; month: number; year: number } | null => {
-  const parts = reportDate.split('-');
-  if (parts.length !== 3) return null;
-  const day = parseInt(parts[0], 10);
-  const monthAbbrev = parts[1].toUpperCase();
-  const year = parseInt(parts[2], 10);
-  const month = MONTH_ABBREV_TO_NUMBER[monthAbbrev];
-  if (!month || isNaN(day) || isNaN(year)) return null;
-  return { day, month, year };
+  // Try DD-MMM-YYYY format first
+  const dashParts = reportDate.split('-');
+  if (dashParts.length === 3) {
+    const day = parseInt(dashParts[0], 10);
+    const monthAbbrev = dashParts[1].toUpperCase();
+    const year = parseInt(dashParts[2], 10);
+    const month = MONTH_ABBREV_TO_NUMBER[monthAbbrev];
+    if (month && !isNaN(day) && !isNaN(year)) return { day, month, year };
+  }
+
+  // Try M/DD/YY format (older data files)
+  const slashParts = reportDate.split('/');
+  if (slashParts.length === 3) {
+    const month = parseInt(slashParts[0], 10);
+    const day = parseInt(slashParts[1], 10);
+    let year = parseInt(slashParts[2], 10);
+    if (year < 100) year += 2000;
+    if (!isNaN(month) && !isNaN(day) && !isNaN(year)) return { day, month, year };
+  }
+
+  return null;
 };
 
 // Map calendar month (1-12) to water year index (Oct=0, Nov=1, ..., Sep=10)
@@ -177,23 +191,26 @@ export interface YTDOutflowResult {
 export const calculateYTDOutflow = (
   grandTotal: RegionTotal,
   ytdInflow: YTDInflowResult,
-  octoberBaseline: { currentStorage: number; lastYearStorage: number }
+  octoberBaseline: { currentStorage: number; lastYearStorage: number | null }
 ): YTDOutflowResult | null => {
   // Current year: outflow = total inflow since Oct - storage increase since Oct
   const currentOutflow = grandTotal.inflow.totalSince
     - (grandTotal.storage.current.amount - octoberBaseline.currentStorage);
 
   // Last year: outflow = last year YTD inflow - last year storage increase since Oct
-  const lastYearOutflow = ytdInflow.lastYearYTD
-    - (grandTotal.storage.lastYear.amount - octoberBaseline.lastYearStorage);
+  let lastYearOutflow = 0;
+  if (octoberBaseline.lastYearStorage !== null) {
+    lastYearOutflow = Math.max(0, ytdInflow.lastYearYTD
+      - (grandTotal.storage.lastYear.amount - octoberBaseline.lastYearStorage));
+  }
 
   const percentChange = lastYearOutflow > 0
-    ? ((currentOutflow / lastYearOutflow) - 1) * 100
+    ? ((Math.max(0, currentOutflow) / lastYearOutflow) - 1) * 100
     : null;
 
   return {
     currentOutflow: Math.max(0, currentOutflow),
-    lastYearOutflow: Math.max(0, lastYearOutflow),
+    lastYearOutflow,
     percentChange,
   };
 };

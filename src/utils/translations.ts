@@ -124,9 +124,9 @@ export const translations = {
     lastYearVeryShort: "Last Year",
     capacityShort: "Capacity",
 
-    // YTD Inflow & Cumulative
-    ytdInflow: "YTD Inflow",
-    ytdOutflow: "YTD Outflow (est.)",
+    // Season Inflow & Outflow (water year Oct–Sep)
+    ytdInflow: "Season Inflow",
+    ytdOutflow: "Season Outflow (est.)",
     thisYear: "This year",
     lastYearLabel: "Last year",
     monthlyView: "Monthly",
@@ -270,9 +270,9 @@ export const translations = {
     lastYearVeryShort: "Πέρυσι",
     capacityShort: "Χωρητ.",
 
-    // YTD Inflow & Cumulative
-    ytdInflow: "Εισροή ΑΕΕ",
-    ytdOutflow: "Εκροή ΑΕΕ (εκτ.)",
+    // Season Inflow & Outflow (water year Oct–Sep)
+    ytdInflow: "Εισροή Περιόδου",
+    ytdOutflow: "Εκροή Περιόδου (εκτ.)",
     thisYear: "Φέτος",
     lastYearLabel: "Πέρυσι",
     monthlyView: "Μηνιαία",
@@ -416,9 +416,9 @@ export const translations = {
     lastYearVeryShort: "Год назад",
     capacityShort: "Вместимость",
 
-    // YTD Inflow & Cumulative
-    ytdInflow: "Приток с нач. года",
-    ytdOutflow: "Отток с нач. года (оц.)",
+    // Season Inflow & Outflow (water year Oct–Sep)
+    ytdInflow: "Приток за сезон",
+    ytdOutflow: "Отток за сезон (оц.)",
     thisYear: "Этот год",
     lastYearLabel: "Прошлый год",
     monthlyView: "По месяцам",
