@@ -91,9 +91,9 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
               r="45"
               fill="none"
               stroke="#e5e7eb"
-              strokeWidth="8"
+              strokeWidth="7"
             />
-            
+
             {/* Progress circle */}
             <circle
               className="progress-ring-circle"
@@ -102,7 +102,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
               r="45"
               fill="none"
               stroke="currentColor"
-              strokeWidth="8"
+              strokeWidth="7"
               strokeLinecap="round"
               strokeDasharray={`${2 * Math.PI * 45}`}
               strokeDashoffset={`${2 * Math.PI * 45 * (1 - currentPercentage / 100)}`}
@@ -113,8 +113,8 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className={`text-xl font-bold ${currentColor}`}>{currentPercentage.toFixed(1)}%</span>
-            <span className="text-xs text-gray-500">{t('currentVeryShort')}</span>
+            <span className={`text-lg font-bold ${currentColor}`}>{currentPercentage.toFixed(1)}%</span>
+            <span className="text-[0.65rem] text-gray-500">{t('currentVeryShort')}</span>
           </div>
         </div>
         
@@ -137,9 +137,9 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
                   r="45"
                   fill="none"
                   stroke="#e5e7eb"
-                  strokeWidth="8"
+                  strokeWidth="7"
                 />
-                
+
                 {/* Progress circle */}
                 <circle
                   className="progress-ring-circle"
@@ -148,7 +148,7 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
                   r="45"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="8"
+                  strokeWidth="7"
                   strokeLinecap="round"
                   strokeDasharray={`${2 * Math.PI * 45}`}
                   strokeDashoffset={`${2 * Math.PI * 45 * (1 - lastYearPercentage / 100)}`}
@@ -159,8 +159,8 @@ const CapacityChart: React.FC<CapacityChartProps> = ({ data, showComparison = tr
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className={`text-xl font-bold ${lastYearColor}`}>{lastYearPercentage.toFixed(1)}%</span>
-                <span className="text-xs text-gray-500">{t('lastYearVeryShort')}</span>
+                <span className={`text-lg font-bold ${lastYearColor}`}>{lastYearPercentage.toFixed(1)}%</span>
+                <span className="text-[0.65rem] text-gray-500">{t('lastYearVeryShort')}</span>
               </div>
             </div>
           </>
