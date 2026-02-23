@@ -261,8 +261,8 @@ const HistoricalHeatmap: React.FC = () => {
               <div
                 className="sticky left-0 z-10 bg-white dark:bg-gray-900"
                 style={{
-                  width: LABEL_W + 24, flexShrink: 0,
-                  marginLeft: -24, paddingLeft: 24, paddingRight: 6,
+                  width: LABEL_W, flexShrink: 0,
+                  paddingRight: 6,
                   boxShadow: isDark
                     ? '6px 0 8px -2px rgba(0,0,0,0.5)'
                     : '6px 0 8px -2px rgba(0,0,0,0.08)',
