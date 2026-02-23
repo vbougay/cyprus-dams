@@ -86,6 +86,7 @@ const REGION_GAP = 4;
 const HEADER_H = 16;
 const TOTAL_ROW_H = 10;
 const TOTAL_GAP = 12;
+const MIN_LABEL_PAD = 6;
 
 interface HistoricalHeatmapStaticProps {
   years?: number;
@@ -97,12 +98,25 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
   const t = useTranslation(language);
   const { theme } = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const [availableWidth, setAvailableWidth] = useState(0);
 
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
   const isDark = mounted
     ? (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches))
     : false;
+
+  // Measure container width so we can size the canvas to fit
+  useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(entries => {
+      setAvailableWidth(Math.floor(entries[0].contentRect.width));
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   const gridData = useMemo(() => {
     let data = historicalStorageData;
@@ -148,12 +162,20 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
   const totalReservoirs = REGIONS.reduce((sum, g) => sum + g.reservoirs.length, 0);
   const totalRegionGaps = (REGIONS.length - 1) * REGION_GAP;
   const gridH = totalReservoirs * STEP - GAP + totalRegionGaps;
-  const canvasW = LABEL_W + gridData.dates.length * STEP;
+
+  // Responsive horizontal sizing: fit canvas to container instead of CSS-squishing
+  const naturalW = LABEL_W + gridData.dates.length * STEP;
+  const canvasW = availableWidth > 0 ? Math.min(naturalW, availableWidth) : naturalW;
+  const gridW = canvasW - LABEL_W;
+  const hStep = gridData.dates.length > 0 ? gridW / gridData.dates.length : STEP;
+  const hGap = hStep > 2 ? GAP : 0;
+  const hCell = Math.max(0.5, hStep - hGap);
+
   const canvasH = HEADER_H + gridH + TOTAL_GAP + TOTAL_ROW_H + HEADER_H;
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || canvasW <= LABEL_W) return;
 
     const dpr = window.devicePixelRatio || 1;
     canvas.width = canvasW * dpr;
@@ -164,12 +186,16 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
     // Clear
     ctx.clearRect(0, 0, canvasW, canvasH);
 
-    // Year labels
+    // Year labels with overlap prevention
     ctx.font = '9px system-ui, sans-serif';
     ctx.fillStyle = isDark ? '#6b7280' : '#9ca3af';
     ctx.textBaseline = 'top';
+    let lastLabelEndX = -Infinity;
     for (const { year, index } of gridData.yearIndices) {
-      ctx.fillText(String(year), LABEL_W + index * STEP, 0);
+      const x = LABEL_W + index * hStep;
+      if (x - lastLabelEndX < MIN_LABEL_PAD) continue;
+      ctx.fillText(String(year), x, 0);
+      lastLabelEndX = x + ctx.measureText(String(year)).width;
     }
 
     // Region labels and cells
@@ -191,7 +217,7 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
         const cellY = y + ri * STEP;
         for (let di = 0; di < res.percentages.length; di++) {
           ctx.fillStyle = getCellColor(res.percentages[di], isDark);
-          ctx.fillRect(LABEL_W + di * STEP, cellY, CELL, CELL);
+          ctx.fillRect(LABEL_W + di * hStep, cellY, hCell, CELL);
         }
       }
 
@@ -218,24 +244,25 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
     ctx.textBaseline = 'middle';
     ctx.fillText(t('totalLabel'), 0, totalY + TOTAL_ROW_H / 2);
 
-    // Total cells
-    const totalCellW = Math.max(1, (canvasW - LABEL_W) / gridData.totalPercentages.length);
+    // Total cells (continuous, no gap)
+    const totalCellW = Math.max(0.5, gridW / gridData.totalPercentages.length);
     for (let di = 0; di < gridData.totalPercentages.length; di++) {
       ctx.fillStyle = getCellColor(gridData.totalPercentages[di], isDark);
       ctx.fillRect(LABEL_W + di * totalCellW, totalY, totalCellW, TOTAL_ROW_H);
     }
 
-    // Year markers for total row
+    // Year markers for total row with overlap prevention
     ctx.font = '8px system-ui, sans-serif';
     ctx.fillStyle = isDark ? '#6b7280' : '#9ca3af';
     ctx.textBaseline = 'top';
+    lastLabelEndX = -Infinity;
     for (const { year, index } of gridData.yearIndices) {
-      if (year % 10 === 0) {
-        const x = LABEL_W + (index / gridData.dates.length) * (canvasW - LABEL_W);
-        ctx.fillText(String(year), x, totalY + TOTAL_ROW_H + 2);
-      }
+      const x = LABEL_W + (index / gridData.dates.length) * gridW;
+      if (x - lastLabelEndX < MIN_LABEL_PAD) continue;
+      ctx.fillText(String(year), x, totalY + TOTAL_ROW_H + 2);
+      lastLabelEndX = x + ctx.measureText(String(year)).width;
     }
-  }, [gridData, isDark, canvasW, canvasH, t]);
+  }, [gridData, isDark, canvasW, canvasH, t, hStep, hCell, gridW]);
 
   const legendCellSize = 10;
 
@@ -259,15 +286,15 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
   const canvasEl = (
     <canvas
       ref={canvasRef}
-      style={{ width: canvasW, height: canvasH, maxWidth: '100%' }}
+      style={{ width: canvasW, height: canvasH }}
     />
   );
 
   if (bare) {
     return (
-      <div>
+      <div ref={wrapperRef}>
         <div className="flex justify-end mb-1">{legend}</div>
-        {canvasEl}
+        {availableWidth > 0 && canvasEl}
       </div>
     );
   }
@@ -284,7 +311,9 @@ const HistoricalHeatmapStatic: React.FC<HistoricalHeatmapStaticProps> = ({ years
         </div>
       </CardHeader>
       <CardContent className="pt-0">
-        {canvasEl}
+        <div ref={wrapperRef}>
+          {availableWidth > 0 && canvasEl}
+        </div>
       </CardContent>
     </Card>
   );
