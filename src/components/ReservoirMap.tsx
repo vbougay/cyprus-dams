@@ -35,7 +35,7 @@ const reservoirLocations = {
   'Arminou': { lng: 32.7371, lat: 34.8752 },
   'Kalavasos': { lng: 33.260517, lat: 34.803972 },
   'Dipotamos': { lng: 33.359274, lat: 34.851618 },
-  'Germasogeia': { lng: 33.0843, lat: 34.7439 },
+  'Germasoyeia': { lng: 33.0843, lat: 34.7439 },
   'Polemidia': { lng: 32.9888, lat: 34.7187 },
   'Achna': { lng: 33.814307, lat: 35.055321 },
   'Lefkara': { lng: 33.2956, lat: 34.8944 },
