@@ -132,6 +132,7 @@ export const translations = {
     monthlyView: "Monthly",
     cumulativeView: "Cumulative",
     allSeasons: "All",
+    predictedAvg: "Predicted (avg)",
     outflowNotAvailable: "Outflow data is not available from the official data source.",
 
     // Historical Heatmap
@@ -278,6 +279,7 @@ export const translations = {
     monthlyView: "Μηνιαία",
     cumulativeView: "Αθροιστική",
     allSeasons: "Όλα",
+    predictedAvg: "Πρόβλεψη (μέσος)",
     outflowNotAvailable: "Τα δεδομένα εκροής δεν είναι διαθέσιμα από την επίσημη πηγή δεδομένων.",
 
     // Historical Heatmap
@@ -424,6 +426,7 @@ export const translations = {
     monthlyView: "По месяцам",
     cumulativeView: "Нарастающим итогом",
     allSeasons: "Все",
+    predictedAvg: "Прогноз (ср.)",
     outflowNotAvailable: "Данные об оттоке недоступны из официального источника данных.",
 
     // Historical Heatmap
