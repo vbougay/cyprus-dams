@@ -18,8 +18,33 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown } from 'lucide-react';
+import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown, Loader2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
+/**
+ * Defers rendering of heavy tab content by one frame so a loading spinner
+ * can paint immediately, giving users instant feedback on tab switches.
+ */
+function TabContentLoader({ children }: { children: React.ReactNode }) {
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      setIsReady(true);
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  if (!isReady) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-8 w-8 animate-spin text-water-500" />
+      </div>
+    );
+  }
+
+  return <>{children}</>;
+}
 
 interface DashboardClientProps {
   initialReservoirs: Reservoir[];
@@ -188,49 +213,53 @@ export function DashboardClient({
           </TabsList>
 
           <TabsContent value="dashboard" className="animate-fade-in">
-            <div className="space-y-8">
-              <NewsTicker />
-              <HistoricalHeatmap />
-              <div>
-                <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
-                  <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
-                  <span>{t('overallStatus')}</span>
-                </h3>
+            <TabContentLoader>
+              <div className="space-y-8">
+                <NewsTicker />
+                <HistoricalHeatmap />
+                <div>
+                  <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
+                    <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
+                    <span>{t('overallStatus')}</span>
+                  </h3>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
-                  {grandTotal && (
-                    <div className="w-full h-full">
-                      <RegionSummary
-                        regionTotal={grandTotal}
-                        showReservoirs={false}
-                        className="h-full"
-                      />
+                  <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
+                    {grandTotal && (
+                      <div className="w-full h-full">
+                        <RegionSummary
+                          regionTotal={grandTotal}
+                          showReservoirs={false}
+                          className="h-full"
+                        />
+                      </div>
+                    )}
+
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      {reservoirs
+                        .sort((a, b) => b.capacity - a.capacity)
+                        .slice(0, 4)
+                        .map((reservoir) => (
+                          <ReservoirCard key={reservoir.name} reservoir={reservoir} />
+                        ))}
                     </div>
-                  )}
-
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    {reservoirs
-                      .sort((a, b) => b.capacity - a.capacity)
-                      .slice(0, 4)
-                      .map((reservoir) => (
-                        <ReservoirCard key={reservoir.name} reservoir={reservoir} />
-                      ))}
                   </div>
                 </div>
-              </div>
 
-              <MonthlyInflow />
-            </div>
+                <MonthlyInflow />
+              </div>
+            </TabContentLoader>
           </TabsContent>
 
           <TabsContent value="regions" className="space-y-8 animate-fade-in">
-            {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
-              <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
-                {getReservoirs(regionTotal.region).map((reservoir) => (
-                  <ReservoirCard key={reservoir.name} reservoir={reservoir} />
-                ))}
-              </RegionSummary>
-            ))}
+            <TabContentLoader>
+              {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
+                <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
+                  {getReservoirs(regionTotal.region).map((reservoir) => (
+                    <ReservoirCard key={reservoir.name} reservoir={reservoir} />
+                  ))}
+                </RegionSummary>
+              ))}
+            </TabContentLoader>
           </TabsContent>
 
           <TabsContent value="map" className="animate-fade-in">
