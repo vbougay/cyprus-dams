@@ -1,5 +1,6 @@
 import React from 'react';
 import { Droplets } from 'lucide-react';
+import ChurchSilhouette from '@/components/ChurchSilhouette';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 
@@ -52,6 +53,11 @@ const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId }) => {
             {formattedDate}
           </p>
         </div>
+      </div>
+
+      {/* St. Nicholas church bell tower silhouette */}
+      <div className="absolute bottom-0 left-[5%] translate-y-[4px] pointer-events-none z-[5]">
+        <ChurchSilhouette className="h-[90px] md:h-[120px] w-auto text-water-700/40 dark:text-water-300/35" />
       </div>
 
       {/* Wave decoration - static for screenshot compatibility, animated for live view */}

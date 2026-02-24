@@ -9,6 +9,7 @@ import { defaultLocale, type Locale } from '@/utils/locale';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import ChurchSilhouette from '@/components/ChurchSilhouette';
 
 const monthAbbrToIndex: Record<string, number> = {
   JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
@@ -326,6 +327,11 @@ const Header: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* St. Nicholas church bell tower silhouette */}
+      <div className="absolute bottom-0 left-[2%] md:left-[5%] translate-y-[4px] pointer-events-none z-[5]">
+        <ChurchSilhouette className="h-[70px] md:h-[120px] w-auto text-water-700/35 dark:text-water-300/30" />
       </div>
 
       {/* Flowing water wave effect */}

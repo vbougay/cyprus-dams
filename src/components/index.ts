@@ -9,3 +9,4 @@ export { default as MonthlyInflow } from './MonthlyInflow';
 // to avoid "window is not defined" from Leaflet during SSR
 export { default as HistoricalHeatmap } from './HistoricalHeatmap';
 export { default as MediaHeader } from './MediaHeader';
+export { default as ChurchSilhouette } from './ChurchSilhouette';
