@@ -153,13 +153,8 @@ const Header: React.FC = () => {
                 </div>
               </div>
 
-              {/* Mobile controls - Media mode, Theme toggle and Language selector */}
+              {/* Mobile controls - Theme toggle and Language selector */}
               <div className="flex items-center gap-2 md:hidden">
-                <Link href={mediaHref}>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
-                    <Camera className="h-4 w-4" />
-                  </Button>
-                </Link>
                 <ThemeToggle />
                 <Select
                   value={language}
@@ -266,15 +261,21 @@ const Header: React.FC = () => {
                   >
                     <ChevronsRight className="h-4 w-4 md:h-5 md:w-5" />
                   </Button>
-                </div>
 
-                {/* Desktop controls - Media mode, Theme toggle and Language selector */}
-                <div className="hidden md:flex items-center gap-2">
                   <Link href={mediaHref}>
-                    <Button variant="ghost" size="icon" className="h-9 w-9 rounded-lg bg-white/50 dark:bg-white/10 backdrop-blur-sm border border-blue-100 dark:border-white/10" title="Media mode">
-                      <Camera className="h-4 w-4" />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title="Media mode"
+                    >
+                      <Camera className="h-3.5 w-3.5 md:h-4 md:w-4" />
                     </Button>
                   </Link>
+                </div>
+
+                {/* Desktop controls - Theme toggle and Language selector */}
+                <div className="hidden md:flex items-center gap-2">
                   <ThemeToggle />
                   <Select
                     value={language}
@@ -412,6 +413,17 @@ const Header: React.FC = () => {
         >
           <ChevronsRight className="h-4 w-4" />
         </Button>
+
+        <Link href={mediaHref}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title="Media mode"
+          >
+            <Camera className="h-3.5 w-3.5" />
+          </Button>
+        </Link>
       </div>
     </div>
     </>
