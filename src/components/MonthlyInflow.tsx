@@ -134,14 +134,15 @@ const MonthlyInflow: React.FC = () => {
 
     return MONTH_KEYS.map((monthKey, index) => {
       const isPast = index <= currentMonthIndex;
+      const value = currentYearData.months[monthKey] || 0;
       return {
         name: monthNames[index],
         key: monthKey,
-        currentYear: currentYearData.months[monthKey] || 0,
-        previousYear: previousYearData ? previousYearData.months[monthKey] || 0 : 0,
-        predicted: (isLatestSelected && !isPast)
+        actual: (isLatestSelected && !isPast) ? null : value,
+        forecast: (isLatestSelected && !isPast)
           ? parseFloat(historicalAverages[monthKey].toFixed(3))
           : null,
+        previousYear: previousYearData ? previousYearData.months[monthKey] || 0 : 0,
       };
     });
   }, [selectedYear, currentDataSetId, monthNames, isLatestSelected, currentMonthIndex, historicalAverages]);
@@ -159,34 +160,34 @@ const MonthlyInflow: React.FC = () => {
   }, [selectedYear, currentDataSetId, monthNames]);
 
   const cumulativeSingleData = useMemo(() => {
-    let cumCurrent = 0;
+    let cumActual = 0;
     let cumPrevious = 0;
-    let cumPredicted = 0;
+    let cumForecast = 0;
     return singleSeasonData.map((d, index) => {
-      cumCurrent += d.currentYear;
+      const isPast = index <= currentMonthIndex;
       cumPrevious += d.previousYear;
 
-      let predictedCum: number | null = null;
+      if (d.actual != null) {
+        cumActual += d.actual;
+      }
+
       if (isLatestSelected) {
-        if (index <= currentMonthIndex) {
-          cumPredicted = cumCurrent;
+        if (isPast) {
+          cumForecast = cumActual;
         } else {
-          cumPredicted += historicalAverages[d.key];
-        }
-        if (index >= currentMonthIndex) {
-          predictedCum = parseFloat(cumPredicted.toFixed(3));
+          cumForecast += (d.forecast ?? 0);
         }
       }
 
       return {
         name: d.name,
         key: d.key,
-        currentYear: parseFloat(cumCurrent.toFixed(3)),
+        actual: (isLatestSelected && !isPast) ? null : parseFloat(cumActual.toFixed(3)),
+        forecast: (isLatestSelected && index >= currentMonthIndex) ? parseFloat(cumForecast.toFixed(3)) : null,
         previousYear: parseFloat(cumPrevious.toFixed(3)),
-        predicted: predictedCum,
       };
     });
-  }, [singleSeasonData, isLatestSelected, currentMonthIndex, historicalAverages]);
+  }, [singleSeasonData, isLatestSelected, currentMonthIndex]);
 
   const cumulativeAllData = useMemo(() => {
     if (selectedYear !== ALL_VALUE) return [];
@@ -238,10 +239,19 @@ const MonthlyInflow: React.FC = () => {
     <Tooltip
       content={({ active, payload, label }) => {
         if (active && payload && payload.length) {
+          const filtered = payload.filter(entry => {
+            if (entry.value == null) return false;
+            // At the overlap point, hide forecast when actual is also present
+            if (entry.dataKey === 'forecast') {
+              return !payload.some(e => e.dataKey === 'actual' && e.value != null);
+            }
+            return true;
+          });
+          if (filtered.length === 0) return null;
           return (
             <div className="bg-white dark:bg-gray-800 p-2 border border-gray-200 dark:border-gray-700 rounded shadow-md max-h-64 overflow-y-auto">
               <p className="font-medium text-foreground">{label}</p>
-              {payload.map((entry, index) => (
+              {filtered.map((entry, index) => (
                 <p key={index} style={{ color: entry.color }} className="text-sm">
                   {entry.name}: {(entry.value as number).toFixed(3)} MCM
                 </p>
@@ -334,10 +344,10 @@ const MonthlyInflow: React.FC = () => {
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
                 {renderReferenceLine}
-                <Area type="monotone" dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} stroke="#0ea5e9" strokeWidth={2.5} fill="url(#currentYearGradient)" animationDuration={1000} />
+                <Area type="monotone" dataKey="actual" name={`${t('yearLabel')} ${selectedYear}`} stroke="#0ea5e9" strokeWidth={2.5} fill="url(#currentYearGradient)" animationDuration={1000} />
                 <Area type="monotone" dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} stroke="#94a3b8" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} />
                 {isLatestSelected && (
-                  <Area type="monotone" dataKey="predicted" name={t('predictedAvg')} stroke="#0ea5e9" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} connectNulls={false} />
+                  <Area type="monotone" dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${t('predictedAvg')})`} stroke="#0ea5e9" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} connectNulls={false} />
                 )}
               </AreaChart>
             </ResponsiveContainer>
@@ -385,10 +395,10 @@ const MonthlyInflow: React.FC = () => {
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
                 {isLatestSelected && renderReferenceLine}
-                <Bar dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} fill="#0ea5e9" radius={[4, 4, 0, 0]} animationDuration={1000} />
+                <Bar dataKey="actual" name={`${t('yearLabel')} ${selectedYear}`} fill="#0ea5e9" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 <Bar dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} fill="#94a3b8" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 {isLatestSelected && (
-                  <Bar dataKey="predicted" name={t('predictedAvg')} fill="#0ea5e9" fillOpacity={0.3} stroke="#0ea5e9" strokeDasharray="4 2" radius={[4, 4, 0, 0]} animationDuration={1000} />
+                  <Bar dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${t('predictedAvg')})`} fill="#0ea5e9" fillOpacity={0.3} stroke="#0ea5e9" strokeDasharray="4 2" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 )}
               </BarChart>
             </ResponsiveContainer>
@@ -427,19 +437,22 @@ const MonthlyInflow: React.FC = () => {
           {!isAllMode ? (
             <>
               <div className="flex items-center gap-1.5">
-                <span className="inline-block w-4 h-0.5 bg-[#0ea5e9] rounded" />
-                <span className="text-muted-foreground">{t('yearLabel')} {selectedYear}</span>
+                {isLatestSelected ? (
+                  <span className="inline-flex w-6">
+                    <span className="inline-block w-3 h-0.5 bg-[#0ea5e9]" />
+                    <span className="inline-block w-3" style={{ borderTop: '2px dashed #0ea5e9', height: 0 }} />
+                  </span>
+                ) : (
+                  <span className="inline-block w-4 h-0.5 bg-[#0ea5e9] rounded" />
+                )}
+                <span className="text-muted-foreground">
+                  {t('yearLabel')} {selectedYear}{isLatestSelected ? ` + ${t('predictedAvg')}` : ''}
+                </span>
               </div>
               <div className="flex items-center gap-1.5">
                 <span className="inline-block w-4 h-0.5 bg-[#94a3b8] rounded" style={{ borderTop: '2px dashed #94a3b8', height: 0 }} />
                 <span className="text-muted-foreground">{t('yearLabel')} {previousYearLabel}</span>
               </div>
-              {isLatestSelected && (
-                <div className="flex items-center gap-1.5">
-                  <span className="inline-block w-4 h-0.5 rounded" style={{ borderTop: '2px dashed #0ea5e9', height: 0 }} />
-                  <span className="text-muted-foreground">{t('predictedAvg')}</span>
-                </div>
-              )}
             </>
           ) : (
             years.map((year, i) => {
