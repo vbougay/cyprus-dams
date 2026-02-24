@@ -31,12 +31,13 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 
 **Summary / Recent Changes (`getSummaryChanges`):**
 
+- For comparison use the date 7-10 days away
 - Keep it concise — highlight only notable or important changes, not every region or reservoir
 - Lead with overall storage change (percentage and MCM)
 - Mention notable individual reservoir movements (large swings, transfers, overflows) — skip small incremental changes
 - Search the web for Cyprus water/reservoir/drought news from the past week and incorporate relevant context (government plans, drought status, weather events)
 - Add up to 3 media article links at the end under an "In the media" / "Στα μέσα" section
-- Write both English and Greek versions with the same structure
+- Write both English, Russian and Greek versions with the same structure
 - Tone: informative and factual, not verbose
 
 **News Ticker Refresh:**
