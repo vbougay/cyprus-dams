@@ -423,7 +423,9 @@ const HistoricalHeatmap: React.FC = () => {
             <div
               className="absolute z-20 pointer-events-none bg-gray-900 dark:bg-gray-800 text-white text-xs rounded-lg px-3 py-2 shadow-lg border border-gray-700"
               style={{
-                left: Math.min(tooltip.x + 14, (containerRef.current?.clientWidth ?? 400) - 180),
+                left: tooltip.x > (containerRef.current?.clientWidth ?? 400) / 2
+                  ? tooltip.x - 164
+                  : tooltip.x + 14,
                 top: Math.max(tooltip.y - 70, 4),
                 minWidth: 150,
               }}
