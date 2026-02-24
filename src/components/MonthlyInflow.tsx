@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { yearlyInflowData, getReportDate } from '@/utils/dataManager';
 import { parseReportDate } from '@/utils/reservoirUtils';
 import { useDataContext } from '@/context/DataContext';
@@ -54,7 +54,6 @@ const MonthlyInflow: React.FC = () => {
 
   const years = useMemo(() => {
     const data = yearlyInflowData();
-    // Reverse so latest season is first in the dropdown
     return data.map(d => d.year).reverse();
   }, [currentDataSetId]);
 
@@ -64,8 +63,8 @@ const MonthlyInflow: React.FC = () => {
   });
   const [viewMode, setViewMode] = useState<ViewMode>('cumulative');
   const [isVisible, setIsVisible] = useState(false);
+  const [hiddenYears, setHiddenYears] = useState<Set<string>>(new Set());
 
-  // Update selected year to latest when dataset changes and current selection is gone
   useEffect(() => {
     const data = yearlyInflowData();
     const latestYear = data.length > 0 ? data[data.length - 1].year : null;
@@ -75,17 +74,54 @@ const MonthlyInflow: React.FC = () => {
   }, [currentDataSetId]);
 
   useEffect(() => {
+    if (selectedYear !== ALL_VALUE) {
+      setHiddenYears(new Set());
+    }
+  }, [selectedYear]);
+
+  useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 200);
     return () => clearTimeout(timer);
   }, []);
 
-  // Translated month names
+  const toggleYear = useCallback((year: string) => {
+    setHiddenYears(prev => {
+      const next = new Set(prev);
+      if (next.has(year)) next.delete(year);
+      else next.add(year);
+      return next;
+    });
+  }, []);
+
   const monthNames = useMemo(() =>
     MONTH_TRANSLATION_KEYS.map(key => t(key as keyof typeof translations.en)),
     [language]
   );
 
-  // Build chart data for single-season mode (selected year + previous year)
+  const latestYear = years[0];
+
+  const currentMonthIndex = useMemo(() => {
+    const reportDate = getReportDate();
+    const parsed = parseReportDate(reportDate);
+    if (!parsed) return -1;
+    return calendarMonthToWaterYearIndex(parsed.month);
+  }, [currentDataSetId]);
+
+  const historicalAverages = useMemo(() => {
+    const inflowData = yearlyInflowData();
+    const completedSeasons = inflowData.filter(d => d.year !== latestYear);
+    const averages: Record<string, number> = {};
+    MONTH_KEYS.forEach(month => {
+      const values = completedSeasons.map(s => s.months[month] || 0);
+      averages[month] = values.length > 0
+        ? values.reduce((a, b) => a + b, 0) / values.length
+        : 0;
+    });
+    return averages;
+  }, [currentDataSetId, latestYear]);
+
+  const isLatestSelected = selectedYear === latestYear;
+
   const singleSeasonData = useMemo(() => {
     if (selectedYear === ALL_VALUE) return [];
     const inflowData = yearlyInflowData();
@@ -96,15 +132,20 @@ const MonthlyInflow: React.FC = () => {
     const prevYearValue = `${parseInt(parts[0]) - 1}/${parseInt(parts[1]) - 1}`;
     const previousYearData = inflowData.find(data => data.year === prevYearValue);
 
-    return MONTH_KEYS.map((monthKey, index) => ({
-      name: monthNames[index],
-      key: monthKey,
-      currentYear: currentYearData.months[monthKey] || 0,
-      previousYear: previousYearData ? previousYearData.months[monthKey] || 0 : 0,
-    }));
-  }, [selectedYear, currentDataSetId, monthNames]);
+    return MONTH_KEYS.map((monthKey, index) => {
+      const isPast = index <= currentMonthIndex;
+      return {
+        name: monthNames[index],
+        key: monthKey,
+        currentYear: currentYearData.months[monthKey] || 0,
+        previousYear: previousYearData ? previousYearData.months[monthKey] || 0 : 0,
+        predicted: (isLatestSelected && !isPast)
+          ? parseFloat(historicalAverages[monthKey].toFixed(3))
+          : null,
+      };
+    });
+  }, [selectedYear, currentDataSetId, monthNames, isLatestSelected, currentMonthIndex, historicalAverages]);
 
-  // Build chart data for all-seasons mode
   const allSeasonsData = useMemo(() => {
     if (selectedYear !== ALL_VALUE) return [];
     const inflowData = yearlyInflowData();
@@ -117,23 +158,36 @@ const MonthlyInflow: React.FC = () => {
     });
   }, [selectedYear, currentDataSetId, monthNames]);
 
-  // Cumulative data for single season
   const cumulativeSingleData = useMemo(() => {
     let cumCurrent = 0;
     let cumPrevious = 0;
-    return singleSeasonData.map(d => {
+    let cumPredicted = 0;
+    return singleSeasonData.map((d, index) => {
       cumCurrent += d.currentYear;
       cumPrevious += d.previousYear;
+
+      let predictedCum: number | null = null;
+      if (isLatestSelected) {
+        if (index <= currentMonthIndex) {
+          cumPredicted = cumCurrent;
+        } else {
+          cumPredicted += historicalAverages[d.key];
+        }
+        if (index >= currentMonthIndex) {
+          predictedCum = parseFloat(cumPredicted.toFixed(3));
+        }
+      }
+
       return {
         name: d.name,
         key: d.key,
         currentYear: parseFloat(cumCurrent.toFixed(3)),
         previousYear: parseFloat(cumPrevious.toFixed(3)),
+        predicted: predictedCum,
       };
     });
-  }, [singleSeasonData]);
+  }, [singleSeasonData, isLatestSelected, currentMonthIndex, historicalAverages]);
 
-  // Cumulative data for all seasons
   const cumulativeAllData = useMemo(() => {
     if (selectedYear !== ALL_VALUE) return [];
     const inflowData = yearlyInflowData();
@@ -150,7 +204,6 @@ const MonthlyInflow: React.FC = () => {
     });
   }, [selectedYear, currentDataSetId, monthNames]);
 
-  // Current report month name for the reference line
   const currentMonthName = useMemo(() => {
     const reportDate = getReportDate();
     const parsed = parseReportDate(reportDate);
@@ -164,7 +217,6 @@ const MonthlyInflow: React.FC = () => {
     ? `${parseInt(selectedYear.split('/')[0]) - 1}/${parseInt(selectedYear.split('/')[1]) - 1}`
     : '';
 
-  // Shared axis/tooltip props
   const xAxisProps = {
     dataKey: 'name' as const,
     angle: -45,
@@ -202,7 +254,7 @@ const MonthlyInflow: React.FC = () => {
     />
   );
 
-  const renderReferenceLine = currentMonthName && viewMode === 'cumulative' ? (
+  const renderReferenceLine = currentMonthName ? (
     <ReferenceLine
       x={currentMonthName}
       stroke="#f59e0b"
@@ -284,6 +336,9 @@ const MonthlyInflow: React.FC = () => {
                 {renderReferenceLine}
                 <Area type="monotone" dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} stroke="#0ea5e9" strokeWidth={2.5} fill="url(#currentYearGradient)" animationDuration={1000} />
                 <Area type="monotone" dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} stroke="#94a3b8" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} />
+                {isLatestSelected && (
+                  <Area type="monotone" dataKey="predicted" name={t('predictedAvg')} stroke="#0ea5e9" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} connectNulls={false} />
+                )}
               </AreaChart>
             </ResponsiveContainer>
           )}
@@ -302,19 +357,22 @@ const MonthlyInflow: React.FC = () => {
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
                 {renderReferenceLine}
-                {years.map((year, i) => (
-                  <Area
-                    key={year}
-                    type="monotone"
-                    dataKey={year}
-                    name={year}
-                    stroke={SEASON_COLORS[i % SEASON_COLORS.length]}
-                    strokeWidth={i === 0 ? 2.5 : 1.5}
-                    strokeDasharray={i === 0 ? undefined : '4 2'}
-                    fill={i === 0 ? 'url(#latestYearGradient)' : 'none'}
-                    animationDuration={1000}
-                  />
-                ))}
+                {years.map((year, i) => {
+                  if (hiddenYears.has(year)) return null;
+                  return (
+                    <Area
+                      key={year}
+                      type="monotone"
+                      dataKey={year}
+                      name={year}
+                      stroke={SEASON_COLORS[i % SEASON_COLORS.length]}
+                      strokeWidth={i === 0 ? 2.5 : 1.5}
+                      strokeDasharray={i === 0 ? undefined : '4 2'}
+                      fill={i === 0 ? 'url(#latestYearGradient)' : 'none'}
+                      animationDuration={1000}
+                    />
+                  );
+                })}
               </AreaChart>
             </ResponsiveContainer>
           )}
@@ -326,38 +384,45 @@ const MonthlyInflow: React.FC = () => {
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
+                {isLatestSelected && renderReferenceLine}
                 <Bar dataKey="currentYear" name={`${t('yearLabel')} ${selectedYear}`} fill="#0ea5e9" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 <Bar dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} fill="#94a3b8" radius={[4, 4, 0, 0]} animationDuration={1000} />
+                {isLatestSelected && (
+                  <Bar dataKey="predicted" name={t('predictedAvg')} fill="#0ea5e9" fillOpacity={0.3} stroke="#0ea5e9" strokeDasharray="4 2" radius={[4, 4, 0, 0]} animationDuration={1000} />
+                )}
               </BarChart>
             </ResponsiveContainer>
           )}
 
-          {/* MONTHLY — All Seasons (lines, since bars would be unreadable) */}
+          {/* MONTHLY — All Seasons (lines) */}
           {viewMode === 'monthly' && isAllMode && allSeasonsData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={allSeasonsData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <XAxis {...xAxisProps} />
                 <YAxis {...yAxisProps} />
                 {renderTooltip}
-                {years.map((year, i) => (
-                  <Line
-                    key={year}
-                    type="monotone"
-                    dataKey={year}
-                    name={year}
-                    stroke={SEASON_COLORS[i % SEASON_COLORS.length]}
-                    strokeWidth={i === 0 ? 2.5 : 1.5}
-                    strokeDasharray={i === 0 ? undefined : '4 2'}
-                    dot={false}
-                    animationDuration={1000}
-                  />
-                ))}
+                {years.map((year, i) => {
+                  if (hiddenYears.has(year)) return null;
+                  return (
+                    <Line
+                      key={year}
+                      type="monotone"
+                      dataKey={year}
+                      name={year}
+                      stroke={SEASON_COLORS[i % SEASON_COLORS.length]}
+                      strokeWidth={i === 0 ? 2.5 : 1.5}
+                      strokeDasharray={i === 0 ? undefined : '4 2'}
+                      dot={false}
+                      animationDuration={1000}
+                    />
+                  );
+                })}
               </LineChart>
             </ResponsiveContainer>
           )}
         </div>
 
-        {/* Custom legend rendered outside chart to avoid overlap with X-axis labels */}
+        {/* Legend */}
         <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 mt-2 text-xs px-3 sm:px-0">
           {!isAllMode ? (
             <>
@@ -369,14 +434,37 @@ const MonthlyInflow: React.FC = () => {
                 <span className="inline-block w-4 h-0.5 bg-[#94a3b8] rounded" style={{ borderTop: '2px dashed #94a3b8', height: 0 }} />
                 <span className="text-muted-foreground">{t('yearLabel')} {previousYearLabel}</span>
               </div>
+              {isLatestSelected && (
+                <div className="flex items-center gap-1.5">
+                  <span className="inline-block w-4 h-0.5 rounded" style={{ borderTop: '2px dashed #0ea5e9', height: 0 }} />
+                  <span className="text-muted-foreground">{t('predictedAvg')}</span>
+                </div>
+              )}
             </>
           ) : (
-            years.map((year, i) => (
-              <div key={year} className="flex items-center gap-1.5">
-                <span className="inline-block w-4 h-0.5 rounded" style={{ backgroundColor: SEASON_COLORS[i % SEASON_COLORS.length] }} />
-                <span className="text-muted-foreground">{year}</span>
-              </div>
-            ))
+            years.map((year, i) => {
+              const isHidden = hiddenYears.has(year);
+              return (
+                <button
+                  key={year}
+                  onClick={() => toggleYear(year)}
+                  className={`flex items-center gap-1.5 transition-opacity ${
+                    isHidden ? 'opacity-30' : 'opacity-100'
+                  } hover:opacity-70 cursor-pointer`}
+                >
+                  <span
+                    className="inline-block w-4 h-0.5 rounded"
+                    style={{
+                      backgroundColor: SEASON_COLORS[i % SEASON_COLORS.length],
+                      ...(isHidden ? { opacity: 0.4 } : {}),
+                    }}
+                  />
+                  <span className={`text-muted-foreground ${isHidden ? 'line-through' : ''}`}>
+                    {year}
+                  </span>
+                </button>
+              );
+            })
           )}
         </div>
 
