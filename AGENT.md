@@ -29,6 +29,16 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 - Compare to the latest previous dataset available
 - Update dataManager.ts imports AND availableDataSets array AND default dataset ID
 
+**Historical Storage Data (`historicalStorageData.ts`):**
+
+The historical heatmap chart uses `src/utils/historicalStorageData.ts` — it must be updated alongside each new data module or the chart will stop at the previous date.
+
+- Add a new entry to the `historicalStorageData` array with the current storage amounts from the new data module
+- Use the format: `{ date: "YYYY-MM-DD", kouris: X, kalavasos: X, ... , totalSCP: X, totalAll: X }`
+- `totalSCP` = sum of Southern Conveyor reservoirs (kouris, kalavasos, lefkara, dipotamos, germasoyeia, arminou, polemidia, achna)
+- `totalAll` = sum of all 21 reservoirs
+- The storage values come from each reservoir's `storage.current.amount` in the new data module
+
 **Summary / Recent Changes (`getSummaryChanges`):**
 
 - For comparison use the date 7-10 days away
