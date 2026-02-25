@@ -2,7 +2,7 @@
 
 Public REST API for Cyprus reservoir data. No authentication required.
 
-**Base URL:** `https://fragmata.com/api/v1`
+**Base URL:** `https://fragmata.info/api/v1`
 
 All endpoints support an optional `?dataset=DD-MMM-YYYY` query parameter to select a specific dataset (defaults to the most recent).
 
@@ -211,7 +211,7 @@ Example configuration for a REST sensor:
 sensor:
   - platform: rest
     name: Cyprus Reservoirs
-    resource: https://fragmata.com/api/v1/summary/
+    resource: https://fragmata.info/api/v1/summary/
     scan_interval: 3600
     value_template: "{{ value_json.totalStoragePercent }}"
     unit_of_measurement: "%"

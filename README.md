@@ -33,6 +33,10 @@ A comprehensive dashboard for monitoring and visualizing water reservoir data ac
 
 All data is sourced from the [Cyprus Water Development Department](https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument) of the Ministry of Agriculture. The application includes 38 data snapshots covering March 2025 through February 2026, with information on all 21 reservoirs including capacity, current storage, inflow rates, and historical comparisons.
 
+## API
+
+A public REST API is available at `https://fragmata.info/api/v1/` — no authentication required. It provides endpoints for reservoir summary, individual reservoirs, regional totals, inflow data, and historical storage levels. See [API.md](API.md) for full documentation and Home Assistant integration examples.
+
 ## Contact
 
 For questions, feedback, or contributions, please contact:
