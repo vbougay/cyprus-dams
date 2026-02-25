@@ -18,7 +18,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { Card, CardContent } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown, Loader2, Github } from 'lucide-react';
+import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown, Loader2, Github, Code } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 /**
@@ -276,10 +276,14 @@ export function DashboardClient({
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
           <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>
           <p className="mt-2">{t('contactMe')} <a href="mailto:v@bougay.com" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">v@bougay.com</a></p>
-          <p className="mt-2">
+          <p className="mt-2 flex items-center justify-center gap-4">
             <a href="https://github.com/vbougay/fragmata.info" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
               <Github className="h-4 w-4" />
               GitHub
+            </a>
+            <a href="https://github.com/vbougay/fragmata.info/blob/main/API.md" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
+              <Code className="h-4 w-4" />
+              {t('apiDocs')}
             </a>
           </p>
         </div>
