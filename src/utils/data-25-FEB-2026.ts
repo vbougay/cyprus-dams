@@ -88,8 +88,8 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
 
 **В СМИ:**
 - [На Кипре — сезон дождей, но засуха продолжается](https://evropakipr.com/istorii/na-kipre-sezon-dozhdey-pochemu-vlasti-utverzhdayut-chto-na-ostrove-chetvertyy-god) — Европа Кипр
-- [Дожди на Кипре будут идти до конца февраля](https://evropakipr.com/istorii/dozhdi-na-kipre-budut-idti-do-konca-fevralya) — Европа Кипр
-- [Водохранилища Кипра наполнились мусором вместе с водой](https://www.cyplive.com/news/news-cyprus/vmeste-s-dragocennoj-vodoj-vodohranilishcha-kipra-napolnilis-musorom.html) — CypLive
+- [На две минуты меньше: жителей Кипра попросили экономить воду](https://pogoda.mail.ru/news/69845557/) — Pogoda Mail.ru
+- [В столице Кипра будут отключать воду на 18 часов?!](https://regionmedia.net/kipr/v-stolitse-kipra-budut-regulyarno-otklyuchat-vodu-na-18-chasov.html) — Regional Media
 `;
   }
   return `
@@ -105,8 +105,8 @@ Total storage rose to **20.0%** (58.2 MCM), up from 17.2% (50.0 MCM). February i
 Despite gains, storage remains below last year's level (25.7%). Parched soil from three years of drought absorbs much of the rainfall, limiting inflows. Three mobile desalination units are planned for deployment in 2026.
 
 **In the media:**
-- [Cyprus dam levels rise after weekend rain](https://en.sigmalive.com/cyprus-dam-levels-rise-after-weekend-rain/) — Sigmalive
-- [Water levels remain critically low despite recent rains](https://cyprus-mail.com/2026/02/16/water-levels-remain-critically-low-despite-recent-rains) — Cyprus Mail
-- [Pomos dam overflows amidst severe water shortages](https://www.stockwatch.com.cy/en/news/pomos-dam-overflows-amidst-severe-water-shortages-in-cyprus) — StockWatch
+- [Storage capacity in dams reaches 19.8 per cent](https://cyprus-mail.com/2026/02/24/storage-capacity-in-dams-reaches-19-8-per-cent) — Cyprus Mail
+- [Cyprus confronts a record drought as reservoirs run dry](https://smartwatermagazine.com/news/smart-water-magazine/cyprus-confronts-a-record-drought-reservoirs-run-dry) — Smart Water Magazine
+- [Severe drought in Cyprus, February 2026](https://www.copernicus.eu/en/media/image-day-gallery/severe-drought-cyprus-february-2026) — Copernicus
 `;
 };
