@@ -6,7 +6,7 @@ import { ReservoirCard, CapacityChart, MonthlyInflow } from '@/components';
 import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
 import MediaHeader from '@/components/MediaHeader';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, Github } from 'lucide-react';
 import {
   getReservoirsWithDrainDates,
   calculateRegionTotals,
@@ -245,6 +245,12 @@ export function MediaClient({
         <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/95 dark:bg-gray-900/95">
           <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
             <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>
+            <p className="mt-2">
+              <a href="https://github.com/vbougay/fragmata.info" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
+                <Github className="h-4 w-4" />
+                GitHub
+              </a>
+            </p>
           </div>
         </footer>
       </div>
