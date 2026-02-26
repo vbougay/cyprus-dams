@@ -137,18 +137,18 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           <div className="bg-white/80 dark:bg-gray-800/50 p-3 rounded-xl shadow-sm">
             <div className="flex items-center gap-2">
               <Timer className="h-4 w-4 text-water-500 dark:text-water-400" />
-              <div className="text-sm text-muted-foreground">{t('fullyDrainedBy')}</div>
+              <div className="text-sm text-muted-foreground">{t('restrictionsBy')}</div>
             </div>
             <div className="text-lg font-semibold mt-1">
               <span className={`
-                ${regionTotal.drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
-                ${regionTotal.drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+                ${regionTotal.drainDate === 'Already Empty' || regionTotal.drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
+                ${regionTotal.drainDate === 'Not Draining' || regionTotal.drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
                 ${regionTotal.drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(regionTotal.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
+                ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(regionTotal.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
               `}>
-                {regionTotal.drainDate === 'Already Empty' ? t('alreadyEmpty') :
-                 regionTotal.drainDate === 'Not Draining' ? t('notDraining') :
-                 regionTotal.drainDate === 'Beyond 10 Years' ? t('beyondTenYears') :
+                {regionTotal.drainDate === 'Already Empty' || regionTotal.drainDate === 'Already Restricted' ? t('alreadyRestricted') :
+                 regionTotal.drainDate === 'Not Draining' || regionTotal.drainDate === 'Not Restricted' ? t('notRestricted') :
+                 regionTotal.drainDate === 'Beyond 10 Years' ? t('notRestricted') :
                  regionTotal.drainDate === 'Calculating...' ? t('calculating') : regionTotal.drainDate}
               </span>
             </div>

@@ -72,18 +72,18 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
           <div className="card-drain-date flex flex-col bg-gray-50 dark:bg-gray-800/50 p-2 rounded-lg mt-2 text-sm">
             <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
               <Timer size={12} className="text-water-500 dark:text-water-400" />
-              {t('fullyDrainedBy')}
+              {t('restrictionsBy')}
             </div>
             <div className="font-mono flex justify-between">
               <span className={`
-                ${drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
-                ${drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+                ${drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
+                ${drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
                 ${drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
+                ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
               `}>
-                {drainDate === 'Already Empty' ? t('alreadyEmpty') :
-                 drainDate === 'Not Draining' ? t('notDraining') :
-                 drainDate === 'Beyond 10 Years' ? t('beyondTenYears') :
+                {drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? t('alreadyRestricted') :
+                 drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? t('notRestricted') :
+                 drainDate === 'Beyond 10 Years' ? t('notRestricted') :
                  drainDate === 'Calculating...' ? t('calculating') : drainDate}
               </span>
             </div>

@@ -4,10 +4,11 @@ import React, { useState, useEffect } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, HistoricalHeatmap } from '@/components';
 import { NewsTicker } from '@/components/NewsTicker';
 import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
+import StorageForecast from '@/components/StorageForecast';
 import {
-  getReservoirsWithDrainDates,
-  calculateRegionTotals,
-  calculateGrandTotal,
+  getReservoirsWithForecastDates,
+  getRegionTotalsWithForecasts,
+  getGrandTotalWithForecast,
   yearlyInflowData,
   getReportDate,
   getOctoberBaselineStorage
@@ -72,13 +73,13 @@ export function DashboardClient({
 
   useEffect(() => {
     // Re-compute data when dataset changes (skip initial render since we have SSR data)
-    const totals = calculateRegionTotals();
+    const totals = getRegionTotalsWithForecasts();
     setRegionTotals(totals);
 
-    const total = calculateGrandTotal();
+    const total = getGrandTotalWithForecast();
     setGrandTotal(total);
 
-    const reservoirsWithDrainDates = getReservoirsWithDrainDates();
+    const reservoirsWithDrainDates = getReservoirsWithForecastDates();
     setReservoirs(reservoirsWithDrainDates);
 
     const inflowData = yearlyInflowData();
@@ -149,15 +150,18 @@ export function DashboardClient({
               <Timer className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
             </div>
             <CardContent className="flex flex-col justify-center p-3 sm:p-4 w-full">
-              <div className="text-xs sm:text-sm text-muted-foreground">{t('forecastedDrainDate')}</div>
+              <div className="text-xs sm:text-sm text-muted-foreground">{t('restrictionsBy')}</div>
               <div className="text-lg sm:text-2xl font-bold">
                 <span className={`
-                  ${grandTotal?.drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
-                  ${grandTotal?.drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+                  ${grandTotal?.drainDate === 'Already Empty' || grandTotal?.drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
+                  ${grandTotal?.drainDate === 'Not Draining' || grandTotal?.drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
                   ${grandTotal?.drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                  ${!['Already Empty', 'Not Draining', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
+                  ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
                 `}>
-                  {grandTotal?.drainDate || 'Calculating...'}
+                  {grandTotal?.drainDate === 'Already Empty' || grandTotal?.drainDate === 'Already Restricted' ? t('alreadyRestricted') :
+                   grandTotal?.drainDate === 'Not Draining' || grandTotal?.drainDate === 'Not Restricted' ? t('notRestricted') :
+                   grandTotal?.drainDate === 'Beyond 10 Years' ? t('notRestricted') :
+                   grandTotal?.drainDate || t('calculating')}
                 </span>
               </div>
             </CardContent>
@@ -245,6 +249,7 @@ export function DashboardClient({
                   </div>
                 </div>
 
+                <StorageForecast />
                 <MonthlyInflow />
               </div>
             </TabContentLoader>

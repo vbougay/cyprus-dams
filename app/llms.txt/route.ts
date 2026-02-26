@@ -8,12 +8,14 @@ import {
 import {
   calculateRegionTotals,
   calculateGrandTotal,
-  getReservoirsWithDrainDates,
+  calculateDrainDate,
   calculateYTDInflow,
   calculateYTDOutflow,
   parseReportDate,
 } from "@/utils/reservoirUtils";
 import { getOctoberBaselineStorage } from "@/utils/dataManager";
+import { calculateForecast, MAIN_RES_KEYS, REGION_KEYS } from "@/utils/forecastEngine";
+import { HistoricalStorageEntry } from "@/utils/historicalStorageData";
 import { Reservoir, RegionTotal } from "@/types";
 
 const MONTH_KEYS = [
@@ -25,6 +27,48 @@ const MONTH_SHORT = [
   "Oct", "Nov", "Dec", "Jan", "Feb", "Mar",
   "Apr", "May", "Jun", "Jul", "Aug-Sep",
 ];
+
+const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = {
+  'Kouris': 'kouris',
+  'Kalavasos': 'kalavasos',
+  'Lefkara': 'lefkara',
+  'Dipotamos': 'dipotamos',
+  'Germasoyeia': 'germasoyeia',
+  'Arminou': 'arminou',
+  'Polemidia': 'polemidia',
+  'Achna': 'achna',
+  'Asprokremmos': 'asprokremmos',
+  'Kannaviou': 'kannaviou',
+  'Mavrokolymbos': 'mavrokolympos',
+  'Evretou': 'evretou',
+  'Argaka': 'argaka',
+  'Pomos': 'pomos',
+  'Agia Marina': 'agiaMarina',
+  'Vyzakia': 'vyzakia',
+  'Xyliatou': 'xyliatos',
+  'Kalopanagiotis': 'kalopanagiotis',
+};
+
+function getReservoirForecastDate(r: Reservoir, reportDate: string): string {
+  const key = RESERVOIR_NAME_TO_KEY[r.name];
+  if (key && r.region !== 'Recharge/Other') {
+    const f = calculateForecast(r.storage.current.amount, r.capacity, reportDate, [key], 5);
+    return f.expectedRestriction;
+  }
+  return calculateDrainDate(r) ?? '—';
+}
+
+function getRegionForecastDate(data: Reservoir[], regionName: string, reportDate: string): string {
+  const regionKeys = REGION_KEYS[regionName];
+  if (!regionKeys) return '—';
+  let storage = 0, capacity = 0;
+  for (const key of regionKeys) {
+    const res = data.find(r => RESERVOIR_NAME_TO_KEY[r.name] === key);
+    if (res) { storage += res.storage.current.amount; capacity += res.capacity; }
+  }
+  const f = calculateForecast(storage, capacity, reportDate, regionKeys, 7);
+  return f.expectedRestriction;
+}
 
 function calendarMonthToWaterYearIndex(calMonth: number): number {
   if (calMonth >= 10) return calMonth - 10;
@@ -42,9 +86,14 @@ function sign(n: number): string {
 
 function buildMarkdown(): string {
   const reportDate = getReportDate();
-  const reservoirs = getReservoirsWithDrainDates(reservoirData);
-  const regionTotals = calculateRegionTotals(reservoirData);
-  const grandTotal = calculateGrandTotal(reservoirData);
+  const allReservoirs = reservoirData;
+  // Compute forecast-based restriction dates for each reservoir
+  const reservoirs = allReservoirs.map(r => ({
+    ...r,
+    drainDate: getReservoirForecastDate(r, reportDate),
+  }));
+  const regionTotals = calculateRegionTotals(allReservoirs);
+  const grandTotal = calculateGrandTotal(allReservoirs);
   const ytdInflow = calculateYTDInflow(yearlyInflowData, reportDate);
   const octBaseline = getOctoberBaselineStorage();
   const ytdOutflow =
@@ -101,7 +150,15 @@ function buildMarkdown(): string {
   lines.push(`| Last year storage | ${fmt(grandTotal.storage.lastYear.amount)} MCM (${fmt(grandTotal.storage.lastYear.percentage)}%) |`);
   const yoyChange = grandTotal.storage.current.percentage - grandTotal.storage.lastYear.percentage;
   lines.push(`| Year-over-year change | ${sign(yoyChange)}% |`);
-  lines.push(`| Forecasted drain date | ${grandTotal.drainDate} |`);
+  // Grand total forecast
+  let mainStorage = 0, mainCapacity = 0;
+  for (const key of MAIN_RES_KEYS) {
+    const res = allReservoirs.find(r => RESERVOIR_NAME_TO_KEY[r.name] === key);
+    if (res) { mainStorage += res.storage.current.amount; mainCapacity += res.capacity; }
+  }
+  const grandForecast = calculateForecast(mainStorage, mainCapacity, reportDate, MAIN_RES_KEYS, 7);
+  lines.push(`| Forecasted restrictions | ${grandForecast.expectedRestriction} (drought: ${grandForecast.droughtRestriction}, recovery: ${grandForecast.recoveryRestriction}) |`);
+  lines.push(`| Cycle phase | ${grandForecast.cyclePhase} (${grandForecast.yearsInPhase} years), confidence: ${grandForecast.confidence} |`);
   if (ytdInflow) {
     const inflowChangeStr = ytdInflow.percentChange !== null
       ? ` (${sign(Math.round(ytdInflow.percentChange))}% vs last year: ${fmt(ytdInflow.lastYearYTD)} MCM)`
@@ -131,10 +188,11 @@ function buildMarkdown(): string {
 
     lines.push(`### ${regionName}`);
     lines.push("");
-    lines.push(`Region total: ${fmt(regionTotal.storage.current.amount)} MCM / ${fmt(regionTotal.capacity)} MCM capacity (${fmt(regionTotal.storage.current.percentage)}%) — Last year: ${fmt(regionTotal.storage.lastYear.percentage)}% — Drain date: ${regionTotal.drainDate}`);
+    const regionRestrictionDate = getRegionForecastDate(allReservoirs, regionName, reportDate);
+    lines.push(`Region total: ${fmt(regionTotal.storage.current.amount)} MCM / ${fmt(regionTotal.capacity)} MCM capacity (${fmt(regionTotal.storage.current.percentage)}%) — Last year: ${fmt(regionTotal.storage.lastYear.percentage)}% — Forecasted restrictions: ${regionRestrictionDate}`);
     lines.push("");
-    lines.push("| Reservoir | Capacity (MCM) | Storage (MCM) | % Full | Last Year % | YTD Inflow (MCM) | Last 24h (MCM) | Max Storage (MCM) | Drain Date |");
-    lines.push("|-----------|---------------|--------------|--------|-------------|-----------------|---------------|------------------|------------|");
+    lines.push("| Reservoir | Capacity (MCM) | Storage (MCM) | % Full | Last Year % | YTD Inflow (MCM) | Last 24h (MCM) | Max Storage (MCM) | Restriction Date |");
+    lines.push("|-----------|---------------|--------------|--------|-------------|-----------------|---------------|------------------|-----------------|");
     for (const r of regionReservoirs) {
       lines.push(
         `| ${r.name} | ${fmt(r.capacity)} | ${fmt(r.storage.current.amount)} | ${fmt(r.storage.current.percentage)}% | ${fmt(r.storage.lastYear.percentage)}% | ${fmt(r.inflow.totalSince)} | ${fmt(r.inflow.last24Hours, 3)} | ${fmt(r.maxStorage.amount)} (${r.maxStorage.date}) | ${r.drainDate || "—"} |`
@@ -173,9 +231,10 @@ function buildMarkdown(): string {
   lines.push("");
   lines.push("- **Water year**: October through September (e.g., season 25/26 = Oct 2025 – Sep 2026)");
   lines.push("- **Grand total**: Excludes Recharge/Other region (Tamassos, Klirou-Malounta, Solea)");
-  lines.push("- **Drain date**: Months until empty = current storage / monthly outflow rate, where monthly outflow = (last year storage − current storage) / 12. Values: \"Not Draining\" (storage increasing), \"Beyond 10 Years\" (>120 months), \"Already Empty\", or MM/YYYY");
+  lines.push("- **Restriction forecast**: Cycle-aware model using 38 years of historical storage data. Classifies the current position in the multi-year drought-wet cycle, builds seasonal water balance profiles for dry/moderate/wet years, and simulates forward under three scenarios (drought/expected/recovery) to estimate when storage drops below the restriction threshold (5% for individual reservoirs, 7% for regions and grand total). Values: \"Not Restricted\" (stays above threshold), \"Already Restricted\", or MM/YYYY");
+  lines.push("- **Cycle phase**: declining (storage trending down from peak), trough (extended low), recovering (trending up from trough), peak (extended high)");
   lines.push("- **YTD outflow**: Water balance = total inflow since Oct − (current storage − Oct baseline storage)");
-  lines.push("- **Inflow forecast**: Average of all completed seasons for each remaining month in the current water year");
+  lines.push("- **Inflow forecast**: Average of cycle-aware year group (dry/moderate/wet based on current cycle phase) for each remaining month in the current water year");
   lines.push("- **Storage units**: MCM = Million Cubic Meters");
   lines.push("");
 

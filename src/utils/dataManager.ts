@@ -1,4 +1,4 @@
-import { Reservoir, ReservoirRegion, RegionTotal, YearlyInflowData } from '../types';
+import { Reservoir, ReservoirRegion, RegionTotal, YearlyInflowData, DrainForecast } from '../types';
 import * as data17Mar from './data-17-mar-2025';
 import * as data28Mar from './data-28-mar-2025';
 import * as data11Apr from './data-11-apr-2025';
@@ -50,6 +50,7 @@ import {
   parseReportDate
 } from './reservoirUtils';
 import { historicalStorageData, HistoricalStorageEntry } from './historicalStorageData';
+import { calculateGrandTotalForecast, calculateForecast, MAIN_RES_KEYS, REGION_KEYS, MAJOR_DAM_KEYS, getExpectedInflowYears } from './forecastEngine';
 
 // Define available data sets with their dates and module references
 export const availableDataSets = [
@@ -154,6 +155,90 @@ export const getReportDate = (): string => {
   return getCurrentDataModule().getReportDate();
 };
 
+export { calculateGrandTotalForecast, calculateForecast, MAIN_RES_KEYS, REGION_KEYS, MAJOR_DAM_KEYS };
+
+/**
+ * Compute the drain forecast for the current dataset's grand total.
+ * Uses the cycle-aware scenario engine.
+ */
+export const getGrandTotalForecast = (): DrainForecast => {
+  const grandTotal = calculateGrandTotalUtil(reservoirData());
+  return calculateGrandTotalForecast(
+    grandTotal.storage.current.amount,
+    grandTotal.capacity,
+    currentDataSetId
+  );
+};
+
+/**
+ * Reservoir key → display name mapping (English).
+ * Used by the forecast dropdown to match data keys to reservoir names.
+ */
+const RESERVOIR_KEY_TO_NAME: Record<string, string> = {
+  kouris: 'Kouris',
+  kalavasos: 'Kalavasos',
+  lefkara: 'Lefkara',
+  dipotamos: 'Dipotamos',
+  germasoyeia: 'Germasoyeia',
+  arminou: 'Arminou',
+  polemidia: 'Polemidia',
+  achna: 'Achna',
+  asprokremmos: 'Asprokremmos',
+  kannaviou: 'Kannaviou',
+  mavrokolympos: 'Mavrokolymbos',
+  evretou: 'Evretou',
+  argaka: 'Argaka',
+  pomos: 'Pomos',
+  agiaMarina: 'Agia Marina',
+  vyzakia: 'Vyzakia',
+  xyliatos: 'Xyliatou',
+  kalopanagiotis: 'Kalopanagiotis',
+};
+
+/**
+ * Get the current storage and capacity for a set of reservoir keys.
+ * Matches reservoir data by name using the key→name mapping.
+ */
+export const getStorageForKeys = (keys: (keyof HistoricalStorageEntry)[]): { storage: number; capacity: number } => {
+  const data = reservoirData();
+  let storage = 0;
+  let capacity = 0;
+  for (const key of keys) {
+    const name = RESERVOIR_KEY_TO_NAME[key as string];
+    if (!name) continue;
+    const res = data.find(r => r.name === name);
+    if (res) {
+      storage += res.storage.current.amount;
+      capacity += res.capacity;
+    }
+  }
+  return { storage, capacity };
+};
+
+/**
+ * Compute forecast for a specific selection (region, dam, or all).
+ * @param selectionId - 'all', region name, or reservoir key
+ * @param restrictionThresholdPct - threshold percentage
+ */
+export const getForecastForSelection = (
+  selectionId: string,
+  restrictionThresholdPct: number
+): DrainForecast => {
+  let keys: (keyof HistoricalStorageEntry)[];
+
+  if (selectionId === 'all') {
+    keys = MAIN_RES_KEYS;
+  } else if (selectionId in REGION_KEYS) {
+    keys = REGION_KEYS[selectionId];
+  } else {
+    // Single reservoir key
+    keys = [selectionId as keyof HistoricalStorageEntry];
+  }
+
+  const { storage, capacity } = getStorageForKeys(keys);
+  return calculateForecast(storage, capacity, currentDataSetId, keys, restrictionThresholdPct);
+};
+
 // Main reservoir keys (excluding Recharge/Other: tamassos, klirouMalounta, solea)
 // These match the regions included in calculateGrandTotal (Southern Conveyor, Paphos, Chrysochou, Nicosia)
 const MAIN_RESERVOIR_KEYS: (keyof HistoricalStorageEntry)[] = [
@@ -202,6 +287,102 @@ export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearS
     currentStorage: currentBaseline,
     lastYearStorage: lastYearBaseline,
   };
+};
+
+// Reverse mapping: reservoir display name → historical data key
+const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = Object.fromEntries(
+  Object.entries(RESERVOIR_KEY_TO_NAME).map(([k, v]) => [v, k as keyof HistoricalStorageEntry])
+);
+
+const MAIN_REGION_NAMES: ReservoirRegion[] = ['Southern Conveyor', 'Paphos', 'Chrysochou', 'Nicosia'];
+
+/**
+ * Get reservoirs with forecast-based expected restriction dates.
+ * Main reservoirs use the cycle-aware forecast engine (5% threshold).
+ * Recharge/Other reservoirs fall back to simple linear drain date.
+ */
+export const getReservoirsWithForecastDates = (): Reservoir[] => {
+  const data = reservoirData();
+  return data.map(reservoir => {
+    const key = RESERVOIR_NAME_TO_KEY[reservoir.name];
+    if (key && reservoir.region !== 'Recharge/Other') {
+      const { storage, capacity } = getStorageForKeys([key]);
+      const forecast = calculateForecast(storage, capacity, currentDataSetId, [key], 5);
+      return { ...reservoir, drainDate: forecast.expectedRestriction };
+    }
+    // Fallback for Recharge/Other (no historical data)
+    return { ...reservoir, drainDate: calculateDrainDate(reservoir) };
+  });
+};
+
+/**
+ * Get region totals with forecast-based expected restriction dates.
+ * Main regions use the cycle-aware forecast engine (7% threshold).
+ * Recharge/Other keeps the simple linear drain date.
+ */
+export const getRegionTotalsWithForecasts = (): RegionTotal[] => {
+  const totals = calculateRegionTotalsUtil(reservoirData());
+  return totals.map(regionTotal => {
+    if (MAIN_REGION_NAMES.includes(regionTotal.region)) {
+      const forecast = getForecastForSelection(regionTotal.region, 7);
+      return { ...regionTotal, drainDate: forecast.expectedRestriction };
+    }
+    return regionTotal;
+  });
+};
+
+/**
+ * Get grand total with forecast-based expected restriction date.
+ * Uses the cycle-aware forecast engine (7% threshold).
+ */
+export const getGrandTotalWithForecast = (): RegionTotal => {
+  const grandTotal = calculateGrandTotalUtil(reservoirData());
+  const forecast = getGrandTotalForecast();
+  return { ...grandTotal, drainDate: forecast.expectedRestriction };
+};
+
+/**
+ * Get cycle-aware monthly inflow averages for the "expected" scenario.
+ * Instead of averaging all historical years, only averages years matching
+ * the expected year type (dry/moderate/wet) based on the current cycle phase.
+ * @param monthKeys - array of month key strings (e.g., ["October", "November", ...])
+ * @param latestYear - the latest (current) year label to exclude from averaging
+ */
+export const getScenarioInflowAverages = (
+  monthKeys: string[],
+  latestYear: string
+): { averages: Record<string, number>; yearType: 'dry' | 'moderate' | 'wet' } => {
+  const { type, startYears } = getExpectedInflowYears(currentDataSetId);
+  const inflowData = yearlyInflowData();
+
+  // Map startYears to inflow year labels: startYear 2015 → "15/16"
+  const matchingLabels = new Set(
+    startYears.map(sy => {
+      const shortStart = sy % 100;
+      const shortEnd = (sy + 1) % 100;
+      return `${shortStart}/${shortEnd < 10 ? '0' + shortEnd : shortEnd}`;
+    })
+  );
+
+  // Filter to matching years, excluding the current (incomplete) year
+  const matchingSeasons = inflowData.filter(
+    d => d.year !== latestYear && matchingLabels.has(d.year)
+  );
+
+  // Fall back to all completed seasons if no matches
+  const seasons = matchingSeasons.length > 0
+    ? matchingSeasons
+    : inflowData.filter(d => d.year !== latestYear);
+
+  const averages: Record<string, number> = {};
+  monthKeys.forEach(month => {
+    const values = seasons.map(s => s.months[month] || 0);
+    averages[month] = values.length > 0
+      ? values.reduce((a, b) => a + b, 0) / values.length
+      : 0;
+  });
+
+  return { averages, yearType: type };
 };
 
 /**

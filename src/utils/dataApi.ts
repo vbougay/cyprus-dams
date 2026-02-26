@@ -1,5 +1,6 @@
 import { Reservoir, RegionTotal, ReservoirRegion } from '../types';
 import {
+  ApiForecast,
   ApiReservoir,
   ApiRegion,
   ApiRegionSummary,
@@ -18,9 +19,11 @@ import {
   getReservoirsWithDrainDates as getWithDrainDates,
   getReservoirsByRegion as getByRegion,
   calculateYTDInflow,
+  calculateDrainDate,
   parseReportDate,
 } from './reservoirUtils';
 import { historicalStorageData, HistoricalStorageEntry } from './historicalStorageData';
+import { calculateForecast, MAIN_RES_KEYS, REGION_KEYS } from './forecastEngine';
 
 // --- Thread-safe dataset resolution ---
 
@@ -55,9 +58,84 @@ function getOctoberBaseline(datasetId: string): { currentStorage: number; lastYe
   return { currentStorage: currentBaseline, lastYearStorage: lastYearBaseline };
 }
 
+// --- Reservoir name → historical key mapping ---
+
+const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = {
+  'Kouris': 'kouris',
+  'Kalavasos': 'kalavasos',
+  'Lefkara': 'lefkara',
+  'Dipotamos': 'dipotamos',
+  'Germasoyeia': 'germasoyeia',
+  'Arminou': 'arminou',
+  'Polemidia': 'polemidia',
+  'Achna': 'achna',
+  'Asprokremmos': 'asprokremmos',
+  'Kannaviou': 'kannaviou',
+  'Mavrokolymbos': 'mavrokolympos',
+  'Evretou': 'evretou',
+  'Argaka': 'argaka',
+  'Pomos': 'pomos',
+  'Agia Marina': 'agiaMarina',
+  'Vyzakia': 'vyzakia',
+  'Xyliatou': 'xyliatos',
+  'Kalopanagiotis': 'kalopanagiotis',
+};
+
+// --- Forecast helpers ---
+
+function getStorageForKeys(
+  data: Reservoir[],
+  keys: (keyof HistoricalStorageEntry)[]
+): { storage: number; capacity: number } {
+  let storage = 0;
+  let capacity = 0;
+  const nameToKey = RESERVOIR_NAME_TO_KEY;
+  for (const key of keys) {
+    // Find the reservoir whose name maps to this key
+    const res = data.find(r => nameToKey[r.name] === key);
+    if (res) {
+      storage += res.storage.current.amount;
+      capacity += res.capacity;
+    }
+  }
+  return { storage, capacity };
+}
+
+function computeApiForecast(
+  storage: number,
+  capacity: number,
+  datasetId: string,
+  keys: (keyof HistoricalStorageEntry)[],
+  thresholdPct: number
+): ApiForecast {
+  const f = calculateForecast(storage, capacity, datasetId, keys, thresholdPct);
+  return {
+    restrictionDate: f.expectedRestriction,
+    droughtRestrictionDate: f.droughtRestriction,
+    recoveryRestrictionDate: f.recoveryRestriction,
+    restrictionThresholdPct: f.restrictionThresholdPct,
+    cyclePhase: f.cyclePhase,
+    confidence: f.confidence,
+  };
+}
+
 // --- Flattening helpers ---
 
-function flattenReservoir(r: Reservoir): ApiReservoir {
+function flattenReservoir(r: Reservoir, datasetId: string): ApiReservoir {
+  const key = RESERVOIR_NAME_TO_KEY[r.name];
+  let forecast: ApiForecast | null = null;
+  let drainDate = r.drainDate ?? 'N/A';
+
+  if (key && r.region !== 'Recharge/Other') {
+    forecast = computeApiForecast(
+      r.storage.current.amount, r.capacity, datasetId, [key], 5
+    );
+    drainDate = forecast.restrictionDate;
+  } else {
+    // Fallback for Recharge/Other
+    drainDate = calculateDrainDate(r) ?? 'N/A';
+  }
+
   return {
     name: r.name,
     region: r.region,
@@ -70,11 +148,22 @@ function flattenReservoir(r: Reservoir): ApiReservoir {
     inflowSinceOctober: r.inflow.totalSince,
     maxStorageMCM: r.maxStorage.amount,
     maxStorageDate: r.maxStorage.date,
-    drainDate: r.drainDate ?? 'N/A',
+    drainDate,
+    forecast,
   };
 }
 
-function flattenRegion(r: RegionTotal): ApiRegion {
+function flattenRegion(r: RegionTotal, datasetId: string, data: Reservoir[]): ApiRegion {
+  let forecast: ApiForecast | null = null;
+  let drainDate = r.drainDate ?? 'N/A';
+
+  const regionKeys = REGION_KEYS[r.region];
+  if (regionKeys) {
+    const { storage, capacity } = getStorageForKeys(data, regionKeys);
+    forecast = computeApiForecast(storage, capacity, datasetId, regionKeys, 7);
+    drainDate = forecast.restrictionDate;
+  }
+
   return {
     region: r.region,
     capacity: r.capacity,
@@ -84,7 +173,8 @@ function flattenRegion(r: RegionTotal): ApiRegion {
     lastYearPercent: r.storage.lastYear.percentage,
     inflowLast24h: r.inflow.last24Hours,
     inflowSinceOctober: r.inflow.totalSince,
-    drainDate: r.drainDate ?? 'N/A',
+    drainDate,
+    forecast,
   };
 }
 
@@ -118,6 +208,10 @@ export function getApiSummary(datasetId?: string): ApiSummaryResponse | null {
     }
   }
 
+  // Compute grand total forecast (all main reservoirs, 7% threshold)
+  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(data, MAIN_RES_KEYS);
+  const forecast = computeApiForecast(mainStorage, mainCapacity, ds.id, MAIN_RES_KEYS, 7);
+
   return {
     dataset: ds.id,
     reportDate: ds.module.getReportDate(),
@@ -132,7 +226,8 @@ export function getApiSummary(datasetId?: string): ApiSummaryResponse | null {
     inflowLast24h: grandTotal.inflow.last24Hours,
     inflowSinceOctober: grandTotal.inflow.totalSince,
     reservoirCount: data.filter(r => r.region !== 'Recharge/Other').length,
-    drainDate: grandTotal.drainDate ?? 'N/A',
+    drainDate: forecast.restrictionDate,
+    forecast,
     regions,
   };
 }
@@ -150,7 +245,7 @@ export function getApiReservoirs(datasetId?: string, region?: string): ApiReserv
     dataset: ds.id,
     reportDate: ds.module.getReportDate(),
     count: data.length,
-    reservoirs: data.map(flattenReservoir),
+    reservoirs: data.map(r => flattenReservoir(r, ds.id)),
   };
 }
 
@@ -162,11 +257,19 @@ export function getApiRegions(datasetId?: string): ApiRegionsResponse | null {
   const regionTotals = calcRegionTotals(data);
   const grandTotal = calcGrandTotal(data);
 
+  // Grand total forecast uses all main reservoir keys at 7% threshold
+  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(data, MAIN_RES_KEYS);
+  const grandForecast = computeApiForecast(mainStorage, mainCapacity, ds.id, MAIN_RES_KEYS, 7);
+
+  const flatGrandTotal = flattenRegion(grandTotal, ds.id, data);
+  flatGrandTotal.drainDate = grandForecast.restrictionDate;
+  flatGrandTotal.forecast = grandForecast;
+
   return {
     dataset: ds.id,
     reportDate: ds.module.getReportDate(),
-    regions: regionTotals.map(flattenRegion),
-    grandTotal: flattenRegion(grandTotal),
+    regions: regionTotals.map(r => flattenRegion(r, ds.id, data)),
+    grandTotal: flatGrandTotal,
   };
 }
 

@@ -28,7 +28,15 @@ Overview of all reservoirs — total storage, inflow, year-over-year change, and
   "inflowLast24h": 3.339,
   "inflowSinceOctober": 36.687,
   "reservoirCount": 18,
-  "drainDate": "Not Draining",
+  "drainDate": "Not Restricted",
+  "forecast": {
+    "restrictionDate": "Not Restricted",
+    "droughtRestrictionDate": "8/2028",
+    "recoveryRestrictionDate": "Not Restricted",
+    "restrictionThresholdPct": 7,
+    "cyclePhase": "declining",
+    "confidence": "high"
+  },
   "regions": {
     "Southern Conveyor": { "storagePercent": 16.3, "storageMCM": 31.637 },
     "Paphos": { "storagePercent": 23.2, "storageMCM": 16.667 },
@@ -66,7 +74,15 @@ All 21 reservoirs with computed drain dates.
       "inflowSinceOctober": 6.883,
       "maxStorageMCM": 25.538,
       "maxStorageDate": "7/1",
-      "drainDate": "Not Draining"
+      "drainDate": "Not Restricted",
+      "forecast": {
+        "restrictionDate": "Not Restricted",
+        "droughtRestrictionDate": "3/2029",
+        "recoveryRestrictionDate": "Not Restricted",
+        "restrictionThresholdPct": 5,
+        "cyclePhase": "declining",
+        "confidence": "high"
+      }
     }
   ]
 }
@@ -95,7 +111,15 @@ Aggregated totals for each region plus the grand total.
       "lastYearPercent": 25.5,
       "inflowLast24h": 1.809,
       "inflowSinceOctober": 17.218,
-      "drainDate": "Not Draining"
+      "drainDate": "Not Restricted",
+      "forecast": {
+        "restrictionDate": "Not Restricted",
+        "droughtRestrictionDate": "7/2028",
+        "recoveryRestrictionDate": "Not Restricted",
+        "restrictionThresholdPct": 7,
+        "cyclePhase": "declining",
+        "confidence": "high"
+      }
     }
   ],
   "grandTotal": { ... }
@@ -180,6 +204,23 @@ List all available datasets.
 
 ---
 
+## Forecast Fields
+
+The `forecast` object is included in summary, reservoir, and region endpoints. It uses a cycle-aware model based on 38 years of historical storage data.
+
+| Field | Description |
+|-------|-------------|
+| `restrictionDate` | Expected date when storage drops below the restriction threshold (main forecast) |
+| `droughtRestrictionDate` | Worst-case scenario (persistent drought) |
+| `recoveryRestrictionDate` | Best-case scenario (wet recovery) |
+| `restrictionThresholdPct` | Threshold percentage (5% for individual reservoirs, 7% for regions/grand total) |
+| `cyclePhase` | Current position in multi-year cycle: `declining`, `trough`, `recovering`, or `peak` |
+| `confidence` | Forecast confidence based on analog year count: `low`, `medium`, or `high` |
+
+The `drainDate` field is populated with the `restrictionDate` value for backward compatibility.
+
+---
+
 ## Units
 
 All storage and inflow values are in **MCM** (Million Cubic Meters). Percentages represent storage as a fraction of total capacity.
@@ -223,6 +264,7 @@ sensor:
       - inflowLast24h
       - inflowSinceOctober
       - drainDate
+      - forecast
       - regions
       - reportDate
 ```
@@ -235,4 +277,8 @@ template:
       - name: "Southern Conveyor Storage"
         state: "{{ state_attr('sensor.cyprus_reservoirs', 'regions')['Southern Conveyor']['storagePercent'] }}"
         unit_of_measurement: "%"
+      - name: "Cyprus Reservoirs Restriction Date"
+        state: "{{ state_attr('sensor.cyprus_reservoirs', 'forecast')['restrictionDate'] }}"
+      - name: "Cyprus Reservoirs Cycle Phase"
+        state: "{{ state_attr('sensor.cyprus_reservoirs', 'forecast')['cyclePhase'] }}"
 ```

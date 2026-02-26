@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { yearlyInflowData, getReportDate } from '@/utils/dataManager';
+import { yearlyInflowData, getReportDate, getScenarioInflowAverages } from '@/utils/dataManager';
 import { parseReportDate } from '@/utils/reservoirUtils';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
@@ -107,20 +107,19 @@ const MonthlyInflow: React.FC = () => {
     return calendarMonthToWaterYearIndex(parsed.month);
   }, [currentDataSetId]);
 
-  const historicalAverages = useMemo(() => {
-    const inflowData = yearlyInflowData();
-    const completedSeasons = inflowData.filter(d => d.year !== latestYear);
-    const averages: Record<string, number> = {};
-    MONTH_KEYS.forEach(month => {
-      const values = completedSeasons.map(s => s.months[month] || 0);
-      averages[month] = values.length > 0
-        ? values.reduce((a, b) => a + b, 0) / values.length
-        : 0;
-    });
-    return averages;
+  const { historicalAverages, expectedYearType } = useMemo(() => {
+    const { averages, yearType } = getScenarioInflowAverages(MONTH_KEYS, latestYear);
+    return { historicalAverages: averages, expectedYearType: yearType };
   }, [currentDataSetId, latestYear]);
 
   const isLatestSelected = selectedYear === latestYear;
+
+  const forecastLabel = useMemo(() => {
+    const key = expectedYearType === 'dry' ? 'predictedDry'
+      : expectedYearType === 'wet' ? 'predictedWet'
+      : 'predictedModerate';
+    return t(key as keyof typeof translations.en);
+  }, [expectedYearType, language]);
 
   const singleSeasonData = useMemo(() => {
     if (selectedYear === ALL_VALUE) return [];
@@ -347,7 +346,7 @@ const MonthlyInflow: React.FC = () => {
                 <Area type="monotone" dataKey="actual" name={`${t('yearLabel')} ${selectedYear}`} stroke="#0ea5e9" strokeWidth={2.5} fill="url(#currentYearGradient)" animationDuration={1000} />
                 <Area type="monotone" dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} stroke="#94a3b8" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} />
                 {isLatestSelected && (
-                  <Area type="monotone" dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${t('predictedAvg')})`} stroke="#0ea5e9" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} connectNulls={false} />
+                  <Area type="monotone" dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${forecastLabel})`} stroke="#0ea5e9" strokeWidth={2} strokeDasharray="6 3" fill="none" animationDuration={1000} connectNulls={false} />
                 )}
               </AreaChart>
             </ResponsiveContainer>
@@ -398,7 +397,7 @@ const MonthlyInflow: React.FC = () => {
                 <Bar dataKey="actual" name={`${t('yearLabel')} ${selectedYear}`} fill="#0ea5e9" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 <Bar dataKey="previousYear" name={`${t('yearLabel')} ${previousYearLabel}`} fill="#94a3b8" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 {isLatestSelected && (
-                  <Bar dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${t('predictedAvg')})`} fill="#0ea5e9" fillOpacity={0.3} stroke="#0ea5e9" strokeDasharray="4 2" radius={[4, 4, 0, 0]} animationDuration={1000} />
+                  <Bar dataKey="forecast" name={`${t('yearLabel')} ${selectedYear} (${forecastLabel})`} fill="#0ea5e9" fillOpacity={0.3} stroke="#0ea5e9" strokeDasharray="4 2" radius={[4, 4, 0, 0]} animationDuration={1000} />
                 )}
               </BarChart>
             </ResponsiveContainer>
@@ -446,7 +445,7 @@ const MonthlyInflow: React.FC = () => {
                   <span className="inline-block w-4 h-0.5 bg-[#0ea5e9] rounded" />
                 )}
                 <span className="text-muted-foreground">
-                  {t('yearLabel')} {selectedYear}{isLatestSelected ? ` + ${t('predictedAvg')}` : ''}
+                  {t('yearLabel')} {selectedYear}{isLatestSelected ? ` + ${forecastLabel}` : ''}
                 </span>
               </div>
               <div className="flex items-center gap-1.5">

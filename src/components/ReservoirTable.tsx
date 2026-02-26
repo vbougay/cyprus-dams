@@ -130,21 +130,21 @@ const ReservoirTable: React.FC = () => {
     },
     {
       key: 'drainDate',
-      label: t('fullyDrainedByShort'),
+      label: t('restrictionsBy'),
       render: (reservoir) => {
         const drainDate = reservoir.drainDate || t('calculating');
         return (
           <div className="flex items-center gap-1">
             <Timer className="h-4 w-4 text-water-500 dark:text-water-400" />
             <span className={`
-              ${drainDate === 'Already Empty' ? 'text-red-500 dark:text-red-400' : ''}
-              ${drainDate === 'Not Draining' ? 'text-green-500 dark:text-green-400' : ''}
+              ${drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
+              ${drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
               ${drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-              ${!['Already Empty', 'Not Draining', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500 dark:text-amber-400' : ''}
+              ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years', 'Calculating...'].includes(drainDate) ? 'text-amber-500 dark:text-amber-400' : ''}
             `}>
-              {drainDate === 'Already Empty' ? t('alreadyEmpty') :
-               drainDate === 'Not Draining' ? t('notDraining') :
-               drainDate === 'Beyond 10 Years' ? t('beyondTenYears') :
+              {drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? t('alreadyRestricted') :
+               drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? t('notRestricted') :
+               drainDate === 'Beyond 10 Years' ? t('notRestricted') :
                drainDate === 'Calculating...' ? t('calculating') : drainDate}
             </span>
           </div>
@@ -169,8 +169,8 @@ const ReservoirTable: React.FC = () => {
   // "Already Empty" = 0, actual dates = timestamp, "Beyond 10 Years" and "Not Draining" = far future.
   const drainDateToSortValue = (drainDate: string | undefined): number => {
     if (!drainDate || drainDate === 'Calculating...') return Infinity;
-    if (drainDate === 'Already Empty') return 0;
-    if (drainDate === 'Not Draining') return Infinity - 1;
+    if (drainDate === 'Already Empty' || drainDate === 'Already Restricted') return 0;
+    if (drainDate === 'Not Draining' || drainDate === 'Not Restricted') return Infinity - 1;
     if (drainDate === 'Beyond 10 Years') return Infinity - 2;
     // Parse "M/YYYY" format
     const parts = drainDate.split('/');

@@ -1,5 +1,15 @@
 import { Reservoir, RegionTotal, ReservoirRegion, YearlyInflowData } from './index';
 
+// Cycle-aware forecast data
+export interface ApiForecast {
+  restrictionDate: string;        // expectedRestriction (the main date shown)
+  droughtRestrictionDate: string;  // worst case
+  recoveryRestrictionDate: string; // best case
+  restrictionThresholdPct: number;
+  cyclePhase: string;             // declining | trough | recovering | peak
+  confidence: string;             // low | medium | high
+}
+
 // Flattened reservoir for API responses
 export interface ApiReservoir {
   name: Reservoir['name'];
@@ -14,6 +24,7 @@ export interface ApiReservoir {
   maxStorageMCM: number;    // maxStorage.amount
   maxStorageDate: string;   // maxStorage.date
   drainDate: string;
+  forecast: ApiForecast | null;
 }
 
 // Flattened region total for API responses
@@ -27,6 +38,7 @@ export interface ApiRegion {
   inflowLast24h: number;
   inflowSinceOctober: number;
   drainDate: string;
+  forecast: ApiForecast | null;
 }
 
 // Region summary used in the summary endpoint
@@ -48,6 +60,7 @@ export interface ApiSummaryResponse {
   inflowSinceOctober: number;
   reservoirCount: number;
   drainDate: string;
+  forecast: ApiForecast | null;
   regions: Record<string, ApiRegionSummary>;
 }
 

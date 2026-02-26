@@ -134,6 +134,9 @@ export const translations = {
     cumulativeView: "Cumulative",
     allSeasons: "All",
     predictedAvg: "Predicted (avg)",
+    predictedDry: "Predicted (dry yrs)",
+    predictedModerate: "Predicted (moderate yrs)",
+    predictedWet: "Predicted (wet yrs)",
     outflowNotAvailable: "Outflow data is not available from the official data source.",
 
     // Historical Heatmap
@@ -145,6 +148,16 @@ export const translations = {
     // Media Mode
     downloadImage: "Download as Image",
     downloading: "Downloading...",
+
+    // Storage Forecast
+    storageForecast: "Storage Forecast",
+    restrictionsBy: "Forecasted Restrictions",
+    notRestricted: "Not Restricted",
+    alreadyRestricted: "Already Restricted",
+    restrictionThreshold: "Restriction Threshold",
+    allMainReservoirs: "All Main Reservoirs",
+    regions: "Regions",
+    majorDams: "Major Dams",
 
   },
   el: {
@@ -282,6 +295,9 @@ export const translations = {
     cumulativeView: "Αθροιστική",
     allSeasons: "Όλα",
     predictedAvg: "Πρόβλεψη (μέσος)",
+    predictedDry: "Πρόβλεψη (ξηρά έτη)",
+    predictedModerate: "Πρόβλεψη (μέτρια έτη)",
+    predictedWet: "Πρόβλεψη (υγρά έτη)",
     outflowNotAvailable: "Τα δεδομένα εκροής δεν είναι διαθέσιμα από την επίσημη πηγή δεδομένων.",
 
     // Historical Heatmap
@@ -293,6 +309,16 @@ export const translations = {
     // Media Mode
     downloadImage: "Λήψη ως Εικόνα",
     downloading: "Γίνεται λήψη...",
+
+    // Storage Forecast
+    storageForecast: "Πρόβλεψη Αποθήκευσης",
+    restrictionsBy: "Πρόβλεψη Περιορισμών",
+    notRestricted: "Χωρίς περιορισμούς",
+    alreadyRestricted: "Ήδη περιορισμένο",
+    restrictionThreshold: "Όριο περιορισμών",
+    allMainReservoirs: "Κύριοι Ταμιευτήρες",
+    regions: "Περιοχές",
+    majorDams: "Μεγάλα Φράγματα",
 
   },
   ru: {
@@ -430,6 +456,9 @@ export const translations = {
     cumulativeView: "Нарастающим итогом",
     allSeasons: "Все",
     predictedAvg: "Прогноз (ср.)",
+    predictedDry: "Прогноз (засушл. годы)",
+    predictedModerate: "Прогноз (умерен. годы)",
+    predictedWet: "Прогноз (влажн. годы)",
     outflowNotAvailable: "Данные об оттоке недоступны из официального источника данных.",
 
     // Historical Heatmap
@@ -441,6 +470,16 @@ export const translations = {
     // Media Mode
     downloadImage: "Скачать как изображение",
     downloading: "Загрузка...",
+
+    // Storage Forecast
+    storageForecast: "Прогноз запасов",
+    restrictionsBy: "Прогноз ограничений",
+    notRestricted: "Без ограничений",
+    alreadyRestricted: "Уже ограничено",
+    restrictionThreshold: "Порог ограничений",
+    allMainReservoirs: "Все водохранилища",
+    regions: "Регионы",
+    majorDams: "Крупные плотины",
   }
 };
 
