@@ -44,7 +44,7 @@ const reservoirLocations = {
   'Palekhori': { lng: 33.1100, lat: 34.9500 }, // Retained due to lack of precise data
   'Solea': { lng: 32.9500, lat: 35.0100 }, // Retained due to lack of precise data
   'Kalopanagiotis': { lng: 32.8254, lat: 35.0061 },
-  'Xyliatou': { lng: 33.0372, lat: 35.0089 },
+  'Xyliatos': { lng: 33.0372, lat: 35.0089 },
   'Vyzakia': { lng: 33.0272, lat: 35.0615 },
   'Argaka': { lng: 32.5022, lat: 35.0486 },
   'Pomos': { lng: 32.5762, lat: 35.1449 },
