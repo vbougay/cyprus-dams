@@ -5,21 +5,14 @@ import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, Hi
 import { NewsTicker } from '@/components/NewsTicker';
 import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
 import StorageForecast from '@/components/StorageForecast';
-import {
-  getReservoirsWithForecastDates,
-  getRegionTotalsWithForecasts,
-  getGrandTotalWithForecast,
-  yearlyInflowData,
-  getReportDate,
-  getOctoberBaselineStorage
-} from '@/utils/dataManager';
-import { calculateYTDInflow, calculateYTDOutflow, YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
+import { StatCardGrid } from '@/components/StatCardGrid';
+import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
+import { useReservoirData } from '@/hooks/useReservoirData';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
-import { Card, CardContent } from '@/components/ui/card';
-import { Droplets, Database, BarChart, Timer, TrendingUp, TrendingDown, Loader2, Github, Code, Mail, Linkedin } from 'lucide-react';
+import { Droplets, Loader2, Github, Code, Mail, Linkedin } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 /**
@@ -62,38 +55,14 @@ export function DashboardClient({
   initialYtdInflow,
   initialYtdOutflow,
 }: DashboardClientProps) {
-  const [regionTotals, setRegionTotals] = useState<RegionTotal[]>(initialRegionTotals);
-  const [grandTotal, setGrandTotal] = useState<RegionTotal | null>(initialGrandTotal);
-  const [reservoirs, setReservoirs] = useState<Reservoir[]>(initialReservoirs);
-  const [ytdInflow, setYtdInflow] = useState<YTDInflowResult | null>(initialYtdInflow);
-  const [ytdOutflow, setYtdOutflow] = useState<YTDOutflowResult | null>(initialYtdOutflow);
   const { currentDataSetId } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
-
-  useEffect(() => {
-    // Re-compute data when dataset changes (skip initial render since we have SSR data)
-    const totals = getRegionTotalsWithForecasts(currentDataSetId);
-    setRegionTotals(totals);
-
-    const total = getGrandTotalWithForecast(currentDataSetId);
-    setGrandTotal(total);
-
-    const reservoirsWithDrainDates = getReservoirsWithForecastDates(currentDataSetId);
-    setReservoirs(reservoirsWithDrainDates);
-
-    const inflowData = yearlyInflowData(currentDataSetId);
-    const reportDate = getReportDate(currentDataSetId);
-    const inflow = calculateYTDInflow(inflowData, reportDate);
-    setYtdInflow(inflow);
-
-    const octBaseline = getOctoberBaselineStorage(currentDataSetId);
-    if (inflow && octBaseline && total) {
-      setYtdOutflow(calculateYTDOutflow(total, inflow, octBaseline));
-    } else {
-      setYtdOutflow(null);
-    }
-  }, [currentDataSetId]);
+  const { regionTotals, grandTotal, reservoirs, ytdInflow, ytdOutflow } = useReservoirData(
+    currentDataSetId,
+    true,
+    { reservoirs: initialReservoirs, regionTotals: initialRegionTotals, grandTotal: initialGrandTotal, ytdInflow: initialYtdInflow, ytdOutflow: initialYtdOutflow }
+  );
 
   const getReservoirs = (region: ReservoirRegion) => {
     return reservoirs.filter(reservoir => reservoir.region === region);
@@ -104,109 +73,7 @@ export function DashboardClient({
       <Header />
 
       <main className="container mx-auto px-4 pb-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6 mb-8">
-          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect">
-            <div className="stat-card-icon flex-none p-3 sm:p-4">
-              <Droplets className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
-            </div>
-            <CardContent className="flex flex-col justify-center p-3 sm:p-4">
-              <div className="text-xs sm:text-sm text-muted-foreground">{t('totalCapacity')}</div>
-              <div className="text-lg sm:text-2xl font-bold text-foreground">{grandTotal?.capacity.toFixed(1)} MCM</div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '100ms' }}>
-            <div className="stat-card-icon flex-none p-3 sm:p-4">
-              <Database className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
-            </div>
-            <CardContent className="flex flex-col justify-center p-3 sm:p-4">
-              <div className="text-xs sm:text-sm text-muted-foreground">{t('currentStorage')}</div>
-              <div className="text-lg sm:text-2xl font-bold text-foreground">
-                {grandTotal?.storage.current.amount.toFixed(1)} MCM
-              </div>
-              <div className="text-xs sm:text-sm text-muted-foreground">
-                ({grandTotal?.storage.current.percentage.toFixed(1)}%)
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '200ms' }}>
-            <div className="stat-card-icon flex-none p-3 sm:p-4">
-              <BarChart className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
-            </div>
-            <CardContent className="flex flex-col justify-center p-3 sm:p-4">
-              <div className="text-xs sm:text-sm text-muted-foreground">{t('vsLastYear')}</div>
-              <div className="text-lg sm:text-2xl font-bold text-foreground">
-                {((grandTotal?.storage.current.percentage || 0) - (grandTotal?.storage.lastYear.percentage || 0)).toFixed(1)}%
-              </div>
-              <div className="text-xs sm:text-sm text-muted-foreground">
-                {t('change')}
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect" style={{ animationDelay: '300ms' }}>
-            <div className="stat-card-icon flex-none p-3 sm:p-4">
-              <Timer className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
-            </div>
-            <CardContent className="flex flex-col justify-center p-3 sm:p-4 w-full">
-              <div className="text-xs sm:text-sm text-muted-foreground">{t('restrictionsBy')}</div>
-              <div className="text-lg sm:text-2xl font-bold">
-                <span className={`
-                  ${grandTotal?.drainDate === 'Already Empty' || grandTotal?.drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
-                  ${grandTotal?.drainDate === 'Not Draining' || grandTotal?.drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
-                  ${grandTotal?.drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                  ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(grandTotal?.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
-                `}>
-                  {grandTotal?.drainDate === 'Already Empty' || grandTotal?.drainDate === 'Already Restricted' ? t('alreadyRestricted') :
-                   grandTotal?.drainDate === 'Not Draining' || grandTotal?.drainDate === 'Not Restricted' ? t('notRestricted') :
-                   grandTotal?.drainDate === 'Beyond 10 Years' ? t('notRestricted') :
-                   grandTotal?.drainDate || t('calculating')}
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="col-span-2 md:col-span-1 grid grid-cols-2 md:grid-cols-1 gap-3">
-            {ytdInflow && (
-              <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect flex-1" style={{ animationDelay: '400ms' }}>
-                <div className="stat-card-icon flex-none p-2 sm:p-3">
-                  <TrendingUp className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                </div>
-                <CardContent className="flex flex-col justify-center p-2 min-w-0">
-                  <div className="text-xs text-muted-foreground">{t('ytdInflow')}</div>
-                  <div className="text-sm font-bold text-foreground">
-                    {ytdInflow.currentYTD.toFixed(1)} MCM
-                    {ytdInflow.percentChange !== null && (
-                      <span className={`text-xs font-semibold ml-1 ${ytdInflow.percentChange >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-                        {ytdInflow.percentChange >= 0 ? '+' : ''}{ytdInflow.percentChange.toFixed(0)}%
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-
-            {ytdOutflow && (
-              <Card className="glass-card flex rounded-2xl overflow-hidden animate-fade-in glow-effect flex-1" style={{ animationDelay: '500ms' }}>
-                <div className="stat-card-icon flex-none p-2 sm:p-3">
-                  <TrendingDown className="h-5 w-5 text-orange-500 dark:text-orange-400" />
-                </div>
-                <CardContent className="flex flex-col justify-center p-2 min-w-0">
-                  <div className="text-xs text-muted-foreground">{t('ytdOutflow')}</div>
-                  <div className="text-sm font-bold text-foreground">
-                    {ytdOutflow.currentOutflow.toFixed(1)} MCM
-                    {ytdOutflow.percentChange !== null && (
-                      <span className={`text-xs font-semibold ml-1 ${ytdOutflow.percentChange <= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-500 dark:text-red-400'}`}>
-                        {ytdOutflow.percentChange >= 0 ? '+' : ''}{ytdOutflow.percentChange.toFixed(0)}%
-                      </span>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        </div>
+        <StatCardGrid grandTotal={grandTotal} ytdInflow={ytdInflow} ytdOutflow={ytdOutflow} t={t} animate />
 
         <Tabs defaultValue="dashboard" className="mb-8 modern-tabs">
           <TabsList className="w-full max-w-xl mx-auto grid grid-cols-4 mb-8 bg-white/60 dark:bg-white/5 backdrop-blur-md rounded-xl p-1 border border-white/20 dark:border-white/10">

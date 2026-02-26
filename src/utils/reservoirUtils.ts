@@ -21,75 +21,46 @@ export const calculateMonthlyOutflowRate = (reservoir: Reservoir): number => {
   return avgMonthlyDecrease;
 };
 
-// Calculate the drain date for a reservoir
-export const calculateDrainDate = (reservoir: Reservoir): string => {
-  // If reservoir is already empty, return "Already Empty"
-  if (reservoir.storage.current.amount <= 0) {
-    return "Already Empty";
-  }
-  
-  // Calculate monthly outflow rate
-  const monthlyOutflowRate = calculateMonthlyOutflowRate(reservoir);
-  
-  // If outflow rate is negative or zero, reservoir is not draining
-  if (monthlyOutflowRate <= 0) {
-    return "Not Draining";
-  }
-  
-  // Calculate months until empty
-  const monthsUntilEmpty = reservoir.storage.current.amount / monthlyOutflowRate;
-  
-  // If more than 10 years, return "Beyond 10 Years"
-  if (monthsUntilEmpty > 120) {
-    return "Beyond 10 Years";
-  }
-  
-  // Calculate the drain date
+// Shared drain date logic: given current amount and monthly outflow rate, return a status string or date
+const formatDrainDate = (currentAmount: number, monthlyOutflowRate: number): string => {
+  if (currentAmount <= 0) return "Already Empty";
+  if (monthlyOutflowRate <= 0) return "Not Draining";
+
+  const monthsUntilEmpty = currentAmount / monthlyOutflowRate;
+  if (monthsUntilEmpty > 120) return "Beyond 10 Years";
+
   const drainDate = new Date();
   drainDate.setMonth(drainDate.getMonth() + Math.floor(monthsUntilEmpty));
-  
-  // Format the date as MM/YYYY
-  const month = drainDate.getMonth() + 1; // Convert 0-based to 1-based
-  const year = drainDate.getFullYear();
-  
-  return `${month}/${year}`;
+  return `${drainDate.getMonth() + 1}/${drainDate.getFullYear()}`;
+};
+
+// Calculate the drain date for a reservoir
+export const calculateDrainDate = (reservoir: Reservoir): string => {
+  return formatDrainDate(reservoir.storage.current.amount, calculateMonthlyOutflowRate(reservoir));
 };
 
 // Calculate the drain date for a region based on its reservoirs
 export const calculateRegionDrainDate = (regionTotal: RegionTotal, reservoirs: Reservoir[]): string => {
-  // If region is already empty, return "Already Empty"
-  if (regionTotal.storage.current.amount <= 0) {
-    return "Already Empty";
-  }
-  
-  // Calculate yearly decrease rate for the region
   const yearlyDecrease = regionTotal.storage.lastYear.amount - regionTotal.storage.current.amount;
-  
-  // If storage is increasing, return "Not Draining"
-  if (yearlyDecrease <= 0) {
-    return "Not Draining";
-  }
-  
-  // Calculate average monthly decrease
-  const avgMonthlyDecrease = yearlyDecrease / 12;
-  
-  // Calculate months until empty
-  const monthsUntilEmpty = regionTotal.storage.current.amount / avgMonthlyDecrease;
-  
-  // If more than 10 years, return "Beyond 10 Years"
-  if (monthsUntilEmpty > 120) {
-    return "Beyond 10 Years";
-  }
-  
-  // Calculate the drain date
-  const drainDate = new Date();
-  drainDate.setMonth(drainDate.getMonth() + Math.floor(monthsUntilEmpty));
-  
-  // Format the date as MM/YYYY
-  const month = drainDate.getMonth() + 1; // Convert 0-based to 1-based
-  const year = drainDate.getFullYear();
-  
-  return `${month}/${year}`;
+  const monthlyRate = yearlyDecrease > 0 ? yearlyDecrease / 12 : -1;
+  return formatDrainDate(regionTotal.storage.current.amount, monthlyRate);
+};
+
+// Get the Tailwind color class for a drain date status
+export const getDrainDateColor = (drainDate: string | undefined): string => {
+  if (!drainDate) return '';
+  if (drainDate === 'Already Empty' || drainDate === 'Already Restricted') return 'text-red-500 dark:text-red-400';
+  if (drainDate === 'Not Draining' || drainDate === 'Not Restricted' || drainDate === 'Beyond 10 Years') return 'text-green-500 dark:text-green-400';
+  return 'text-amber-500 dark:text-amber-400';
+};
+
+// Get the display text for a drain date status
+export const getDrainDateText = (drainDate: string | undefined, t: (key: string) => string): string => {
+  if (!drainDate) return t('calculating');
+  if (drainDate === 'Already Empty' || drainDate === 'Already Restricted') return t('alreadyRestricted');
+  if (drainDate === 'Not Draining' || drainDate === 'Not Restricted' || drainDate === 'Beyond 10 Years') return t('notRestricted');
+  if (drainDate === 'Calculating...') return t('calculating');
+  return drainDate;
 };
 
 // Water year month keys (October through August-September)

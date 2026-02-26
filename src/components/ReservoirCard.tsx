@@ -5,6 +5,7 @@ import { CapacityChart } from '@/components';
 import { DropletIcon, Droplets, TrendingUp, Calendar, Timer } from 'lucide-react';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation, translations } from '@/utils/translations';
+import { getDrainDateColor, getDrainDateText } from '@/utils/reservoirUtils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ReservoirCardProps {
@@ -75,16 +76,8 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir }) => {
               {t('restrictionsBy')}
             </div>
             <div className="font-mono flex justify-between">
-              <span className={`
-                ${drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
-                ${drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
-                ${drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
-              `}>
-                {drainDate === 'Already Empty' || drainDate === 'Already Restricted' ? t('alreadyRestricted') :
-                 drainDate === 'Not Draining' || drainDate === 'Not Restricted' ? t('notRestricted') :
-                 drainDate === 'Beyond 10 Years' ? t('notRestricted') :
-                 drainDate === 'Calculating...' ? t('calculating') : drainDate}
+              <span className={getDrainDateColor(drainDate)}>
+                {getDrainDateText(drainDate, t)}
               </span>
             </div>
           </div>

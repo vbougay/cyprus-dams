@@ -7,6 +7,7 @@ import { getSummaryChanges } from '@/utils/dataManager';
 import { useLanguage } from '@/context/LanguageContext';
 import { useDataContext } from '@/context/DataContext';
 import { useTranslation } from '@/utils/translations';
+import { getDrainDateColor, getDrainDateText } from '@/utils/reservoirUtils';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -140,16 +141,8 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
               <div className="text-sm text-muted-foreground">{t('restrictionsBy')}</div>
             </div>
             <div className="text-lg font-semibold mt-1">
-              <span className={`
-                ${regionTotal.drainDate === 'Already Empty' || regionTotal.drainDate === 'Already Restricted' ? 'text-red-500 dark:text-red-400' : ''}
-                ${regionTotal.drainDate === 'Not Draining' || regionTotal.drainDate === 'Not Restricted' ? 'text-green-500 dark:text-green-400' : ''}
-                ${regionTotal.drainDate === 'Beyond 10 Years' ? 'text-green-500 dark:text-green-400' : ''}
-                ${!['Already Empty', 'Already Restricted', 'Not Draining', 'Not Restricted', 'Beyond 10 Years'].includes(regionTotal.drainDate || '') ? 'text-amber-500 dark:text-amber-400' : ''}
-              `}>
-                {regionTotal.drainDate === 'Already Empty' || regionTotal.drainDate === 'Already Restricted' ? t('alreadyRestricted') :
-                 regionTotal.drainDate === 'Not Draining' || regionTotal.drainDate === 'Not Restricted' ? t('notRestricted') :
-                 regionTotal.drainDate === 'Beyond 10 Years' ? t('notRestricted') :
-                 regionTotal.drainDate === 'Calculating...' ? t('calculating') : regionTotal.drainDate}
+              <span className={getDrainDateColor(regionTotal.drainDate)}>
+                {getDrainDateText(regionTotal.drainDate, t)}
               </span>
             </div>
           </div>
