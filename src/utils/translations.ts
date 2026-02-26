@@ -64,7 +64,6 @@ export const translations = {
     
     // Footer
     dataFrom: "Data from Cyprus Water Development Department",
-    contactMe: "Contact me at",
     apiDocs: "API",
 
     // Region names
@@ -225,7 +224,6 @@ export const translations = {
     
     // Footer
     dataFrom: "Δεδομένα από το Τμήμα Αναπτύξεως Υδάτων Κύπρου",
-    contactMe: "Επικοινωνία στο",
     apiDocs: "API",
 
     // Region names
@@ -386,7 +384,6 @@ export const translations = {
     
     // Footer
     dataFrom: "Данные Департамента Водного Развития Кипра",
-    contactMe: "Связаться со мной по",
     apiDocs: "API",
 
     // Region names
