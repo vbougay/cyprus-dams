@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { toBlob } from 'html-to-image';
 import { ReservoirCard, CapacityChart, MonthlyInflow } from '@/components';
+import StorageForecast from '@/components/StorageForecast';
 import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
 import MediaHeader from '@/components/MediaHeader';
 import { Button } from '@/components/ui/button';
@@ -239,6 +240,8 @@ export function MediaClient({
             </div>
 
             <MonthlyInflow />
+
+            <StorageForecast />
           </div>
         </main>
 
