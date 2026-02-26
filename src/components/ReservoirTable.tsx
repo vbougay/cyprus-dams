@@ -165,6 +165,25 @@ const ReservoirTable: React.FC = () => {
     return matchesSearch && matchesRegion;
   });
   
+  // Convert a drainDate string to a sortable numeric value.
+  // "Already Empty" = 0, actual dates = timestamp, "Beyond 10 Years" and "Not Draining" = far future.
+  const drainDateToSortValue = (drainDate: string | undefined): number => {
+    if (!drainDate || drainDate === 'Calculating...') return Infinity;
+    if (drainDate === 'Already Empty') return 0;
+    if (drainDate === 'Not Draining') return Infinity - 1;
+    if (drainDate === 'Beyond 10 Years') return Infinity - 2;
+    // Parse "M/YYYY" format
+    const parts = drainDate.split('/');
+    if (parts.length === 2) {
+      const month = parseInt(parts[0], 10);
+      const year = parseInt(parts[1], 10);
+      if (!isNaN(month) && !isNaN(year)) {
+        return year * 12 + month;
+      }
+    }
+    return Infinity;
+  };
+
   // Sorting function
   const sortedReservoirs = [...filteredReservoirs].sort((a, b) => {
     // Handle custom sort field 'difference'
@@ -173,34 +192,41 @@ const ReservoirTable: React.FC = () => {
       const diffB = b.storage.current.percentage - b.storage.lastYear.percentage;
       return sortDirection === 'asc' ? diffA - diffB : diffB - diffA;
     }
-    
+
     // Handle storage and inflow fields
     if (sortField === 'storage') {
       const valueA = a.storage.current.amount;
       const valueB = b.storage.current.amount;
       return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
     }
-    
+
     if (sortField === 'inflow') {
       const valueA = a.inflow.totalSince;
       const valueB = b.inflow.totalSince;
       return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
     }
-    
+
+    // Handle drainDate field with chronological sorting
+    if (sortField === 'drainDate') {
+      const valueA = drainDateToSortValue(a.drainDate);
+      const valueB = drainDateToSortValue(b.drainDate);
+      return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
+    }
+
     // Handle other fields
     const valueA = a[sortField as keyof Reservoir];
     const valueB = b[sortField as keyof Reservoir];
-    
+
     if (typeof valueA === 'string' && typeof valueB === 'string') {
       return sortDirection === 'asc'
         ? valueA.localeCompare(valueB)
         : valueB.localeCompare(valueA);
     }
-    
+
     if (typeof valueA === 'number' && typeof valueB === 'number') {
       return sortDirection === 'asc' ? valueA - valueB : valueB - valueA;
     }
-    
+
     return 0;
   });
   
