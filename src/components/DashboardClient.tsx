@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, HistoricalHeatmap } from '@/components';
 import { NewsTicker } from '@/components/NewsTicker';
 import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
@@ -12,33 +12,8 @@ import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
-import { Droplets, Loader2, Github, Code, Mail, Linkedin } from 'lucide-react';
+import { Droplets, Github, Code, Mail, Linkedin } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-/**
- * Defers rendering of heavy tab content by one frame so a loading spinner
- * can paint immediately, giving users instant feedback on tab switches.
- */
-function TabContentLoader({ children }: { children: React.ReactNode }) {
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  if (!isReady) {
-    return (
-      <div className="flex items-center justify-center py-24">
-        <Loader2 className="h-8 w-8 animate-spin text-water-500" />
-      </div>
-    );
-  }
-
-  return <>{children}</>;
-}
 
 interface DashboardClientProps {
   initialReservoirs: Reservoir[];
@@ -86,9 +61,7 @@ export function DashboardClient({
           <TabsContent value="dashboard" className="animate-fade-in">
               <div className="space-y-8">
                 <NewsTicker />
-                <TabContentLoader>
-                  <HistoricalHeatmap />
-                </TabContentLoader>
+                <HistoricalHeatmap />
                 <div>
                   <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
                     <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
@@ -123,7 +96,6 @@ export function DashboardClient({
           </TabsContent>
 
           <TabsContent value="regions" className="space-y-8 animate-fade-in">
-            <TabContentLoader>
               {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
                 <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
                   {getReservoirs(regionTotal.region).map((reservoir) => (
@@ -131,7 +103,6 @@ export function DashboardClient({
                   ))}
                 </RegionSummary>
               ))}
-            </TabContentLoader>
           </TabsContent>
 
           <TabsContent value="map" className="animate-fade-in">

@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
-
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -51,10 +49,13 @@
   --color-sidebar-border: hsl(var(--sidebar-border));
   --color-sidebar-ring: hsl(var(--sidebar-ring));
 
-  /* Font families */
-  --font-family-sans: 'Inter', sans-serif;
-  --font-family-display: 'Plus Jakarta Sans', 'Inter', sans-serif;
-  --font-family-mono: 'Roboto Mono', monospace;
+  /* Reset built-in font families so Tailwind doesn't generate @property rules
+     (which can't contain var() in initial-value per CSS spec).
+     Actual values are set below via a regular CSS rule. */
+  --font-family-sans: initial;
+  --font-family-mono: initial;
+  /* Custom font family — not a Tailwind built-in, so var() works in @theme */
+  --font-family-display: var(--font-display), var(--font-inter), sans-serif;
 
   /* Border radius */
   --radius-lg: var(--radius);
@@ -75,6 +76,13 @@
   --animate-wave-flow: wave-flow 8s infinite linear;
   --animate-wave-flow-reverse: wave-flow-reverse 12s infinite linear;
   --animate-ticker-scroll: ticker-scroll 40s infinite linear;
+}
+
+/* Font families using next/font CSS variables — must be outside @theme
+   because Tailwind's @property initial-value can't contain var() per CSS spec */
+html {
+  --font-family-sans: var(--font-inter), sans-serif;
+  --font-family-mono: var(--font-mono), monospace;
 }
 
 @keyframes accordion-down {
