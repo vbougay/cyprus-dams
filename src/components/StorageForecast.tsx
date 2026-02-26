@@ -95,14 +95,14 @@ const StorageForecast: React.FC = () => {
   const damCapacities = useMemo(() => {
     const caps: Record<string, number> = {};
     for (const key of MAJOR_DAM_KEYS) {
-      const { capacity } = getStorageForKeys([key]);
+      const { capacity } = getStorageForKeys([key], currentDataSetId);
       caps[key as string] = capacity;
     }
     return caps;
   }, [currentDataSetId]);
 
   const forecast = useMemo(() => {
-    return getForecastForSelection(selectedOption.id, selectedOption.thresholdPct);
+    return getForecastForSelection(selectedOption.id, selectedOption.thresholdPct, currentDataSetId);
   }, [currentDataSetId, selectedOption.id, selectedOption.thresholdPct]);
 
   // Subsample trajectories for chart (every 2nd point to reduce density)

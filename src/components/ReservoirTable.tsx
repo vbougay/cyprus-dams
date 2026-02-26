@@ -41,7 +41,7 @@ const ReservoirTable: React.FC = () => {
   const { currentDataSetId } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
-  const reservoirData = getReservoirsWithDrainDates();
+  const reservoirData = getReservoirsWithDrainDates(currentDataSetId);
   
   // Define the columns for the table
   const columns: Column[] = [

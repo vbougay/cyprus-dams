@@ -12,7 +12,14 @@ import {
   ApiHistoricalResponse,
   ApiHistoricalEntry,
 } from '../types/api';
-import { availableDataSets } from './dataManager';
+import {
+  availableDataSets,
+  reservoirData,
+  yearlyInflowData,
+  getReportDate,
+  getStorageForKeys,
+  RESERVOIR_NAME_TO_KEY,
+} from './dataManager';
 import {
   calculateRegionTotals as calcRegionTotals,
   calculateGrandTotal as calcGrandTotal,
@@ -20,86 +27,18 @@ import {
   getReservoirsByRegion as getByRegion,
   calculateYTDInflow,
   calculateDrainDate,
-  parseReportDate,
 } from './reservoirUtils';
 import { historicalStorageData, HistoricalStorageEntry } from './historicalStorageData';
 import { calculateForecast, MAIN_RES_KEYS, REGION_KEYS } from './forecastEngine';
 
-// --- Thread-safe dataset resolution ---
+// --- Thread-safe dataset resolution (returns full entry for API-specific needs) ---
 
 function resolveDataset(datasetId?: string) {
   const id = datasetId || availableDataSets[0].id;
   return availableDataSets.find(ds => ds.id === id) ?? null;
 }
 
-// Main reservoir keys (excluding Recharge/Other) — mirrors MAIN_RESERVOIR_KEYS in dataManager.ts
-const MAIN_RESERVOIR_KEYS: (keyof HistoricalStorageEntry)[] = [
-  'kouris', 'kalavasos', 'lefkara', 'dipotamos', 'germasoyeia',
-  'arminou', 'polemidia', 'asprokremmos', 'evretou', 'kannaviou',
-  'mavrokolympos', 'vyzakia', 'xyliatos', 'argaka', 'pomos',
-  'kalopanagiotis', 'agiaMarina', 'achna'
-];
-
-function getOctoberStorageFromHistorical(year: number): number | null {
-  const prefix = `${year}-10`;
-  const octEntries = historicalStorageData.filter(entry => entry.date.startsWith(prefix));
-  if (octEntries.length === 0) return null;
-  const entry = octEntries[0];
-  return MAIN_RESERVOIR_KEYS.reduce((sum, key) => sum + ((entry[key] as number | null) ?? 0), 0);
-}
-
-function getOctoberBaseline(datasetId: string): { currentStorage: number; lastYearStorage: number | null } | null {
-  const parsed = parseReportDate(datasetId);
-  if (!parsed) return null;
-  const waterYearStart = parsed.month >= 10 ? parsed.year : parsed.year - 1;
-  const currentBaseline = getOctoberStorageFromHistorical(waterYearStart);
-  if (currentBaseline === null) return null;
-  const lastYearBaseline = getOctoberStorageFromHistorical(waterYearStart - 1);
-  return { currentStorage: currentBaseline, lastYearStorage: lastYearBaseline };
-}
-
-// --- Reservoir name → historical key mapping ---
-
-const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = {
-  'Kouris': 'kouris',
-  'Kalavasos': 'kalavasos',
-  'Lefkara': 'lefkara',
-  'Dipotamos': 'dipotamos',
-  'Germasoyeia': 'germasoyeia',
-  'Arminou': 'arminou',
-  'Polemidia': 'polemidia',
-  'Achna': 'achna',
-  'Asprokremmos': 'asprokremmos',
-  'Kannaviou': 'kannaviou',
-  'Mavrokolymbos': 'mavrokolympos',
-  'Evretou': 'evretou',
-  'Argaka': 'argaka',
-  'Pomos': 'pomos',
-  'Agia Marina': 'agiaMarina',
-  'Vyzakia': 'vyzakia',
-  'Xyliatou': 'xyliatos',
-  'Kalopanagiotis': 'kalopanagiotis',
-};
-
 // --- Forecast helpers ---
-
-function getStorageForKeys(
-  data: Reservoir[],
-  keys: (keyof HistoricalStorageEntry)[]
-): { storage: number; capacity: number } {
-  let storage = 0;
-  let capacity = 0;
-  const nameToKey = RESERVOIR_NAME_TO_KEY;
-  for (const key of keys) {
-    // Find the reservoir whose name maps to this key
-    const res = data.find(r => nameToKey[r.name] === key);
-    if (res) {
-      storage += res.storage.current.amount;
-      capacity += res.capacity;
-    }
-  }
-  return { storage, capacity };
-}
 
 function computeApiForecast(
   storage: number,
@@ -153,13 +92,13 @@ function flattenReservoir(r: Reservoir, datasetId: string): ApiReservoir {
   };
 }
 
-function flattenRegion(r: RegionTotal, datasetId: string, data: Reservoir[]): ApiRegion {
+function flattenRegion(r: RegionTotal, datasetId: string): ApiRegion {
   let forecast: ApiForecast | null = null;
   let drainDate = r.drainDate ?? 'N/A';
 
   const regionKeys = REGION_KEYS[r.region];
   if (regionKeys) {
-    const { storage, capacity } = getStorageForKeys(data, regionKeys);
+    const { storage, capacity } = getStorageForKeys(regionKeys, datasetId);
     forecast = computeApiForecast(storage, capacity, datasetId, regionKeys, 7);
     drainDate = forecast.restrictionDate;
   }
@@ -194,7 +133,7 @@ export function getApiSummary(datasetId?: string): ApiSummaryResponse | null {
   const ds = resolveDataset(datasetId);
   if (!ds) return null;
 
-  const data = ds.module.reservoirData;
+  const data = reservoirData(ds.id);
   const grandTotal = calcGrandTotal(data);
   const regionTotals = calcRegionTotals(data);
 
@@ -209,12 +148,12 @@ export function getApiSummary(datasetId?: string): ApiSummaryResponse | null {
   }
 
   // Compute grand total forecast (all main reservoirs, 7% threshold)
-  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(data, MAIN_RES_KEYS);
+  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(MAIN_RES_KEYS, ds.id);
   const forecast = computeApiForecast(mainStorage, mainCapacity, ds.id, MAIN_RES_KEYS, 7);
 
   return {
     dataset: ds.id,
-    reportDate: ds.module.getReportDate(),
+    reportDate: getReportDate(ds.id),
     totalCapacity: grandTotal.capacity,
     totalStorage: grandTotal.storage.current.amount,
     totalStoragePercent: grandTotal.storage.current.percentage,
@@ -236,14 +175,14 @@ export function getApiReservoirs(datasetId?: string, region?: string): ApiReserv
   const ds = resolveDataset(datasetId);
   if (!ds) return null;
 
-  let data = getWithDrainDates(ds.module.reservoirData);
+  let data = getWithDrainDates(reservoirData(ds.id));
   if (region) {
     data = getByRegion(data, region as ReservoirRegion);
   }
 
   return {
     dataset: ds.id,
-    reportDate: ds.module.getReportDate(),
+    reportDate: getReportDate(ds.id),
     count: data.length,
     reservoirs: data.map(r => flattenReservoir(r, ds.id)),
   };
@@ -253,22 +192,22 @@ export function getApiRegions(datasetId?: string): ApiRegionsResponse | null {
   const ds = resolveDataset(datasetId);
   if (!ds) return null;
 
-  const data = ds.module.reservoirData;
+  const data = reservoirData(ds.id);
   const regionTotals = calcRegionTotals(data);
   const grandTotal = calcGrandTotal(data);
 
   // Grand total forecast uses all main reservoir keys at 7% threshold
-  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(data, MAIN_RES_KEYS);
+  const { storage: mainStorage, capacity: mainCapacity } = getStorageForKeys(MAIN_RES_KEYS, ds.id);
   const grandForecast = computeApiForecast(mainStorage, mainCapacity, ds.id, MAIN_RES_KEYS, 7);
 
-  const flatGrandTotal = flattenRegion(grandTotal, ds.id, data);
+  const flatGrandTotal = flattenRegion(grandTotal, ds.id);
   flatGrandTotal.drainDate = grandForecast.restrictionDate;
   flatGrandTotal.forecast = grandForecast;
 
   return {
     dataset: ds.id,
-    reportDate: ds.module.getReportDate(),
-    regions: regionTotals.map(r => flattenRegion(r, ds.id, data)),
+    reportDate: getReportDate(ds.id),
+    regions: regionTotals.map(r => flattenRegion(r, ds.id)),
     grandTotal: flatGrandTotal,
   };
 }
@@ -277,8 +216,8 @@ export function getApiInflow(datasetId?: string): ApiInflowResponse | null {
   const ds = resolveDataset(datasetId);
   if (!ds) return null;
 
-  const inflowData = ds.module.yearlyInflowData;
-  const reportDate = ds.module.getReportDate();
+  const inflowData = yearlyInflowData(ds.id);
+  const reportDate = getReportDate(ds.id);
   const ytdResult = calculateYTDInflow(inflowData, reportDate);
 
   return {

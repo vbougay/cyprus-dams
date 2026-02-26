@@ -3,7 +3,7 @@ import ReactMarkdown from 'react-markdown';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
 import { Droplets, Timer } from 'lucide-react';
-import { getSummaryChanges, getCurrentDataSetId } from '@/utils/dataManager';
+import { getSummaryChanges } from '@/utils/dataManager';
 import { useLanguage } from '@/context/LanguageContext';
 import { useDataContext } from '@/context/DataContext';
 import { useTranslation } from '@/utils/translations';
@@ -24,7 +24,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   className = ''
 }) => {
   const { language } = useLanguage();
-  const { isPlaying } = useDataContext();
+  const { isPlaying, currentDataSetId } = useDataContext();
   const t = useTranslation(language);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -89,8 +89,8 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
   
   // Check if this is the Total region and if we have summary changes
   const isTotal = regionTotal.region === 'Total';
-  const summaryChanges = isTotal ? getSummaryChanges(language as 'en' | 'el' | 'ru') : null;
-  const showSummaryChanges = isTotal && summaryChanges && getCurrentDataSetId() != '17-MAR-2025';
+  const summaryChanges = isTotal ? getSummaryChanges(language as 'en' | 'el' | 'ru', currentDataSetId) : null;
+  const showSummaryChanges = isTotal && summaryChanges && currentDataSetId !== '17-MAR-2025';
   
   return (
     <Card ref={cardRef} className={`opacity-0 overflow-hidden transition-all duration-500 rounded-2xl backdrop-blur-sm ${cardBgColor} ${className}`}>

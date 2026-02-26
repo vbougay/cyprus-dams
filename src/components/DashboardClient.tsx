@@ -73,21 +73,21 @@ export function DashboardClient({
 
   useEffect(() => {
     // Re-compute data when dataset changes (skip initial render since we have SSR data)
-    const totals = getRegionTotalsWithForecasts();
+    const totals = getRegionTotalsWithForecasts(currentDataSetId);
     setRegionTotals(totals);
 
-    const total = getGrandTotalWithForecast();
+    const total = getGrandTotalWithForecast(currentDataSetId);
     setGrandTotal(total);
 
-    const reservoirsWithDrainDates = getReservoirsWithForecastDates();
+    const reservoirsWithDrainDates = getReservoirsWithForecastDates(currentDataSetId);
     setReservoirs(reservoirsWithDrainDates);
 
-    const inflowData = yearlyInflowData();
-    const reportDate = getReportDate();
+    const inflowData = yearlyInflowData(currentDataSetId);
+    const reportDate = getReportDate(currentDataSetId);
     const inflow = calculateYTDInflow(inflowData, reportDate);
     setYtdInflow(inflow);
 
-    const octBaseline = getOctoberBaselineStorage();
+    const octBaseline = getOctoberBaselineStorage(currentDataSetId);
     if (inflow && octBaseline && total) {
       setYtdOutflow(calculateYTDOutflow(total, inflow, octBaseline));
     } else {

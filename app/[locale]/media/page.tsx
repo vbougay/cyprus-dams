@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import { MediaClient } from "@/components/MediaClient";
-import { reservoirData, yearlyInflowData, getReportDate } from "@/utils/data-20-FEB-2026";
 import {
-  calculateRegionTotals as calculateRegionTotalsUtil,
-  calculateGrandTotal as calculateGrandTotalUtil,
-  getReservoirsWithDrainDates as getReservoirsWithDrainDatesUtil,
-  calculateYTDInflow,
-  calculateYTDOutflow,
-} from "@/utils/reservoirUtils";
-import { getOctoberBaselineStorage } from "@/utils/dataManager";
+  reservoirData,
+  yearlyInflowData,
+  getReportDate,
+  getReservoirsWithDrainDates,
+  calculateRegionTotals,
+  calculateGrandTotal,
+  getOctoberBaselineStorage,
+  DEFAULT_DATASET_ID,
+} from "@/utils/dataManager";
+import { calculateYTDInflow, calculateYTDOutflow } from "@/utils/reservoirUtils";
 import { isValidLocale, type Locale } from "@/utils/locale";
 
 const mediaMeta: Record<Locale, { title: string; description: string }> = {
@@ -44,12 +46,13 @@ export async function generateMetadata({
 }
 
 export default function MediaPage() {
-  const reservoirs = getReservoirsWithDrainDatesUtil(reservoirData);
-  const regionTotals = calculateRegionTotalsUtil(reservoirData);
-  const grandTotal = calculateGrandTotalUtil(reservoirData);
-  const reportDate = getReportDate();
-  const ytdInflow = calculateYTDInflow(yearlyInflowData, reportDate);
-  const octBaseline = getOctoberBaselineStorage();
+  const dsId = DEFAULT_DATASET_ID;
+  const reservoirs = getReservoirsWithDrainDates(dsId);
+  const regionTotals = calculateRegionTotals(dsId);
+  const grandTotal = calculateGrandTotal(dsId);
+  const reportDate = getReportDate(dsId);
+  const ytdInflow = calculateYTDInflow(yearlyInflowData(dsId), reportDate);
+  const octBaseline = getOctoberBaselineStorage(dsId);
   const ytdOutflow =
     ytdInflow && octBaseline && grandTotal
       ? calculateYTDOutflow(grandTotal, ytdInflow, octBaseline)

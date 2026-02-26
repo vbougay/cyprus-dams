@@ -54,21 +54,21 @@ export function MediaClient({
   const currentDataSet = availableDataSets[currentIndex];
 
   useEffect(() => {
-    const totals = calculateRegionTotals();
+    const totals = calculateRegionTotals(currentDataSetId);
     setRegionTotals(totals);
 
-    const total = calculateGrandTotal();
+    const total = calculateGrandTotal(currentDataSetId);
     setGrandTotal(total);
 
-    const reservoirsWithDrainDates = getReservoirsWithDrainDates();
+    const reservoirsWithDrainDates = getReservoirsWithDrainDates(currentDataSetId);
     setReservoirs(reservoirsWithDrainDates);
 
-    const inflowData = yearlyInflowData();
-    const reportDate = getReportDate();
+    const inflowData = yearlyInflowData(currentDataSetId);
+    const reportDate = getReportDate(currentDataSetId);
     const inflow = calculateYTDInflow(inflowData, reportDate);
     setYtdInflow(inflow);
 
-    const octBaseline = getOctoberBaselineStorage();
+    const octBaseline = getOctoberBaselineStorage(currentDataSetId);
     if (inflow && octBaseline && total) {
       setYtdOutflow(calculateYTDOutflow(total, inflow, octBaseline));
     } else {

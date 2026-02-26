@@ -97,76 +97,66 @@ export const availableDataSets = [
   { id: '17-MAR-2025', label: 'March 17, 2025', value: '17-MAR-2025', module: data17Mar },
 ];
 
-/**
- * Default to the most recent data set (February 16, 2026)
- */
-let currentDataSetId = '25-FEB-2026';
+/** The most recent dataset ID (first entry in the sorted array). */
+export const DEFAULT_DATASET_ID = availableDataSets[0].id;
 
-// Function to get the current data module
-const getCurrentDataModule = () => {
-  const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
-  return dataset?.module || data25Feb;
-};
+// Resolve a dataset module from an optional ID (defaults to latest).
+function resolveModule(datasetId?: string) {
+  const id = datasetId || DEFAULT_DATASET_ID;
+  return availableDataSets.find(ds => ds.id === id)?.module || availableDataSets[0].module;
+}
 
-// Function to set the current data set
-export const setCurrentDataSet = (dataSetId: string) => {
-  if (availableDataSets.some(ds => ds.id === dataSetId)) {
-    currentDataSetId = dataSetId;
-    return true;
-  }
-  return false;
-};
+// Resolve a valid dataset ID (defaults to latest).
+function resolveId(datasetId?: string): string {
+  const id = datasetId || DEFAULT_DATASET_ID;
+  return availableDataSets.some(ds => ds.id === id) ? id : DEFAULT_DATASET_ID;
+}
 
-// Function to get the current data set ID
-export const getCurrentDataSetId = (): string => {
-  return currentDataSetId;
-};
-
-// Re-export all functions from the data modules, but make them use the current data set
-export const reservoirData = (): Reservoir[] => {
-  return getCurrentDataModule().reservoirData;
+// Data access functions — all accept an optional datasetId (defaults to latest).
+export const reservoirData = (datasetId?: string): Reservoir[] => {
+  return resolveModule(datasetId).reservoirData;
 };
 
 // Export utility functions directly
 export { calculateDrainDate, calculateRegionDrainDate };
 
-// Apply utility functions to the current data set
-export const getReservoirsByRegion = (region: ReservoirRegion): Reservoir[] => {
-  return getReservoirsByRegionUtil(reservoirData(), region);
+export const getReservoirsByRegion = (region: ReservoirRegion, datasetId?: string): Reservoir[] => {
+  return getReservoirsByRegionUtil(reservoirData(datasetId), region);
 };
 
-export const calculateRegionTotals = (): RegionTotal[] => {
-  return calculateRegionTotalsUtil(reservoirData());
+export const calculateRegionTotals = (datasetId?: string): RegionTotal[] => {
+  return calculateRegionTotalsUtil(reservoirData(datasetId));
 };
 
-export const calculateGrandTotal = (): RegionTotal => {
-  return calculateGrandTotalUtil(reservoirData());
+export const calculateGrandTotal = (datasetId?: string): RegionTotal => {
+  return calculateGrandTotalUtil(reservoirData(datasetId));
 };
 
-export const getReservoirsWithDrainDates = (): Reservoir[] => {
-  return getReservoirsWithDrainDatesUtil(reservoirData());
+export const getReservoirsWithDrainDates = (datasetId?: string): Reservoir[] => {
+  return getReservoirsWithDrainDatesUtil(reservoirData(datasetId));
 };
 
-export const yearlyInflowData = (): YearlyInflowData[] => {
-  return getCurrentDataModule().yearlyInflowData;
+export const yearlyInflowData = (datasetId?: string): YearlyInflowData[] => {
+  return resolveModule(datasetId).yearlyInflowData;
 };
 
-export const getReportDate = (): string => {
-  return getCurrentDataModule().getReportDate();
+export const getReportDate = (datasetId?: string): string => {
+  return resolveModule(datasetId).getReportDate();
 };
 
 export { calculateGrandTotalForecast, calculateForecast, MAIN_RES_KEYS, REGION_KEYS, MAJOR_DAM_KEYS };
 
 /**
- * Compute the drain forecast for the current dataset's grand total.
+ * Compute the drain forecast for a dataset's grand total.
  * Uses the cycle-aware scenario engine.
  */
-export const getGrandTotalForecast = (): DrainForecast => {
-  const grandTotal = calculateGrandTotalUtil(reservoirData());
+export const getGrandTotalForecast = (datasetId?: string): DrainForecast => {
+  const dsId = resolveId(datasetId);
+  const grandTotal = calculateGrandTotalUtil(reservoirData(dsId));
   return calculateGrandTotalForecast(
     grandTotal.storage.current.amount,
     grandTotal.capacity,
-    currentDataSetId
+    dsId
   );
 };
 
@@ -196,11 +186,11 @@ const RESERVOIR_KEY_TO_NAME: Record<string, string> = {
 };
 
 /**
- * Get the current storage and capacity for a set of reservoir keys.
+ * Get storage and capacity for a set of reservoir keys.
  * Matches reservoir data by name using the key→name mapping.
  */
-export const getStorageForKeys = (keys: (keyof HistoricalStorageEntry)[]): { storage: number; capacity: number } => {
-  const data = reservoirData();
+export const getStorageForKeys = (keys: (keyof HistoricalStorageEntry)[], datasetId?: string): { storage: number; capacity: number } => {
+  const data = reservoirData(datasetId);
   let storage = 0;
   let capacity = 0;
   for (const key of keys) {
@@ -219,11 +209,14 @@ export const getStorageForKeys = (keys: (keyof HistoricalStorageEntry)[]): { sto
  * Compute forecast for a specific selection (region, dam, or all).
  * @param selectionId - 'all', region name, or reservoir key
  * @param restrictionThresholdPct - threshold percentage
+ * @param datasetId - optional dataset ID (defaults to latest)
  */
 export const getForecastForSelection = (
   selectionId: string,
-  restrictionThresholdPct: number
+  restrictionThresholdPct: number,
+  datasetId?: string,
 ): DrainForecast => {
+  const dsId = resolveId(datasetId);
   let keys: (keyof HistoricalStorageEntry)[];
 
   if (selectionId === 'all') {
@@ -235,18 +228,9 @@ export const getForecastForSelection = (
     keys = [selectionId as keyof HistoricalStorageEntry];
   }
 
-  const { storage, capacity } = getStorageForKeys(keys);
-  return calculateForecast(storage, capacity, currentDataSetId, keys, restrictionThresholdPct);
+  const { storage, capacity } = getStorageForKeys(keys, dsId);
+  return calculateForecast(storage, capacity, dsId, keys, restrictionThresholdPct);
 };
-
-// Main reservoir keys (excluding Recharge/Other: tamassos, klirouMalounta, solea)
-// These match the regions included in calculateGrandTotal (Southern Conveyor, Paphos, Chrysochou, Nicosia)
-const MAIN_RESERVOIR_KEYS: (keyof HistoricalStorageEntry)[] = [
-  'kouris', 'kalavasos', 'lefkara', 'dipotamos', 'germasoyeia',
-  'arminou', 'polemidia', 'asprokremmos', 'evretou', 'kannaviou',
-  'mavrokolympos', 'vyzakia', 'xyliatos', 'argaka', 'pomos',
-  'kalopanagiotis', 'agiaMarina', 'achna'
-];
 
 /**
  * Look up October storage from historical data for a given year.
@@ -259,20 +243,17 @@ function getOctoberStorageFromHistorical(year: number): number | null {
   if (octEntries.length === 0) return null;
 
   const entry = octEntries[0]; // earliest Oct entry (data is chronological)
-  return MAIN_RESERVOIR_KEYS.reduce((sum, key) => sum + ((entry[key] as number | null) ?? 0), 0);
+  return MAIN_RES_KEYS.reduce((sum, key) => sum + ((entry[key] as number | null) ?? 0), 0);
 }
 
 /**
  * Get October baseline storage for water balance calculations.
  * Uses historical storage data to find the correct October baseline
- * for the water year of the currently selected dataset.
- * - `currentStorage` = Oct start of current water year
- * - `lastYearStorage` = Oct start of previous water year (null if unavailable)
+ * for the water year of the given dataset.
  */
-export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearStorage: number | null } | null => {
-  // Use dataset ID (always DD-MMM-YYYY format) instead of report date
-  // which may use inconsistent formats in older data files
-  const parsed = parseReportDate(currentDataSetId);
+export const getOctoberBaselineStorage = (datasetId?: string): { currentStorage: number; lastYearStorage: number | null } | null => {
+  const dsId = resolveId(datasetId);
+  const parsed = parseReportDate(dsId);
   if (!parsed) return null;
 
   // Determine water year: Oct–Sep cycle
@@ -290,7 +271,7 @@ export const getOctoberBaselineStorage = (): { currentStorage: number; lastYearS
 };
 
 // Reverse mapping: reservoir display name → historical data key
-const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = Object.fromEntries(
+export const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = Object.fromEntries(
   Object.entries(RESERVOIR_KEY_TO_NAME).map(([k, v]) => [v, k as keyof HistoricalStorageEntry])
 );
 
@@ -301,13 +282,14 @@ const MAIN_REGION_NAMES: ReservoirRegion[] = ['Southern Conveyor', 'Paphos', 'Ch
  * Main reservoirs use the cycle-aware forecast engine (5% threshold).
  * Recharge/Other reservoirs fall back to simple linear drain date.
  */
-export const getReservoirsWithForecastDates = (): Reservoir[] => {
-  const data = reservoirData();
+export const getReservoirsWithForecastDates = (datasetId?: string): Reservoir[] => {
+  const dsId = resolveId(datasetId);
+  const data = reservoirData(dsId);
   return data.map(reservoir => {
     const key = RESERVOIR_NAME_TO_KEY[reservoir.name];
     if (key && reservoir.region !== 'Recharge/Other') {
-      const { storage, capacity } = getStorageForKeys([key]);
-      const forecast = calculateForecast(storage, capacity, currentDataSetId, [key], 5);
+      const { storage, capacity } = getStorageForKeys([key], dsId);
+      const forecast = calculateForecast(storage, capacity, dsId, [key], 5);
       return { ...reservoir, drainDate: forecast.expectedRestriction };
     }
     // Fallback for Recharge/Other (no historical data)
@@ -320,11 +302,12 @@ export const getReservoirsWithForecastDates = (): Reservoir[] => {
  * Main regions use the cycle-aware forecast engine (7% threshold).
  * Recharge/Other keeps the simple linear drain date.
  */
-export const getRegionTotalsWithForecasts = (): RegionTotal[] => {
-  const totals = calculateRegionTotalsUtil(reservoirData());
+export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] => {
+  const dsId = resolveId(datasetId);
+  const totals = calculateRegionTotalsUtil(reservoirData(dsId));
   return totals.map(regionTotal => {
     if (MAIN_REGION_NAMES.includes(regionTotal.region)) {
-      const forecast = getForecastForSelection(regionTotal.region, 7);
+      const forecast = getForecastForSelection(regionTotal.region, 7, dsId);
       return { ...regionTotal, drainDate: forecast.expectedRestriction };
     }
     return regionTotal;
@@ -335,9 +318,10 @@ export const getRegionTotalsWithForecasts = (): RegionTotal[] => {
  * Get grand total with forecast-based expected restriction date.
  * Uses the cycle-aware forecast engine (7% threshold).
  */
-export const getGrandTotalWithForecast = (): RegionTotal => {
-  const grandTotal = calculateGrandTotalUtil(reservoirData());
-  const forecast = getGrandTotalForecast();
+export const getGrandTotalWithForecast = (datasetId?: string): RegionTotal => {
+  const dsId = resolveId(datasetId);
+  const grandTotal = calculateGrandTotalUtil(reservoirData(dsId));
+  const forecast = getGrandTotalForecast(dsId);
   return { ...grandTotal, drainDate: forecast.expectedRestriction };
 };
 
@@ -350,10 +334,12 @@ export const getGrandTotalWithForecast = (): RegionTotal => {
  */
 export const getScenarioInflowAverages = (
   monthKeys: string[],
-  latestYear: string
+  latestYear: string,
+  datasetId?: string,
 ): { averages: Record<string, number>; yearType: 'dry' | 'moderate' | 'wet' } => {
-  const { type, startYears } = getExpectedInflowYears(currentDataSetId);
-  const inflowData = yearlyInflowData();
+  const dsId = resolveId(datasetId);
+  const { type, startYears } = getExpectedInflowYears(dsId);
+  const inflowData = yearlyInflowData(dsId);
 
   // Map startYears to inflow year labels: startYear 2015 → "15/16"
   const matchingLabels = new Set(
@@ -388,12 +374,13 @@ export const getScenarioInflowAverages = (
 /**
  * Get summary of changes for the selected dataset.
  */
-export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string | null => {
-  const dataset = availableDataSets.find(ds => ds.id === currentDataSetId);
-  const currentModule = dataset?.module;
-  
-  if (currentModule && 'getSummaryChanges' in currentModule && typeof currentModule.getSummaryChanges === 'function') {
-    return currentModule.getSummaryChanges(language);
+export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en', datasetId?: string): string | null => {
+  const dsId = resolveId(datasetId);
+  const dataset = availableDataSets.find(ds => ds.id === dsId);
+  const mod = dataset?.module;
+
+  if (mod && 'getSummaryChanges' in mod && typeof mod.getSummaryChanges === 'function') {
+    return mod.getSummaryChanges(language);
   }
   return null;
 };

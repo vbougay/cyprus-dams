@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { availableDataSets, setCurrentDataSet, getCurrentDataSetId } from '@/utils/dataManager';
+import { availableDataSets, DEFAULT_DATASET_ID } from '@/utils/dataManager';
 
 // Define the context type
 interface DataContextType {
@@ -12,7 +12,7 @@ interface DataContextType {
 
 // Create the context with default values
 const DataContext = createContext<DataContextType>({
-  currentDataSetId: getCurrentDataSetId(),
+  currentDataSetId: DEFAULT_DATASET_ID,
   availableDataSets: availableDataSets,
   setDataSet: () => {},
   isPlaying: false,
@@ -28,11 +28,11 @@ interface DataProviderProps {
 }
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
-  const [currentDataSetId, setCurrentDataSetId] = useState<string>(getCurrentDataSetId());
+  const [currentDataSetId, setCurrentDataSetId] = useState<string>(DEFAULT_DATASET_ID);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const setDataSet = (dataSetId: string) => {
-    if (setCurrentDataSet(dataSetId)) {
+    if (availableDataSets.some(ds => ds.id === dataSetId)) {
       setCurrentDataSetId(dataSetId);
     }
   };

@@ -53,12 +53,12 @@ const MonthlyInflow: React.FC = () => {
   const t = useTranslation(language);
 
   const years = useMemo(() => {
-    const data = yearlyInflowData();
+    const data = yearlyInflowData(currentDataSetId);
     return data.map(d => d.year).reverse();
   }, [currentDataSetId]);
 
   const [selectedYear, setSelectedYear] = useState<string>(() => {
-    const data = yearlyInflowData();
+    const data = yearlyInflowData(currentDataSetId);
     return data.length > 0 ? data[data.length - 1].year : '25/26';
   });
   const [viewMode, setViewMode] = useState<ViewMode>('cumulative');
@@ -66,7 +66,7 @@ const MonthlyInflow: React.FC = () => {
   const [hiddenYears, setHiddenYears] = useState<Set<string>>(new Set());
 
   useEffect(() => {
-    const data = yearlyInflowData();
+    const data = yearlyInflowData(currentDataSetId);
     const latestYear = data.length > 0 ? data[data.length - 1].year : null;
     if (latestYear && selectedYear !== ALL_VALUE && !years.includes(selectedYear)) {
       setSelectedYear(latestYear);
@@ -101,14 +101,14 @@ const MonthlyInflow: React.FC = () => {
   const latestYear = years[0];
 
   const currentMonthIndex = useMemo(() => {
-    const reportDate = getReportDate();
+    const reportDate = getReportDate(currentDataSetId);
     const parsed = parseReportDate(reportDate);
     if (!parsed) return -1;
     return calendarMonthToWaterYearIndex(parsed.month);
   }, [currentDataSetId]);
 
   const { historicalAverages, expectedYearType } = useMemo(() => {
-    const { averages, yearType } = getScenarioInflowAverages(MONTH_KEYS, latestYear);
+    const { averages, yearType } = getScenarioInflowAverages(MONTH_KEYS, latestYear, currentDataSetId);
     return { historicalAverages: averages, expectedYearType: yearType };
   }, [currentDataSetId, latestYear]);
 
@@ -123,7 +123,7 @@ const MonthlyInflow: React.FC = () => {
 
   const singleSeasonData = useMemo(() => {
     if (selectedYear === ALL_VALUE) return [];
-    const inflowData = yearlyInflowData();
+    const inflowData = yearlyInflowData(currentDataSetId);
     const currentYearData = inflowData.find(data => data.year === selectedYear);
     if (!currentYearData) return [];
 
@@ -148,7 +148,7 @@ const MonthlyInflow: React.FC = () => {
 
   const allSeasonsData = useMemo(() => {
     if (selectedYear !== ALL_VALUE) return [];
-    const inflowData = yearlyInflowData();
+    const inflowData = yearlyInflowData(currentDataSetId);
     return MONTH_KEYS.map((monthKey, index) => {
       const point: Record<string, string | number> = { name: monthNames[index], key: monthKey };
       inflowData.forEach(yearData => {
@@ -190,7 +190,7 @@ const MonthlyInflow: React.FC = () => {
 
   const cumulativeAllData = useMemo(() => {
     if (selectedYear !== ALL_VALUE) return [];
-    const inflowData = yearlyInflowData();
+    const inflowData = yearlyInflowData(currentDataSetId);
     const cumSums: Record<string, number> = {};
     inflowData.forEach(yd => { cumSums[yd.year] = 0; });
 
@@ -205,7 +205,7 @@ const MonthlyInflow: React.FC = () => {
   }, [selectedYear, currentDataSetId, monthNames]);
 
   const currentMonthName = useMemo(() => {
-    const reportDate = getReportDate();
+    const reportDate = getReportDate(currentDataSetId);
     const parsed = parseReportDate(reportDate);
     if (!parsed) return null;
     const idx = calendarMonthToWaterYearIndex(parsed.month);
@@ -483,7 +483,7 @@ const MonthlyInflow: React.FC = () => {
         {!isAllMode && (
           <div className="flex items-center justify-end mt-6 pt-4 border-t border-gray-100 dark:border-gray-800">
             <div className="text-sm font-medium text-water-600 dark:text-water-400">
-              {t('totalLabel')}: {yearlyInflowData().find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
+              {t('totalLabel')}: {yearlyInflowData(currentDataSetId).find(d => d.year === selectedYear)?.total.toFixed(3)} MCM
             </div>
           </div>
         )}

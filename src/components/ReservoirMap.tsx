@@ -81,7 +81,7 @@ const ReservoirMap: React.FC = () => {
     const maxSize = 60; // Maximum bubble size in pixels
     
     // Find the largest reservoir capacity for scaling
-    const maxCapacity = Math.max(...reservoirData().map(r => r.capacity));
+    const maxCapacity = Math.max(...reservoirData(currentDataSetId).map(r => r.capacity));
     
     // Scale logarithmically to handle wide range of reservoir sizes
     const size = minSize + (Math.log(capacity + 1) / Math.log(maxCapacity + 1)) * (maxSize - minSize);
@@ -124,7 +124,7 @@ const ReservoirMap: React.FC = () => {
             />
             <ZoomControl position="topright" />
 
-            {reservoirData().map(reservoir => {
+            {reservoirData(currentDataSetId).map(reservoir => {
               const location = reservoirLocations[reservoir.name as keyof typeof reservoirLocations];
               if (!location) return null;
 
