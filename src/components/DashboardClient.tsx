@@ -217,10 +217,11 @@ export function DashboardClient({
           </TabsList>
 
           <TabsContent value="dashboard" className="animate-fade-in">
-            <TabContentLoader>
               <div className="space-y-8">
                 <NewsTicker />
-                <HistoricalHeatmap />
+                <TabContentLoader>
+                  <HistoricalHeatmap />
+                </TabContentLoader>
                 <div>
                   <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
                     <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
@@ -252,7 +253,6 @@ export function DashboardClient({
                 <StorageForecast />
                 <MonthlyInflow />
               </div>
-            </TabContentLoader>
           </TabsContent>
 
           <TabsContent value="regions" className="space-y-8 animate-fade-in">
