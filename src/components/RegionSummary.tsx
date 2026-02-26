@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
-import { Droplets, Timer } from 'lucide-react';
 import { getSummaryChanges } from '@/utils/dataManager';
 import { useLanguage } from '@/context/LanguageContext';
 import { useDataContext } from '@/context/DataContext';
@@ -98,7 +97,6 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
             <span className="text-foreground">
               {regionTotal.region === 'Southern Conveyor' ? t('southernConveyor') :
                regionTotal.region === 'Paphos' ? t('paphos') :
@@ -136,10 +134,7 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
           </div>
 
           <div className="bg-white/80 dark:bg-gray-800/50 p-3 rounded-xl shadow-sm">
-            <div className="flex items-center gap-2">
-              <Timer className="h-4 w-4 text-water-500 dark:text-water-400" />
-              <div className="text-sm text-muted-foreground">{t('restrictionsBy')}</div>
-            </div>
+            <div className="text-sm text-muted-foreground">{t('restrictionsBy')}</div>
             <div className="text-lg font-semibold mt-1">
               <span className={getDrainDateColor(regionTotal.drainDate)}>
                 {getDrainDateText(regionTotal.drainDate, t)}
