@@ -43,10 +43,10 @@ export function StatCardGrid({
         <CardContent className="flex flex-col justify-center p-3 sm:p-4">
           <div className="text-xs sm:text-sm text-muted-foreground">{t('currentStorage')}</div>
           <div className="text-lg sm:text-2xl font-bold text-foreground">
-            {grandTotal?.storage.current.amount.toFixed(1)} MCM
+            {grandTotal?.storage.current.percentage.toFixed(1)}%
           </div>
           <div className="text-xs sm:text-sm text-muted-foreground">
-            ({grandTotal?.storage.current.percentage.toFixed(1)}%)
+            ({grandTotal?.storage.current.amount.toFixed(1)} MCM)
           </div>
         </CardContent>
       </Card>
