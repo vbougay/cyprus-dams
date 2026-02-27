@@ -299,7 +299,7 @@ export const getReservoirsWithForecastDates = (datasetId?: string): Reservoir[] 
 
 /**
  * Get region totals with forecast-based expected restriction dates.
- * Main regions use the cycle-aware forecast engine (7% threshold).
+ * Main regions use the cycle-aware forecast engine (5% threshold).
  * Recharge/Other keeps the simple linear drain date.
  */
 export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] => {
@@ -307,7 +307,7 @@ export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] 
   const totals = calculateRegionTotalsUtil(reservoirData(dsId));
   return totals.map(regionTotal => {
     if (MAIN_REGION_NAMES.includes(regionTotal.region)) {
-      const forecast = getForecastForSelection(regionTotal.region, 7, dsId);
+      const forecast = getForecastForSelection(regionTotal.region, 5, dsId);
       return { ...regionTotal, drainDate: forecast.expectedRestriction };
     }
     return regionTotal;
@@ -316,7 +316,7 @@ export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] 
 
 /**
  * Get grand total with forecast-based expected restriction date.
- * Uses the cycle-aware forecast engine (7% threshold).
+ * Uses the cycle-aware forecast engine (5% threshold).
  */
 export const getGrandTotalWithForecast = (datasetId?: string): RegionTotal => {
   const dsId = resolveId(datasetId);

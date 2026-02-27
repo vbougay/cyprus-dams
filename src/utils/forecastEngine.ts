@@ -19,7 +19,7 @@ const FORECAST_YEARS = 10;
 const MAX_ANALOGS = 6;
 const RATIONING_THRESHOLD = 0.20; // Below 20% capacity, reduce outflow
 const HISTORICAL_CONTEXT_MONTHS = 12; // Months of history to include in chart
-const DEFAULT_RESTRICTION_PCT = 7; // Default restriction threshold percentage
+const DEFAULT_RESTRICTION_PCT = 5; // Default restriction threshold percentage
 
 // Main reservoir keys (excluding Recharge/Other: tamassos, klirouMalounta, solea)
 export const MAIN_RES_KEYS: (keyof HistoricalStorageEntry)[] = [

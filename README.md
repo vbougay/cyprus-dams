@@ -44,7 +44,7 @@ The dashboard uses a cycle-aware forecasting engine built on 38 years of histori
 - **Expected**: Models the typical cycle — remaining decline followed by recovery then moderation
 - **Recovery**: Assumes wet conditions for 2 years then moderate (best case)
 
-Forecasts can be viewed for the entire system, individual regions (Southern Conveyor, Paphos, Chrysochou, Nicosia), or major dams (Kouris, Asprokremmos, Evretou, Kannaviou). Water restriction dates show when storage is projected to drop below a threshold (7% for aggregates, 5% for individual dams) — the point where restrictions typically begin, well before actual depletion.
+Forecasts can be viewed for the entire system, individual regions (Southern Conveyor, Paphos, Chrysochou, Nicosia), or major dams (Kouris, Asprokremmos, Evretou, Kannaviou). Water restriction dates show when storage is projected to drop below a 5% capacity threshold — the point where restrictions typically begin, well before actual depletion.
 
 **Inflow Prediction** — The Monthly Inflow chart predicts remaining months of the current water year using the same cycle classification. Instead of averaging all historical years equally, it averages only the years matching the expected scenario's year type (dry/moderate/wet), producing predictions consistent with the storage forecast.
 
