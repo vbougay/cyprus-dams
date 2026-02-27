@@ -40,18 +40,18 @@ interface ForecastOption {
   thresholdPct: number;
 }
 
-const ALL_OPTION: ForecastOption = { id: 'all', keys: MAIN_RES_KEYS, thresholdPct: 5 };
+const ALL_OPTION: ForecastOption = { id: 'all', keys: MAIN_RES_KEYS, thresholdPct: 7 };
 
 const REGION_OPTIONS: ForecastOption[] = Object.entries(REGION_KEYS).map(([name, keys]) => ({
   id: name,
   keys,
-  thresholdPct: 5,
+  thresholdPct: 7,
 }));
 
 const DAM_OPTIONS: ForecastOption[] = MAJOR_DAM_KEYS.map(key => ({
   id: key as string,
   keys: [key],
-  thresholdPct: 5,
+  thresholdPct: 7,
 }));
 
 // Dam key → capacity lookup (filled at render time from live data)

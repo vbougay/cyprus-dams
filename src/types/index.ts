@@ -84,7 +84,7 @@ export interface DrainForecast {
   droughtRestriction: string;  // When storage drops below restriction threshold
   expectedRestriction: string;
   recoveryRestriction: string;
-  restrictionThresholdPct: number;  // e.g., 5 or 10
+  restrictionThresholdPct: number;  // e.g., 7 or 10
   restrictionThresholdMCM: number;  // capacity * threshold / 100
   cyclePhase: CyclePhase;
   yearsInPhase: number;

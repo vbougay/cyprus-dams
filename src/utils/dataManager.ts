@@ -166,25 +166,25 @@ export const getGrandTotalForecast = (datasetId?: string): DrainForecast => {
  * Reservoir key → display name mapping (English).
  * Used by the forecast dropdown to match data keys to reservoir names.
  */
-const RESERVOIR_KEY_TO_NAME: Record<string, string> = {
-  kouris: 'Kouris',
-  kalavasos: 'Kalavasos',
-  lefkara: 'Lefkara',
-  dipotamos: 'Dipotamos',
-  germasoyeia: 'Germasoyeia',
-  arminou: 'Arminou',
-  polemidia: 'Polemidia',
-  achna: 'Achna',
-  asprokremmos: 'Asprokremmos',
-  kannaviou: 'Kannaviou',
-  mavrokolympos: 'Mavrokolymbos',
-  evretou: 'Evretou',
-  argaka: 'Argaka',
-  pomos: 'Pomos',
-  agiaMarina: 'Agia Marina',
-  vyzakia: 'Vyzakia',
-  xyliatos: 'Xyliatou',
-  kalopanagiotis: 'Kalopanagiotis',
+const RESERVOIR_KEY_TO_NAMES: Record<string, string[]> = {
+  kouris: ['Kouris'],
+  kalavasos: ['Kalavasos'],
+  lefkara: ['Lefkara'],
+  dipotamos: ['Dipotamos'],
+  germasoyeia: ['Germasoyeia'],
+  arminou: ['Arminou'],
+  polemidia: ['Polemidia'],
+  achna: ['Achna'],
+  asprokremmos: ['Asprokremmos'],
+  kannaviou: ['Kannaviou'],
+  mavrokolympos: ['Mavrokolympos', 'Mavrokolymbos'],
+  evretou: ['Evretou'],
+  argaka: ['Argaka'],
+  pomos: ['Pomos'],
+  agiaMarina: ['Agia Marina'],
+  vyzakia: ['Vyzakia'],
+  xyliatos: ['Xyliatos', 'Xyliatou'],
+  kalopanagiotis: ['Kalopanagiotis'],
 };
 
 /**
@@ -196,9 +196,9 @@ export const getStorageForKeys = (keys: (keyof HistoricalStorageEntry)[], datase
   let storage = 0;
   let capacity = 0;
   for (const key of keys) {
-    const name = RESERVOIR_KEY_TO_NAME[key as string];
-    if (!name) continue;
-    const res = data.find(r => r.name === name);
+    const names = RESERVOIR_KEY_TO_NAMES[key as string];
+    if (!names) continue;
+    const res = data.find(r => names.includes(r.name));
     if (res) {
       storage += res.storage.current.amount;
       capacity += res.capacity;
@@ -274,14 +274,14 @@ export const getOctoberBaselineStorage = (datasetId?: string): { currentStorage:
 
 // Reverse mapping: reservoir display name → historical data key
 export const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = Object.fromEntries(
-  Object.entries(RESERVOIR_KEY_TO_NAME).map(([k, v]) => [v, k as keyof HistoricalStorageEntry])
+  Object.entries(RESERVOIR_KEY_TO_NAMES).flatMap(([k, names]) => names.map(name => [name, k as keyof HistoricalStorageEntry]))
 );
 
 const MAIN_REGION_NAMES: ReservoirRegion[] = ['Southern Conveyor', 'Paphos', 'Chrysochou', 'Nicosia'];
 
 /**
  * Get reservoirs with forecast-based expected restriction dates.
- * Main reservoirs use the cycle-aware forecast engine (5% threshold).
+ * Main reservoirs use the cycle-aware forecast engine (7% threshold).
  * Recharge/Other reservoirs fall back to simple linear drain date.
  */
 export const getReservoirsWithForecastDates = (datasetId?: string): Reservoir[] => {
@@ -291,7 +291,7 @@ export const getReservoirsWithForecastDates = (datasetId?: string): Reservoir[] 
     const key = RESERVOIR_NAME_TO_KEY[reservoir.name];
     if (key && reservoir.region !== 'Recharge/Other') {
       const { storage, capacity } = getStorageForKeys([key], dsId);
-      const forecast = calculateForecast(storage, capacity, dsId, [key], 5);
+      const forecast = calculateForecast(storage, capacity, dsId, [key], 7);
       return { ...reservoir, drainDate: forecast.expectedRestriction };
     }
     // Fallback for Recharge/Other (no historical data)
@@ -301,7 +301,7 @@ export const getReservoirsWithForecastDates = (datasetId?: string): Reservoir[] 
 
 /**
  * Get region totals with forecast-based expected restriction dates.
- * Main regions use the cycle-aware forecast engine (5% threshold).
+ * Main regions use the cycle-aware forecast engine (7% threshold).
  * Recharge/Other keeps the simple linear drain date.
  */
 export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] => {
@@ -309,7 +309,7 @@ export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] 
   const totals = calculateRegionTotalsUtil(reservoirData(dsId));
   return totals.map(regionTotal => {
     if (MAIN_REGION_NAMES.includes(regionTotal.region)) {
-      const forecast = getForecastForSelection(regionTotal.region, 5, dsId);
+      const forecast = getForecastForSelection(regionTotal.region, 7, dsId);
       return { ...regionTotal, drainDate: forecast.expectedRestriction };
     }
     return regionTotal;
@@ -318,7 +318,7 @@ export const getRegionTotalsWithForecasts = (datasetId?: string): RegionTotal[] 
 
 /**
  * Get grand total with forecast-based expected restriction date.
- * Uses the cycle-aware forecast engine (5% threshold).
+ * Uses the cycle-aware forecast engine (7% threshold).
  */
 export const getGrandTotalWithForecast = (datasetId?: string): RegionTotal => {
   const dsId = resolveId(datasetId);

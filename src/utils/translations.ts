@@ -155,7 +155,7 @@ export const translations = {
     // Storage Forecast
     storageForecast: "Storage Forecast",
     restrictionsBy: "Forecasted Restrictions",
-    notRestricted: "Not Restricted",
+    notRestricted: "Not Expected",
     alreadyRestricted: "Already Restricted",
     restrictionThreshold: "Restriction Threshold",
     allMainReservoirs: "All Main Reservoirs",
@@ -319,7 +319,7 @@ export const translations = {
     // Storage Forecast
     storageForecast: "Πρόβλεψη Αποθήκευσης",
     restrictionsBy: "Πρόβλεψη Περιορισμών",
-    notRestricted: "Χωρίς περιορισμούς",
+    notRestricted: "Δεν αναμένονται",
     alreadyRestricted: "Ήδη περιορισμένο",
     restrictionThreshold: "Όριο περιορισμών",
     allMainReservoirs: "Κύριοι Ταμιευτήρες",
@@ -483,7 +483,7 @@ export const translations = {
     // Storage Forecast
     storageForecast: "Прогноз запасов",
     restrictionsBy: "Прогноз ограничений",
-    notRestricted: "Без ограничений",
+    notRestricted: "Не ожидаются",
     alreadyRestricted: "Уже ограничено",
     restrictionThreshold: "Порог ограничений",
     allMainReservoirs: "Все водохранилища",
