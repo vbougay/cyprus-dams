@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Reservoir } from '@/types';
 import { getReservoirsWithDrainDates } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation, translations } from '@/utils/translations';
 import { ChevronDown, ChevronUp, Filter, Search, Timer } from 'lucide-react';
+import StorageSparkline from '@/components/StorageSparkline';
+import { getAllSparklineData } from '@/utils/sparklineData';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -42,7 +44,8 @@ const ReservoirTable: React.FC = () => {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const reservoirData = getReservoirsWithDrainDates(currentDataSetId);
-  
+  const sparklineMap = useMemo(() => getAllSparklineData(reservoirData), [reservoirData]);
+
   // Define the columns for the table
   const columns: Column[] = [
     {
@@ -89,6 +92,20 @@ const ReservoirTable: React.FC = () => {
         </div>
       ),
       sortable: true,
+    },
+    {
+      key: 'storage',
+      label: t('trend12m'),
+      render: (reservoir) => {
+        const data = sparklineMap.get(reservoir.name);
+        if (!data || data.length === 0) return <span className="text-muted-foreground">-</span>;
+        return (
+          <div className="w-[80px] h-[24px]">
+            <StorageSparkline data={data} />
+          </div>
+        );
+      },
+      sortable: false,
     },
     {
       key: 'storage',

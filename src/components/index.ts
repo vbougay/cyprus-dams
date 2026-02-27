@@ -10,3 +10,4 @@ export { default as MonthlyInflow } from './MonthlyInflow';
 export { default as HistoricalHeatmap } from './HistoricalHeatmap';
 export { default as MediaHeader } from './MediaHeader';
 export { default as ChurchSilhouette } from './ChurchSilhouette';
+export { default as StorageSparkline } from './StorageSparkline';

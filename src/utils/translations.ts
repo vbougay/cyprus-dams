@@ -117,6 +117,10 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Max Storage",
+    history: "History",
+    high: "High",
+    low: "Low",
+    trend12m: "12m Trend",
     vsLastYearColon: "vs Last Year:",
     
     // Chart labels (compact)
@@ -277,6 +281,10 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Μέγιστη αποθήκευση",
+    history: "Ιστορικό",
+    high: "Μέγ.",
+    low: "Ελάχ.",
+    trend12m: "Τάση 12μ",
     vsLastYearColon: "Σε σύγκριση με πέρυσι:",
     
     // Chart labels (compact)
@@ -437,6 +445,10 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Макс. запас",
+    history: "История",
+    high: "Макс.",
+    low: "Мин.",
+    trend12m: "Тренд 12м",
     vsLastYearColon: "vs год назад:",
     
     // Chart labels (compact)

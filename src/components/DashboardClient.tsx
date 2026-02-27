@@ -1,7 +1,8 @@
 "use client";
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Header, ReservoirCard, ReservoirTable, RegionSummary, MonthlyInflow, HistoricalHeatmap } from '@/components';
+import { getAllSparklineData } from '@/utils/sparklineData';
 import { NewsTicker } from '@/components/NewsTicker';
 import ReservoirMapWrapper from '@/components/ReservoirMapWrapper';
 import StorageForecast from '@/components/StorageForecast';
@@ -38,6 +39,8 @@ export function DashboardClient({
     true,
     { reservoirs: initialReservoirs, regionTotals: initialRegionTotals, grandTotal: initialGrandTotal, ytdInflow: initialYtdInflow, ytdOutflow: initialYtdOutflow }
   );
+
+  const sparklineMap = useMemo(() => getAllSparklineData(reservoirs), [reservoirs]);
 
   const getReservoirs = (region: ReservoirRegion) => {
     return reservoirs.filter(reservoir => reservoir.region === region);
@@ -84,7 +87,7 @@ export function DashboardClient({
                         .sort((a, b) => b.capacity - a.capacity)
                         .slice(0, 4)
                         .map((reservoir) => (
-                          <ReservoirCard key={reservoir.name} reservoir={reservoir} />
+                          <ReservoirCard key={reservoir.name} reservoir={reservoir} sparklineData={sparklineMap.get(reservoir.name)} />
                         ))}
                     </div>
                   </div>
@@ -99,7 +102,7 @@ export function DashboardClient({
               {regionTotals.filter(region => region.region !== 'Total').map((regionTotal) => (
                 <RegionSummary key={regionTotal.region} regionTotal={regionTotal}>
                   {getReservoirs(regionTotal.region).map((reservoir) => (
-                    <ReservoirCard key={reservoir.name} reservoir={reservoir} />
+                    <ReservoirCard key={reservoir.name} reservoir={reservoir} sparklineData={sparklineMap.get(reservoir.name)} />
                   ))}
                 </RegionSummary>
               ))}
