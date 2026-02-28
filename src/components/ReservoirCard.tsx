@@ -88,7 +88,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
                       </div>
                     </div>
                   )}
-                  <div className="w-full h-[28px] mt-1">
+                  <div className="w-full h-[48px] mt-1">
                     <StorageSparkline
                       data={sparklineData}
                       highlightMax={extremes?.max}
