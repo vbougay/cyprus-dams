@@ -93,6 +93,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
                       data={sparklineData}
                       highlightMax={extremes?.max}
                       highlightMin={extremes?.min}
+                      showLevelLines
                     />
                   </div>
                 </>

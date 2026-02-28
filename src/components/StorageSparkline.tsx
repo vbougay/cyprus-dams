@@ -1,5 +1,5 @@
 import React from 'react';
-import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, ReferenceDot } from 'recharts';
+import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, ReferenceDot, ReferenceLine } from 'recharts';
 import { SparklineDataPoint } from '@/utils/sparklineData';
 
 function getSparklineColor(percentage: number): { stroke: string; fill: string } {
@@ -34,9 +34,10 @@ interface StorageSparklineProps {
   data: SparklineDataPoint[];
   highlightMax?: SparklineDataPoint;
   highlightMin?: SparklineDataPoint;
+  showLevelLines?: boolean;
 }
 
-const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax, highlightMin }) => {
+const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax, highlightMin, showLevelLines }) => {
   if (data.length === 0) return null;
 
   const latestPct = data[data.length - 1].percentage;
@@ -50,6 +51,15 @@ const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax,
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart data={data} margin={{ top: 3, right: 3, bottom: 3, left: 3 }}>
         <YAxis domain={[0, 100]} hide />
+        {showLevelLines && [25, 50, 75].map(level => (
+          <ReferenceLine
+            key={level}
+            y={level}
+            stroke="#9ca3af"
+            strokeWidth={0.5}
+            strokeDasharray="2 2"
+          />
+        ))}
         <Tooltip
           content={<SparklineTooltip />}
           cursor={false}
