@@ -3,10 +3,10 @@ import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, ReferenceDot, Ref
 import { SparklineDataPoint } from '@/utils/sparklineData';
 
 function getSparklineColor(percentage: number): { stroke: string; fill: string } {
-  if (percentage < 25) return { stroke: '#ef4444', fill: '#ef444430' };
-  if (percentage < 50) return { stroke: '#f97316', fill: '#f9731630' };
-  if (percentage < 75) return { stroke: '#eab308', fill: '#eab30830' };
-  return { stroke: '#22c55e', fill: '#22c55e30' };
+  if (percentage < 25) return { stroke: '#ef4444', fill: '#ef444450' };
+  if (percentage < 50) return { stroke: '#f97316', fill: '#f9731650' };
+  if (percentage < 75) return { stroke: '#eab308', fill: '#eab30850' };
+  return { stroke: '#22c55e', fill: '#22c55e50' };
 }
 
 function formatDate(dateStr: string): string {
