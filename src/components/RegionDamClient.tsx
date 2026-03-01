@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useMemo } from 'react';
-import { Header, ReservoirCard, HistoricalHeatmap, StorageSparkline } from '@/components';
-import { getAllSparklineData, getSparklineExtremes } from '@/utils/sparklineData';
+import { Header, ReservoirCard, HistoricalHeatmap } from '@/components';
+import { getAllSparklineData } from '@/utils/sparklineData';
 import StorageForecast from '@/components/StorageForecast';
 import { StatCardGrid } from '@/components/StatCardGrid';
 import Footer from '@/components/Footer';
@@ -13,8 +13,6 @@ import { useTranslation, translations } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { HistoricalStorageEntry } from '@/utils/historicalStorageData';
-import { Calendar, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
 import { getRegionSlugForDam, REGION_SLUG_MAP } from '@/utils/slugs';
 import { defaultLocale } from '@/utils/locale';
@@ -166,54 +164,11 @@ export function RegionDamClient({
         />
 
         <div className="space-y-8">
-          {/* Last 12 months sparkline (dam pages only) */}
-          {type === 'dam' && damName && (() => {
-            const sparklineData = sparklineMap.get(damName);
-            if (!sparklineData || sparklineData.length === 0) return null;
-            const extremes = getSparklineExtremes(sparklineData);
-            const formatShortDate = (iso: string) => {
-              const d = new Date(iso);
-              return d.toLocaleDateString(language === 'el' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short' });
-            };
-            return (
-              <Card className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-lg border border-gray-200 dark:border-gray-800 p-4">
-                <CardContent className="p-0">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Calendar size={14} className="text-water-500 dark:text-water-400" />
-                    <span className="text-sm font-medium text-muted-foreground">{t('history')}</span>
-                    {extremes && (
-                      <div className="flex gap-3 ml-auto font-mono text-xs">
-                        <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
-                          <ArrowUpCircle size={12} />
-                          <span>{extremes.max.percentage.toFixed(1)}%</span>
-                          <span className="text-muted-foreground">{formatShortDate(extremes.max.date)}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-red-500 dark:text-red-400">
-                          <ArrowDownCircle size={12} />
-                          <span>{extremes.min.percentage.toFixed(1)}%</span>
-                          <span className="text-muted-foreground">{formatShortDate(extremes.min.date)}</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <div className="w-full h-[80px]">
-                    <StorageSparkline
-                      data={sparklineData}
-                      highlightMax={extremes?.max}
-                      highlightMin={extremes?.min}
-                      showLevelLines
-                      language={language}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })()}
-
           {/* Historical Heatmap */}
           <HistoricalHeatmap
             filterRegion={type === 'region' ? heatmapRegionKey : undefined}
             filterDamKey={type === 'dam' ? damKey : undefined}
+            sparklineData={type === 'dam' && damName ? sparklineMap.get(damName) : undefined}
           />
 
           {/* Dam Cards (region pages only) */}

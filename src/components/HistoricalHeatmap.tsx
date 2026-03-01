@@ -4,8 +4,10 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { useTheme } from '@/components/ThemeProvider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, Calendar, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { REGIONS, getCellColor } from '@/utils/heatmapConfig';
+import { SparklineDataPoint, getSparklineExtremes } from '@/utils/sparklineData';
+import { StorageSparkline } from '@/components';
 
 interface TooltipData {
   name: string;
@@ -27,9 +29,10 @@ const TOTAL_CAPACITY = 290.668;
 interface HistoricalHeatmapProps {
   filterRegion?: string;
   filterDamKey?: keyof HistoricalStorageEntry;
+  sparklineData?: SparklineDataPoint[];
 }
 
-const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, filterDamKey }) => {
+const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, filterDamKey, sparklineData }) => {
   const { language } = useLanguage();
   const t = useTranslation(language);
   const { theme } = useTheme();
@@ -339,7 +342,7 @@ const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, fil
           )}
 
           {/* Total timeline — non-scrollable, full width */}
-          <div className={filterDamKey ? "" : "border-t border-gray-200 dark:border-gray-700 mt-3 pt-3"}>
+          <div className={filterDamKey ? "mt-3" : "border-t border-gray-200 dark:border-gray-700 mt-3 pt-3"}>
             <div className="flex items-center gap-2">
               {!filterDamKey && (
                 <span
@@ -400,6 +403,46 @@ const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, fil
               </div>
             </div>
           </div>
+
+          {/* Last 12 months sparkline (dam pages only) */}
+          {sparklineData && sparklineData.length > 0 && (() => {
+            const extremes = getSparklineExtremes(sparklineData);
+            const formatShortDate = (iso: string) => {
+              const d = new Date(iso);
+              return d.toLocaleDateString(language === 'el' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short' });
+            };
+            return (
+              <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3">
+                <div className="flex items-center gap-2 mb-2">
+                  <Calendar size={14} className="text-water-500 dark:text-water-400" />
+                  <span className="text-sm font-medium text-muted-foreground">{t('history')}</span>
+                  {extremes && (
+                    <div className="flex gap-3 ml-auto font-mono text-xs">
+                      <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
+                        <ArrowUpCircle size={12} />
+                        <span>{extremes.max.percentage.toFixed(1)}%</span>
+                        <span className="text-muted-foreground">{formatShortDate(extremes.max.date)}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-red-500 dark:text-red-400">
+                        <ArrowDownCircle size={12} />
+                        <span>{extremes.min.percentage.toFixed(1)}%</span>
+                        <span className="text-muted-foreground">{formatShortDate(extremes.min.date)}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="w-full h-[80px]">
+                  <StorageSparkline
+                    data={sparklineData}
+                    highlightMax={extremes?.max}
+                    highlightMin={extremes?.min}
+                    showLevelLines
+                    language={language}
+                  />
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Tooltip */}
           {tooltip && (
