@@ -47,10 +47,10 @@ const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId }) => {
       {/* Wave decoration - static for screenshot compatibility, animated for live view */}
       <div className="absolute bottom-0 left-0 right-0 translate-y-1/2 h-[40px] pointer-events-none z-10 overflow-hidden">
         <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 28" preserveAspectRatio="none">
-          <path d="M0,14 C150,28 350,0 600,14 C850,28 1050,0 1200,14 L1200,28 L0,28 Z" className="fill-water-400/70 dark:fill-water-400/60" />
+          <path d="M0,14 C150,28 350,0 600,14 C850,28 1050,0 1200,14 L1200,28 L0,28 Z" fill="#38bdf8" fillOpacity={0.7} />
         </svg>
         <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 1200 28" preserveAspectRatio="none">
-          <path d="M0,14 C200,0 400,28 600,14 C800,0 1000,28 1200,14 L1200,28 L0,28 Z" className="fill-water-500/50 dark:fill-water-500/40" />
+          <path d="M0,14 C200,0 400,28 600,14 C800,0 1000,28 1200,14 L1200,28 L0,28 Z" fill="#0ea5e9" fillOpacity={0.5} />
         </svg>
       </div>
     </header>
