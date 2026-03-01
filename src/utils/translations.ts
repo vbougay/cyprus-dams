@@ -147,6 +147,7 @@ export const translations = {
 
     // Historical Heatmap
     historicalLevels: "Historical Reservoir Levels",
+    historicalLevelsSingle: "Historical Reservoir Levels",
     noData: "No data",
     full: "Full",
     fillLevel: "Fill",
@@ -318,6 +319,7 @@ export const translations = {
 
     // Historical Heatmap
     historicalLevels: "Ιστορικά Επίπεδα Ταμιευτήρων",
+    historicalLevelsSingle: "Ιστορικά Επίπεδα Ταμιευτήρα",
     noData: "Χωρίς δεδομένα",
     full: "Πλήρες",
     fillLevel: "Πλήρωση",
@@ -489,6 +491,7 @@ export const translations = {
 
     // Historical Heatmap
     historicalLevels: "Исторические уровни водохранилищ",
+    historicalLevelsSingle: "Исторические уровни водохранилища",
     noData: "Нет данных",
     full: "Полн.",
     fillLevel: "Заполн.",

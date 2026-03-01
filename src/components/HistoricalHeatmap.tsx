@@ -191,7 +191,7 @@ const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, fil
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
           <CardTitle className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight">
             <BarChart3 className="h-5 w-5 text-water-500 dark:text-water-400" />
-            {t('historicalLevels')}
+            {filterDamKey ? t('historicalLevelsSingle') : t('historicalLevels')}
           </CardTitle>
           <div className="flex items-center gap-2 text-[10px] text-gray-500 dark:text-gray-400">
             <span>{t('noData')}:</span>
