@@ -167,7 +167,7 @@ export function RegionDamClient({
   const translatedRegionName = breadcrumbRegionName ? translateRegion(breadcrumbRegionName) : '';
 
   const content = (
-    <div ref={mediaMode ? captureRef : undefined} className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300${mediaMode ? ' media-mode' : ''}`}>
+    <div ref={mediaMode ? captureRef : undefined} className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300${mediaMode ? ' media-mode max-w-screen-xl mx-auto' : ''}`}>
       {mediaMode ? (
         <MediaHeader dateLabel={currentDataSet?.label || ''} dataSetId={currentDataSet?.id} entityName={displayName} />
       ) : (

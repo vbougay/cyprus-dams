@@ -75,7 +75,7 @@ export function MediaClient({
 
   return (
     <div className="min-h-screen">
-      <div ref={captureRef} className="media-mode bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
+      <div ref={captureRef} className="media-mode max-w-screen-xl mx-auto bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
         <MediaHeader
           dateLabel={currentDataSet?.label || ''}
           dataSetId={currentDataSet?.id}
