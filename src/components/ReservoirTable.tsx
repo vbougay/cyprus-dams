@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { Reservoir } from '@/types';
 import { getReservoirsWithDrainDates } from '@/utils/dataManager';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation, translations } from '@/utils/translations';
+import { getDamSlug, getRegionSlug } from '@/utils/slugs';
 import { ChevronDown, ChevronUp, Filter, Search, Timer } from 'lucide-react';
 import StorageSparkline from '@/components/StorageSparkline';
 import { getAllSparklineData } from '@/utils/sparklineData';
@@ -52,25 +54,38 @@ const ReservoirTable: React.FC = () => {
       key: 'name',
       label: t('reservoir'),
       render: (reservoir) => {
-        // Get translations for reservoir name and region
-        // We need to check if the translations object has entries for these
         const translatedName = (() => {
-          // Check if the name exists in translations
           if (reservoir.name in translations[language]) {
             // @ts-expect-error - We know this is a valid key at runtime
             return t(reservoir.name);
           }
           return reservoir.name;
         })();
-        
-        // Get translation for region
+
         const regionKey = regionKeyMap[reservoir.region];
         const translatedRegion = regionKey ? t(regionKey as Parameters<typeof t>[0]) : reservoir.region;
-        
+
+        const damSlug = getDamSlug(reservoir.name);
+        const regionSlug = getRegionSlug(reservoir.region);
+        const damHref = damSlug ? (language === 'en' ? `/dam/${damSlug}` : `/${language}/dam/${damSlug}`) : undefined;
+        const regionHref = regionSlug ? (language === 'en' ? `/region/${regionSlug}` : `/${language}/region/${regionSlug}`) : undefined;
+
         return (
           <div>
-            <span className="font-medium">{translatedName}</span>
-            <div className="text-xs text-muted-foreground">{translatedRegion}</div>
+            {damHref ? (
+              <Link href={damHref} className="font-medium hover:text-water-600 dark:hover:text-water-400 transition-colors">
+                {translatedName}
+              </Link>
+            ) : (
+              <span className="font-medium">{translatedName}</span>
+            )}
+            {regionHref ? (
+              <Link href={regionHref} className="block text-xs text-muted-foreground hover:text-water-600 dark:hover:text-water-400 transition-colors">
+                {translatedRegion}
+              </Link>
+            ) : (
+              <div className="text-xs text-muted-foreground">{translatedRegion}</div>
+            )}
           </div>
         );
       },

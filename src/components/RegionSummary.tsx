@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import Link from 'next/link';
 import { RegionTotal } from '@/types';
 import { CapacityChart } from '@/components';
 import { getSummaryChanges } from '@/utils/dataManager';
@@ -7,6 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { useDataContext } from '@/context/DataContext';
 import { useTranslation } from '@/utils/translations';
 import { getDrainDateColor, getDrainDateText } from '@/utils/reservoirUtils';
+import { getRegionSlug } from '@/utils/slugs';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -97,14 +99,23 @@ const RegionSummary: React.FC<RegionSummaryProps> = ({
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
           <div className="flex items-center gap-2">
-            <span className="text-foreground">
-              {regionTotal.region === 'Southern Conveyor' ? t('southernConveyor') :
-               regionTotal.region === 'Paphos' ? t('paphos') :
-               regionTotal.region === 'Chrysochou' ? t('chrysochou') :
-               regionTotal.region === 'Nicosia' ? t('nicosia') :
-               regionTotal.region === 'Recharge/Other' ? t('rechargeOther') :
-               regionTotal.region === 'Total' ? t('totalLabel') : regionTotal.region}
-            </span>
+            {(() => {
+              const label = regionTotal.region === 'Southern Conveyor' ? t('southernConveyor') :
+                regionTotal.region === 'Paphos' ? t('paphos') :
+                regionTotal.region === 'Chrysochou' ? t('chrysochou') :
+                regionTotal.region === 'Nicosia' ? t('nicosia') :
+                regionTotal.region === 'Recharge/Other' ? t('rechargeOther') :
+                regionTotal.region === 'Total' ? t('totalLabel') : regionTotal.region;
+              const slug = regionTotal.region !== 'Total' ? getRegionSlug(regionTotal.region) : undefined;
+              const href = slug ? (language === 'en' ? `/region/${slug}` : `/${language}/region/${slug}`) : undefined;
+              return href ? (
+                <Link href={href} className="text-foreground hover:text-water-600 dark:hover:text-water-400 transition-colors">
+                  {label}
+                </Link>
+              ) : (
+                <span className="text-foreground">{label}</span>
+              );
+            })()}
           </div>
           <div className="text-sm font-normal text-muted-foreground">
             {regionTotal.capacity.toFixed(1)} MCM {t('capacity')}
