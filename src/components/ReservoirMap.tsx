@@ -49,7 +49,7 @@ const reservoirLocations = {
   'Argaka': { lng: 32.5022, lat: 35.0486 },
   'Pomos': { lng: 32.5762, lat: 35.1449 },
   'Agia Marina': { lng: 32.5410, lat: 35.1170 },
-  'Mavrokolymbos': { lng: 32.4058, lat: 34.8565 },
+  'Mavrokolympos': { lng: 32.4058, lat: 34.8565 },
 };
 
 // Default coordinates for Cyprus center

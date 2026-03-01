@@ -236,7 +236,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Paphos',
   },
   {
-    name: 'Mavrokolymbos',
+    name: 'Mavrokolympos',
     capacity: 2.180,
     inflow: {
       last24Hours: 0.000,
@@ -378,7 +378,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Nicosia',
   },
   {
-    name: 'Xyliatou',
+    name: 'Xyliatos',
     capacity: 1.430,
     inflow: {
       last24Hours: 0.000,
@@ -766,6 +766,6 @@ Yearly Inflow Data:
 
 Other Notable Changes:
 - Agia Marina capacity corrected from 0.298 MCM to 0.300 MCM
-- Xyliatou maxStorage date added (29/3)
+- Xyliatos maxStorage date added (29/3)
 `;
 };

@@ -236,7 +236,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Paphos',
   },
   {
-    name: 'Mavrokolymbos',
+    name: 'Mavrokolympos',
     capacity: 2.180,
     inflow: {
       last24Hours: 0.000,
@@ -378,7 +378,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Nicosia',
   },
   {
-    name: 'Xyliatou',
+    name: 'Xyliatos',
     capacity: 1.430,
     inflow: {
       last24Hours: 0.000,
@@ -722,11 +722,11 @@ Between April 11 and April 28, 2025, Cyprus's reservoirs experienced mixed chang
 
 In the Southern Conveyor, most reservoirs saw decreases in water storage. Kouris decreased by about 0.4 million cubic meters (MCM), while Lefkara, Germasoyeia, and Achna also recorded decreases. Dipotamos showed a small increase, while Arminou remained relatively stable.
 
-The Paphos region continued its gradual decline, with Asprokremmos and Kannaviou losing about 0.5 and 0.15 MCM respectively, while Mavrokolymbos remained at zero.
+The Paphos region continued its gradual decline, with Asprokremmos and Kannaviou losing about 0.5 and 0.15 MCM respectively, while Mavrokolympos remained at zero.
 
 In Chrysochou, Evretou lost about 0.15 MCM, while Argaka, Pomos, and Agia Marina remained relatively stable.
 
-Nicosia's reservoirs showed small decreases, with Xyliatou losing about 0.01 MCM and Kalopanagiotis decreasing slightly.
+Nicosia's reservoirs showed small decreases, with Xyliatos losing about 0.01 MCM and Kalopanagiotis decreasing slightly.
 
 Among the smaller recharge and other reservoirs, Tamassos decreased by about 0.03 MCM, while Klirou-Malounta and Solea remained relatively stable.
 

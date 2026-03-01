@@ -116,7 +116,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Paphos'
   },
   {
-    name: 'Mavrokolymbos',
+    name: 'Mavrokolympos',
     capacity: 2.180,
     inflow: { last24Hours: 0.000, totalSince: 0.199 },
     storage: {
@@ -186,7 +186,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Nicosia'
   },
   {
-    name: 'Xyliatou',
+    name: 'Xyliatos',
     capacity: 1.430,
     inflow: { last24Hours: 0.000, totalSince: 0.157 },
     storage: {
@@ -445,7 +445,7 @@ Between March 28 and April 11, 2025, Cyprus's reservoirs experienced mostly mode
 
 In the Southern Conveyor, most reservoirs saw slight decreases in water storage, with Kouris, Kalavasos, Lefkara, Germasoyeia, Polemidia, and Achna all dropping by around 0.1 to 0.3 million cubic meters (MCM). Notably, Dipotamos and Arminou bucked the trend, each recording small increases in storage, suggesting some localized inflow or reduced outflow.
 
-The Paphos region continued its gradual decline, with Asprokremmos and Kannaviou both losing about 0.1 to 0.4 MCM, while Mavrokolymbos remained unchanged at zero storage.
+The Paphos region continued its gradual decline, with Asprokremmos and Kannaviou both losing about 0.1 to 0.4 MCM, while Mavrokolympos remained unchanged at zero storage.
 
 In Chrysochou, the picture was mixed: Evretou lost a bit of water, but Argaka, Pomos, and Agia Marina all saw minor gains, reflecting localized rainfall or inflow events.
 

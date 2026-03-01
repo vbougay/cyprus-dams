@@ -39,13 +39,13 @@ const RESERVOIR_NAME_TO_KEY: Record<string, keyof HistoricalStorageEntry> = {
   'Achna': 'achna',
   'Asprokremmos': 'asprokremmos',
   'Kannaviou': 'kannaviou',
-  'Mavrokolymbos': 'mavrokolympos',
+  'Mavrokolympos': 'mavrokolympos',
   'Evretou': 'evretou',
   'Argaka': 'argaka',
   'Pomos': 'pomos',
   'Agia Marina': 'agiaMarina',
   'Vyzakia': 'vyzakia',
-  'Xyliatou': 'xyliatos',
+  'Xyliatos': 'xyliatos',
   'Kalopanagiotis': 'kalopanagiotis',
 };
 

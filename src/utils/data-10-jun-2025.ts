@@ -721,7 +721,7 @@ Between June 6 and June 10, 2025, Cyprus's reservoirs continued to show decrease
 
 In the Southern Conveyor, all reservoirs showed further decreases in storage levels. The major reservoirs including Kouris, Kalavasos, and Lefkara continued their downward trajectory, while smaller reservoirs in the region showed similar trends.
 
-In the Paphos region, both Asprokremmos and Kannaviou decreased, while Mavrokolymbos remains completely empty.
+In the Paphos region, both Asprokremmos and Kannaviou decreased, while Mavrokolympos remains completely empty.
 
 In Chrysochou, all reservoirs showed decreases, with Evretou leading the losses in the region.
 

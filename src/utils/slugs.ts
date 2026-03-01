@@ -63,10 +63,6 @@ const DAM_NAME_TO_SLUG: Record<string, string> = Object.fromEntries(
   Object.entries(DAM_SLUG_MAP).map(([slug, { name }]) => [name, slug])
 );
 
-// Also handle alternate names (Mavrokolymbos → mavrokolympos, Xyliatou → xyliatos)
-DAM_NAME_TO_SLUG['Mavrokolymbos'] = 'mavrokolympos';
-DAM_NAME_TO_SLUG['Xyliatou'] = 'xyliatos';
-
 // Lookups
 export function getRegionBySlug(slug: string): ReservoirRegion | undefined {
   return REGION_SLUG_MAP[slug];

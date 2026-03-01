@@ -39,7 +39,7 @@ const regionMetaDescriptions: Record<string, Record<Locale, string>> = {
     ru: "Уровни воды плотин региона Хрисоху: Эвретоу, Аргака, Помос, Агиа Марина.",
   },
   nicosia: {
-    en: "Water levels for Nicosia region dams: Vyzakia, Xyliatou, Kalopanagiotis. Current storage and forecasts.",
+    en: "Water levels for Nicosia region dams: Vyzakia, Xyliatos, Kalopanagiotis. Current storage and forecasts.",
     el: "Επίπεδα νερού φραγμάτων Λευκωσίας: Βυζακιά, Ξυλιάτου, Καλοπαναγιώτης.",
     ru: "Уровни воды плотин Никосии: Визакия, Ксилиату, Калопанайотис.",
   },

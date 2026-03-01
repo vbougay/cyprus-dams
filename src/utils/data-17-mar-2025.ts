@@ -236,7 +236,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Paphos',
   },
   {
-    name: 'Mavrokolymbos',
+    name: 'Mavrokolympos',
     capacity: 2.180,
     inflow: {
       last24Hours: 0.000,
@@ -378,7 +378,7 @@ export const reservoirData: Reservoir[] = [
     region: 'Nicosia',
   },
   {
-    name: 'Xyliatou',
+    name: 'Xyliatos',
     capacity: 1.430,
     inflow: {
       last24Hours: 0.000,

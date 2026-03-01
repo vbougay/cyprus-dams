@@ -177,13 +177,13 @@ const RESERVOIR_KEY_TO_NAMES: Record<string, string[]> = {
   achna: ['Achna'],
   asprokremmos: ['Asprokremmos'],
   kannaviou: ['Kannaviou'],
-  mavrokolympos: ['Mavrokolympos', 'Mavrokolymbos'],
+  mavrokolympos: ['Mavrokolympos'],
   evretou: ['Evretou'],
   argaka: ['Argaka'],
   pomos: ['Pomos'],
   agiaMarina: ['Agia Marina'],
   vyzakia: ['Vyzakia'],
-  xyliatos: ['Xyliatos', 'Xyliatou'],
+  xyliatos: ['Xyliatos'],
   kalopanagiotis: ['Kalopanagiotis'],
 };
 
