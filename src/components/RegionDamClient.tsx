@@ -17,7 +17,8 @@ import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { HistoricalStorageEntry } from '@/utils/historicalStorageData';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
-import { Download, Loader2 } from 'lucide-react';
+import { Download, Loader2, X } from 'lucide-react';
+import Link from 'next/link';
 import { getRegionSlugForDam, REGION_SLUG_MAP } from '@/utils/slugs';
 import { defaultLocale } from '@/utils/locale';
 
@@ -168,12 +169,12 @@ export function RegionDamClient({
   const content = (
     <div ref={mediaMode ? captureRef : undefined} className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300${mediaMode ? ' media-mode' : ''}`}>
       {mediaMode ? (
-        <MediaHeader dateLabel={currentDataSet?.label || ''} dataSetId={currentDataSet?.id} />
+        <MediaHeader dateLabel={currentDataSet?.label || ''} dataSetId={currentDataSet?.id} entityName={displayName} />
       ) : (
         <Header />
       )}
 
-      <main className="container mx-auto px-4 pb-16">
+      <main className={`container mx-auto px-4 ${mediaMode ? 'pb-6' : 'pb-16'}`}>
         {type === 'dam' && regionSlug && !mediaMode && (
           <Breadcrumb className="mb-2">
             <BreadcrumbList>
@@ -191,9 +192,11 @@ export function RegionDamClient({
             </BreadcrumbList>
           </Breadcrumb>
         )}
-        <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-          {displayName}
-        </h1>
+        {!mediaMode && (
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+            {displayName}
+          </h1>
+        )}
 
         <StatCardGrid
           grandTotal={regionTotal}
@@ -201,10 +204,11 @@ export function RegionDamClient({
           ytdOutflow={null}
           t={t}
           animate={!mediaMode}
+          compact={mediaMode}
           totalInflowSince={regionTotal.inflow.totalSince}
         />
 
-        <div className="space-y-8">
+        <div className={mediaMode ? 'space-y-4' : 'space-y-8'}>
           {/* Historical Heatmap */}
           <HistoricalHeatmap
             filterRegion={type === 'region' ? heatmapRegionKey : undefined}
@@ -243,10 +247,15 @@ export function RegionDamClient({
   );
 
   if (mediaMode) {
+    const closeHref = localePath(
+      type === 'dam' && damSlug ? `/dam/${damSlug}`
+        : type === 'region' && regionSlug ? `/region/${regionSlug}`
+        : '/'
+    );
     return (
       <div className="min-h-screen">
         {content}
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
           <Button
             onClick={handleDownload}
             disabled={isDownloading}
@@ -259,6 +268,11 @@ export function RegionDamClient({
               <Download className="h-5 w-5 mr-2" />
             )}
             {isDownloading ? t('downloading') : t('downloadImage')}
+          </Button>
+          <Button asChild size="lg" className="bg-gray-600 hover:bg-gray-700 text-white rounded-xl shadow-lg transition-colors h-12 w-12 p-0">
+            <Link href={closeHref}>
+              <X className="h-5 w-5" />
+            </Link>
           </Button>
         </div>
       </div>

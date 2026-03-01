@@ -8,13 +8,15 @@ import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
 import MediaHeader from '@/components/MediaHeader';
 import { StatCardGrid } from '@/components/StatCardGrid';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2, Droplets } from 'lucide-react';
+import { Download, Loader2, Droplets, X } from 'lucide-react';
+import Link from 'next/link';
 import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { useReservoirData } from '@/hooks/useReservoirData';
 import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, Reservoir } from '@/types';
+import { defaultLocale } from '@/utils/locale';
 import Footer from '@/components/Footer';
 
 interface MediaClientProps {
@@ -79,10 +81,10 @@ export function MediaClient({
           dataSetId={currentDataSet?.id}
         />
 
-        <main className="container mx-auto px-4 pb-16">
-          <StatCardGrid grandTotal={grandTotal} ytdInflow={ytdInflow} ytdOutflow={ytdOutflow} t={t} drainDateLabel={t('forecastedDrainDate')} />
+        <main className="container mx-auto px-4 pb-6">
+          <StatCardGrid grandTotal={grandTotal} ytdInflow={ytdInflow} ytdOutflow={ytdOutflow} t={t} compact drainDateLabel={t('forecastedDrainDate')} />
 
-          <div className="space-y-8">
+          <div className="space-y-4">
             <div>
               <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
                 <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
@@ -119,7 +121,7 @@ export function MediaClient({
         <Footer hideLinks />
       </div>
 
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-6 right-6 z-50 flex items-center gap-2">
         <Button
           onClick={handleDownload}
           disabled={isDownloading}
@@ -132,6 +134,11 @@ export function MediaClient({
             <Download className="h-5 w-5 mr-2" />
           )}
           {isDownloading ? t('downloading') : t('downloadImage')}
+        </Button>
+        <Button asChild size="lg" className="bg-gray-600 hover:bg-gray-700 text-white rounded-xl shadow-lg transition-colors h-12 w-12 p-0">
+          <Link href={language === defaultLocale ? '/' : `/${language}`}>
+            <X className="h-5 w-5" />
+          </Link>
         </Button>
       </div>
     </div>

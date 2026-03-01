@@ -8,34 +8,45 @@ import { formatDataSetDate } from '@/utils/dateFormatting';
 interface MediaHeaderProps {
   dateLabel: string;
   dataSetId?: string;
+  entityName?: string;
 }
 
-const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId }) => {
+const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId, entityName }) => {
   const { language } = useLanguage();
   const t = useTranslation(language);
 
   const formattedDate = dataSetId ? formatDataSetDate(dataSetId, language) : dateLabel;
 
   return (
-    <header className="relative w-full py-4 md:py-8 mb-8 bg-white/95 dark:bg-gray-900/95 overflow-visible">
+    <header className="relative w-full py-3 md:py-4 mb-10 bg-white/95 dark:bg-gray-900/95 overflow-visible">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col items-center text-center gap-1">
-          {/* Title */}
-          <div className="flex items-center gap-3">
-            <div className="relative">
+        <div className="flex items-center justify-between gap-4">
+          {/* Left: Title & subtitle */}
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="relative flex-shrink-0">
               <div className="absolute inset-0 bg-water-400/20 dark:bg-water-400/30 blur-xl rounded-full"></div>
               <Droplets className="relative w-8 h-8 md:w-10 md:h-10 text-water-500 dark:text-water-400" />
             </div>
-            <h1 className="text-2xl md:text-4xl font-bold gradient-text">
-              {t('appTitle')}
-            </h1>
+            <div className="min-w-0">
+              <h1 className="text-xl md:text-3xl font-bold gradient-text leading-tight">
+                {t('appTitle')}
+              </h1>
+              <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-sm">
+                {t('subtitle')}
+              </p>
+            </div>
           </div>
-          <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-base">
-            {t('subtitle')}
-          </p>
-          <p className="text-sm md:text-lg font-medium text-water-700 dark:text-water-300 mt-0.5">
-            {formattedDate}
-          </p>
+          {/* Right: Entity name & date */}
+          <div className="text-right flex-shrink-0">
+            {entityName && (
+              <p className="text-lg md:text-2xl font-bold text-foreground leading-tight">
+                {entityName}
+              </p>
+            )}
+            <p className="text-sm md:text-base font-medium text-water-700 dark:text-water-300">
+              {formattedDate}
+            </p>
+          </div>
         </div>
       </div>
 

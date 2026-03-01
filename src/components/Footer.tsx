@@ -36,11 +36,31 @@ const Footer: React.FC<{ hideLinks?: boolean }> = ({ hideLinks }) => {
 
   const regionSlugs = Object.keys(REGION_DAMS);
 
+  if (hideLinks) {
+    return (
+      <footer className="border-t border-gray-200 dark:border-gray-800 py-3 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
+        <div className="container mx-auto px-4">
+          <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 flex-wrap">
+            <a
+              href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument"
+              className="hover:text-water-600 dark:hover:text-water-400 transition-colors"
+            >
+              {t('dataFrom')}
+            </a>
+            <span>·</span>
+            <span>Vladimir Bugay</span>
+            <span>·</span>
+            <span>v@bougay.com</span>
+          </p>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
       <div className="container mx-auto px-4">
         {/* Region/Dam links grid */}
-        {!hideLinks && (
         <div className="footer-links-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6 text-xs">
           {regionSlugs.map((regionSlug) => {
             const regionName = REGION_SLUG_MAP[regionSlug];
@@ -81,10 +101,9 @@ const Footer: React.FC<{ hideLinks?: boolean }> = ({ hideLinks }) => {
             );
           })}
         </div>
-        )}
 
         {/* Original footer content */}
-        <div className={`text-center text-sm text-muted-foreground${hideLinks ? '' : ' border-t border-gray-200 dark:border-gray-800'} pt-4`}>
+        <div className="text-center text-sm text-muted-foreground border-t border-gray-200 dark:border-gray-800 pt-4">
           <p>
             <a
               href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument"

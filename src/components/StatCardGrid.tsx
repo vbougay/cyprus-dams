@@ -10,6 +10,7 @@ interface StatCardGridProps {
   ytdOutflow: YTDOutflowResult | null;
   t: (key: string) => string;
   animate?: boolean;
+  compact?: boolean;
   drainDateLabel?: string;
   totalInflowSince?: number;
 }
@@ -20,6 +21,7 @@ export function StatCardGrid({
   ytdOutflow,
   t,
   animate = false,
+  compact = false,
   drainDateLabel,
   totalInflowSince,
 }: StatCardGridProps) {
@@ -43,7 +45,7 @@ export function StatCardGrid({
       : 'text-foreground';
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6 mb-8">
+    <div className={`grid grid-cols-2 md:grid-cols-5 gap-3 ${compact ? 'md:gap-3 mb-4' : 'md:gap-6 mb-8'}`}>
       <Card className={`glass-card flex rounded-2xl overflow-hidden ${anim} glow-effect`}>
         <div className="stat-card-icon flex-none p-3 sm:p-4">
           <Droplets className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
