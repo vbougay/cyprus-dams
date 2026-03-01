@@ -66,7 +66,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
               const extremes = getSparklineExtremes(sparklineData);
               const formatShortDate = (iso: string) => {
                 const d = new Date(iso);
-                return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+                return d.toLocaleDateString(language === 'el' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short' });
               };
               return (
                 <>
@@ -94,6 +94,7 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
                       highlightMax={extremes?.max}
                       highlightMin={extremes?.min}
                       showLevelLines
+                      language={language}
                     />
                   </div>
                 </>

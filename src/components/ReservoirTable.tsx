@@ -101,7 +101,7 @@ const ReservoirTable: React.FC = () => {
         if (!data || data.length === 0) return <span className="text-muted-foreground">-</span>;
         return (
           <div className="w-[80px] h-[24px]">
-            <StorageSparkline data={data} />
+            <StorageSparkline data={data} language={language} />
           </div>
         );
       },

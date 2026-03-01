@@ -9,22 +9,23 @@ function getSparklineColor(percentage: number): { stroke: string; fill: string }
   return { stroke: '#22c55e', fill: '#22c55e50' };
 }
 
-function formatDate(dateStr: string): string {
+function formatDate(dateStr: string, language: string = 'en'): string {
   const d = new Date(dateStr);
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' });
+  return d.toLocaleDateString(language === 'el' ? 'el-GR' : language === 'ru' ? 'ru-RU' : 'en-GB', { day: 'numeric', month: 'short', year: '2-digit' });
 }
 
 interface SparklineTooltipProps {
   active?: boolean;
   payload?: Array<{ payload: SparklineDataPoint }>;
+  language?: string;
 }
 
-const SparklineTooltip: React.FC<SparklineTooltipProps> = ({ active, payload }) => {
+const SparklineTooltip: React.FC<SparklineTooltipProps> = ({ active, payload, language = 'en' }) => {
   if (!active || !payload?.[0]) return null;
   const point = payload[0].payload;
   return (
     <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded px-1.5 py-0.5 text-[10px] shadow-sm">
-      <span className="text-muted-foreground">{formatDate(point.date)}</span>
+      <span className="text-muted-foreground">{formatDate(point.date, language)}</span>
       <span className="ml-1 font-medium text-foreground">{point.percentage.toFixed(1)}%</span>
     </div>
   );
@@ -35,9 +36,10 @@ interface StorageSparklineProps {
   highlightMax?: SparklineDataPoint;
   highlightMin?: SparklineDataPoint;
   showLevelLines?: boolean;
+  language?: string;
 }
 
-const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax, highlightMin, showLevelLines }) => {
+const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax, highlightMin, showLevelLines, language = 'en' }) => {
   if (data.length === 0) return null;
 
   const latestPct = data[data.length - 1].percentage;
@@ -61,7 +63,7 @@ const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax,
           />
         ))}
         <Tooltip
-          content={<SparklineTooltip />}
+          content={<SparklineTooltip language={language} />}
           cursor={false}
           allowEscapeViewBox={{ x: true, y: true }}
         />
