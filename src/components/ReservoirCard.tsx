@@ -78,12 +78,12 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
                     <div className="flex gap-3 font-mono text-xs">
                       <div className="flex items-center gap-1 text-green-600 dark:text-green-400">
                         <ArrowUpCircle size={12} />
-                        <span>{(extremes.max.percentage * capacity / 100).toFixed(3)}</span>
+                        <span>{extremes.max.percentage.toFixed(1)}%</span>
                         <span className="text-muted-foreground">{formatShortDate(extremes.max.date)}</span>
                       </div>
                       <div className="flex items-center gap-1 text-red-500 dark:text-red-400">
                         <ArrowDownCircle size={12} />
-                        <span>{(extremes.min.percentage * capacity / 100).toFixed(3)}</span>
+                        <span>{extremes.min.percentage.toFixed(1)}%</span>
                         <span className="text-muted-foreground">{formatShortDate(extremes.min.date)}</span>
                       </div>
                     </div>
