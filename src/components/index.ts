@@ -11,3 +11,4 @@ export { default as HistoricalHeatmap } from './HistoricalHeatmap';
 export { default as MediaHeader } from './MediaHeader';
 export { default as ChurchSilhouette } from './ChurchSilhouette';
 export { default as StorageSparkline } from './StorageSparkline';
+export { default as Footer } from './Footer';

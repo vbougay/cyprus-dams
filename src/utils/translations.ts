@@ -162,6 +162,9 @@ export const translations = {
     regions: "Regions",
     majorDams: "Major Dams",
 
+    // Region/Dam pages
+    forecastNotAvailable: "Forecast data is not available for this selection.",
+
   },
   el: {
     // Header
@@ -326,6 +329,9 @@ export const translations = {
     regions: "Περιοχές",
     majorDams: "Μεγάλα Φράγματα",
 
+    // Region/Dam pages
+    forecastNotAvailable: "Τα δεδομένα πρόβλεψης δεν είναι διαθέσιμα για αυτή την επιλογή.",
+
   },
   ru: {
     // Header
@@ -489,6 +495,9 @@ export const translations = {
     allMainReservoirs: "Все водохранилища",
     regions: "Регионы",
     majorDams: "Крупные плотины",
+
+    // Region/Dam pages
+    forecastNotAvailable: "Данные прогноза недоступны для этого выбора.",
   }
 };
 

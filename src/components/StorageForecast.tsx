@@ -77,12 +77,17 @@ function getOptionById(id: string): ForecastOption {
   return getAllOptions().find(o => o.id === id) ?? ALL_OPTION;
 }
 
-const StorageForecast: React.FC = () => {
+interface StorageForecastProps {
+  selectionId?: string;
+}
+
+const StorageForecast: React.FC<StorageForecastProps> = ({ selectionId: fixedSelectionId }) => {
   const { currentDataSetId } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
   const [isVisible, setIsVisible] = useState(false);
-  const [selectedId, setSelectedId] = useState('all');
+  const [selectedId, setSelectedId] = useState(fixedSelectionId ?? 'all');
+  const isFixed = fixedSelectionId !== undefined;
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -145,30 +150,32 @@ const StorageForecast: React.FC = () => {
             <span>{t('storageForecast')}</span>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <Select value={selectedId} onValueChange={setSelectedId}>
-              <SelectTrigger className="w-[200px] h-8 text-xs">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">{t('allMainReservoirs')}</SelectItem>
-                <SelectGroup>
-                  <SelectLabel className="text-xs">{t('regions')}</SelectLabel>
-                  {REGION_OPTIONS.map(opt => (
-                    <SelectItem key={opt.id} value={opt.id}>
-                      {REGION_DISPLAY_NAMES[opt.id]?.[language] ?? opt.id}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-                <SelectGroup>
-                  <SelectLabel className="text-xs">{t('majorDams')}</SelectLabel>
-                  {DAM_OPTIONS.map(opt => (
-                    <SelectItem key={opt.id} value={opt.id}>
-                      {DAM_DISPLAY_NAMES[opt.id]?.[language] ?? opt.id} ({damCapacities[opt.id]?.toFixed(1)} MCM)
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+            {!isFixed && (
+              <Select value={selectedId} onValueChange={setSelectedId}>
+                <SelectTrigger className="w-[200px] h-8 text-xs">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">{t('allMainReservoirs')}</SelectItem>
+                  <SelectGroup>
+                    <SelectLabel className="text-xs">{t('regions')}</SelectLabel>
+                    {REGION_OPTIONS.map(opt => (
+                      <SelectItem key={opt.id} value={opt.id}>
+                        {REGION_DISPLAY_NAMES[opt.id]?.[language] ?? opt.id}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                  <SelectGroup>
+                    <SelectLabel className="text-xs">{t('majorDams')}</SelectLabel>
+                    {DAM_OPTIONS.map(opt => (
+                      <SelectItem key={opt.id} value={opt.id}>
+                        {DAM_DISPLAY_NAMES[opt.id]?.[language] ?? opt.id} ({damCapacities[opt.id]?.toFixed(1)} MCM)
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
             <span
               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium text-white"
               style={{ backgroundColor: phaseColor }}

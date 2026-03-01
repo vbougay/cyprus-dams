@@ -11,6 +11,7 @@ interface StatCardGridProps {
   t: (key: string) => string;
   animate?: boolean;
   drainDateLabel?: string;
+  totalInflowSince?: number;
 }
 
 export function StatCardGrid({
@@ -20,9 +21,26 @@ export function StatCardGrid({
   t,
   animate = false,
   drainDateLabel,
+  totalInflowSince,
 }: StatCardGridProps) {
   const anim = animate ? 'animate-fade-in' : '';
   const delay = (ms: number) => animate ? { animationDelay: `${ms}ms` } : undefined;
+
+  const storagePct = grandTotal?.storage.current.percentage ?? 0;
+  const storageColor = storagePct < 25
+    ? 'text-red-600 dark:text-red-400'
+    : storagePct < 50
+      ? 'text-orange-600 dark:text-orange-400'
+      : storagePct < 75
+        ? 'text-yellow-600 dark:text-yellow-400'
+        : 'text-green-600 dark:text-green-400';
+
+  const changePct = (grandTotal?.storage.current.percentage || 0) - (grandTotal?.storage.lastYear.percentage || 0);
+  const changeColor = changePct > 0
+    ? 'text-green-600 dark:text-green-400'
+    : changePct < 0
+      ? 'text-red-600 dark:text-red-400'
+      : 'text-foreground';
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-3 md:gap-6 mb-8">
@@ -42,7 +60,7 @@ export function StatCardGrid({
         </div>
         <CardContent className="flex flex-col justify-center p-3 sm:p-4">
           <div className="text-xs sm:text-sm text-muted-foreground">{t('currentStorage')}</div>
-          <div className="text-lg sm:text-2xl font-bold text-foreground">
+          <div className={`text-lg sm:text-2xl font-bold ${storageColor}`}>
             {grandTotal?.storage.current.percentage.toFixed(1)}%
           </div>
           <div className="text-xs sm:text-sm text-muted-foreground">
@@ -57,8 +75,8 @@ export function StatCardGrid({
         </div>
         <CardContent className="flex flex-col justify-center p-3 sm:p-4">
           <div className="text-xs sm:text-sm text-muted-foreground">{t('vsLastYear')}</div>
-          <div className="text-lg sm:text-2xl font-bold text-foreground">
-            {((grandTotal?.storage.current.percentage || 0) - (grandTotal?.storage.lastYear.percentage || 0)).toFixed(1)}%
+          <div className={`text-lg sm:text-2xl font-bold ${changeColor}`}>
+            {changePct > 0 ? '+' : ''}{changePct.toFixed(1)}%
           </div>
           <div className="text-xs sm:text-sm text-muted-foreground">
             {t('change')}
@@ -115,6 +133,18 @@ export function StatCardGrid({
                   </span>
                 )}
               </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {!ytdInflow && !ytdOutflow && totalInflowSince !== undefined && (
+          <Card className={`glass-card flex rounded-2xl overflow-hidden ${anim} glow-effect col-span-2 md:col-span-1`} style={delay(400)}>
+            <div className="stat-card-icon flex-none p-3 sm:p-4">
+              <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8 text-water-600 dark:text-water-400" />
+            </div>
+            <CardContent className="flex flex-col justify-center p-3 sm:p-4">
+              <div className="text-xs sm:text-sm text-muted-foreground">{t('totalInflow')}</div>
+              <div className="text-lg sm:text-2xl font-bold text-foreground">{totalInflowSince.toFixed(1)} MCM</div>
             </CardContent>
           </Card>
         )}

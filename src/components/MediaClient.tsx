@@ -15,6 +15,7 @@ import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, Reservoir } from '@/types';
+import Footer from '@/components/Footer';
 
 interface MediaClientProps {
   initialReservoirs: Reservoir[];
@@ -115,11 +116,7 @@ export function MediaClient({
           </div>
         </main>
 
-        <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/95 dark:bg-gray-900/95">
-          <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-            <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>
-          </div>
-        </footer>
+        <Footer />
       </div>
 
       <div className="fixed bottom-6 right-6 z-50">

@@ -127,14 +127,14 @@ const Header: React.FC = () => {
                   <div className="absolute inset-0 bg-water-400/20 dark:bg-water-400/30 blur-xl rounded-full"></div>
                   <Droplets className="relative w-8 h-8 md:w-10 md:h-10 text-water-500 dark:text-water-400 animate-float" />
                 </div>
-                <div>
+                <Link href={getLocalePath(language)} className="block">
                   <h1 className="text-2xl md:text-4xl font-bold gradient-text">
                     {t('appTitle')}
                   </h1>
                   <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-base mt-1">
                     {t('subtitle')}
                   </p>
-                </div>
+                </Link>
               </div>
 
               {/* Mobile controls - Theme toggle and Language selector */}

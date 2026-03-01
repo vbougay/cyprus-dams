@@ -13,7 +13,8 @@ import { useDataContext } from '@/context/DataContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation } from '@/utils/translations';
 import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
-import { Droplets, Github, Code, Mail, Linkedin } from 'lucide-react';
+import { Droplets } from 'lucide-react';
+import Footer from '@/components/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface DashboardClientProps {
@@ -118,29 +119,7 @@ export function DashboardClient({
         </Tabs>
       </main>
 
-      <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
-        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
-          <p><a href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument" className="hover:text-water-600 dark:hover:text-water-400 transition-colors">{t('dataFrom')}</a></p>
-          <p className="mt-2 flex items-center justify-center gap-4 flex-wrap">
-            <a href="https://www.linkedin.com/in/vbougay/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
-              <Linkedin className="h-4 w-4" />
-              Vladimir Bugay
-            </a>
-            <a href="mailto:v@bougay.com" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
-              <Mail className="h-4 w-4" />
-              v@bougay.com
-            </a>
-            <a href="https://github.com/vbougay/fragmata.info" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
-              <Github className="h-4 w-4" />
-              GitHub
-            </a>
-            <a href="https://github.com/vbougay/fragmata.info/blob/main/API.md" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-water-600 dark:hover:text-water-400 transition-colors">
-              <Code className="h-4 w-4" />
-              {t('apiDocs')}
-            </a>
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

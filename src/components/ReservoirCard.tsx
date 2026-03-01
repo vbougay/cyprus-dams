@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Link from 'next/link';
 import { Reservoir } from '@/types';
 import { CapacityChart } from '@/components';
 import StorageSparkline from '@/components/StorageSparkline';
@@ -8,6 +9,7 @@ import { DropletIcon, Droplets, TrendingUp, Calendar, Timer, TrendingDown, Arrow
 import { useLanguage } from '@/context/LanguageContext';
 import { useTranslation, translations } from '@/utils/translations';
 import { getDrainDateColor, getDrainDateText } from '@/utils/reservoirUtils';
+import { getDamSlug } from '@/utils/slugs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface ReservoirCardProps {
@@ -31,7 +33,20 @@ const ReservoirCard: React.FC<ReservoirCardProps> = ({ reservoir, sparklineData 
     <Card className="h-full overflow-hidden group hover:shadow-lg transition-all duration-300 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-100 dark:border-gray-800 rounded-xl">
       <CardHeader className="pb-2">
         <CardTitle className="flex justify-between items-center">
-          <span className="font-medium text-lg text-foreground">{translations[language][name as keyof typeof translations.en] || name}</span>
+          {(() => {
+            const slug = getDamSlug(name);
+            const translatedName = translations[language][name as keyof typeof translations.en] || name;
+            const href = slug
+              ? (language === 'en' ? `/dam/${slug}` : `/${language}/dam/${slug}`)
+              : undefined;
+            return href ? (
+              <Link href={href} className="font-medium text-lg text-foreground hover:text-water-600 dark:hover:text-water-400 transition-colors">
+                {translatedName}
+              </Link>
+            ) : (
+              <span className="font-medium text-lg text-foreground">{translatedName}</span>
+            );
+          })()}
           <div className="flex items-center gap-1.5 text-xs font-normal bg-water-50 dark:bg-water-900/30 text-water-700 dark:text-water-300 px-2 py-1 rounded-full">
             <DropletIcon size={12} />
             <span>{capacity.toFixed(3)} MCM</span>
