@@ -339,22 +339,24 @@ const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, fil
           )}
 
           {/* Total timeline — non-scrollable, full width */}
-          <div className="border-t border-gray-200 dark:border-gray-700 mt-3 pt-3">
+          <div className={filterDamKey ? "" : "border-t border-gray-200 dark:border-gray-700 mt-3 pt-3"}>
             <div className="flex items-center gap-2">
-              <span
-                className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-gray-300 flex-shrink-0"
-                style={{ width: LABEL_W }}
-              >
-                {t('totalLabel')}
-              </span>
-              <div className="flex-1 flex relative" style={{ height: 10 }}>
+              {!filterDamKey && (
+                <span
+                  className="text-[9px] sm:text-[10px] font-semibold text-gray-600 dark:text-gray-300 flex-shrink-0"
+                  style={{ width: LABEL_W }}
+                >
+                  {t('totalLabel')}
+                </span>
+              )}
+              <div className="flex-1 flex relative" style={{ height: filterDamKey ? 14 : 10 }}>
                 {gridData.totalPercentages.map((pct, dateIdx) => (
                   <div
                     key={dateIdx}
                     className="cursor-pointer"
                     style={{
                       flex: 1,
-                      height: 10,
+                      height: filterDamKey ? 14 : 10,
                       backgroundColor: getCellColor(pct, isDark),
                     }}
                     onClick={() => scrollToDate(dateIdx)}
@@ -378,7 +380,7 @@ const HistoricalHeatmap: React.FC<HistoricalHeatmapProps> = ({ filterRegion, fil
             </div>
             {/* Year markers */}
             <div className="flex items-center">
-              <div style={{ width: LABEL_W, flexShrink: 0 }} />
+              {!filterDamKey && <div style={{ width: LABEL_W, flexShrink: 0 }} />}
               <div className="flex-1 relative" style={{ height: 12 }}>
                 {gridData.yearIndices
                   .filter(({ year }) => year % 10 === 0)
