@@ -1,10 +1,13 @@
 "use client";
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
+import { toBlob } from 'html-to-image';
 import { Header, ReservoirCard, HistoricalHeatmap } from '@/components';
 import { getAllSparklineData } from '@/utils/sparklineData';
 import StorageForecast from '@/components/StorageForecast';
+import MediaHeader from '@/components/MediaHeader';
 import { StatCardGrid } from '@/components/StatCardGrid';
+import { Button } from '@/components/ui/button';
 import Footer from '@/components/Footer';
 import { useReservoirData } from '@/hooks/useReservoirData';
 import { useDataContext } from '@/context/DataContext';
@@ -14,11 +17,13 @@ import { RegionTotal, ReservoirRegion, Reservoir } from '@/types';
 import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { HistoricalStorageEntry } from '@/utils/historicalStorageData';
 import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { Download, Loader2 } from 'lucide-react';
 import { getRegionSlugForDam, REGION_SLUG_MAP } from '@/utils/slugs';
 import { defaultLocale } from '@/utils/locale';
 
 interface RegionDamClientProps {
   type: 'region' | 'dam';
+  mediaMode?: boolean;
   regionName?: ReservoirRegion;
   damName?: string;
   damKey?: keyof HistoricalStorageEntry;
@@ -46,6 +51,7 @@ function reservoirToRegionTotal(r: Reservoir): RegionTotal {
 
 export function RegionDamClient({
   type,
+  mediaMode,
   regionName,
   damName,
   damKey,
@@ -58,9 +64,40 @@ export function RegionDamClient({
   initialYtdInflow,
   initialYtdOutflow,
 }: RegionDamClientProps) {
-  const { currentDataSetId } = useDataContext();
+  const [isDownloading, setIsDownloading] = useState(false);
+  const captureRef = useRef<HTMLDivElement>(null);
+  const { currentDataSetId, availableDataSets } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
+
+  const currentIndex = availableDataSets.findIndex(ds => ds.id === currentDataSetId);
+  const currentDataSet = availableDataSets[currentIndex];
+
+  const handleDownload = async () => {
+    if (!captureRef.current) return;
+    setIsDownloading(true);
+    try {
+      captureRef.current.classList.add('capturing');
+      const blob = await toBlob(captureRef.current, {
+        pixelRatio: 1,
+        cacheBust: true,
+      });
+      captureRef.current.classList.remove('capturing');
+      if (!blob) throw new Error('Failed to create image blob');
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      const entitySlug = type === 'dam' ? damSlug : (heatmapRegionKey || 'region');
+      link.download = `fragmata-${type}-${entitySlug}-${currentDataSet?.label || 'data'}.png`;
+      link.href = url;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      captureRef.current?.classList.remove('capturing');
+      console.error('Screenshot failed:', err);
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const { regionTotals, reservoirs } = useReservoirData(
     currentDataSetId,
@@ -128,12 +165,16 @@ export function RegionDamClient({
   const breadcrumbRegionName = regionSlug ? REGION_SLUG_MAP[regionSlug] : undefined;
   const translatedRegionName = breadcrumbRegionName ? translateRegion(breadcrumbRegionName) : '';
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
-      <Header />
+  const content = (
+    <div ref={mediaMode ? captureRef : undefined} className={`min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300${mediaMode ? ' media-mode' : ''}`}>
+      {mediaMode ? (
+        <MediaHeader dateLabel={currentDataSet?.label || ''} dataSetId={currentDataSet?.id} />
+      ) : (
+        <Header />
+      )}
 
       <main className="container mx-auto px-4 pb-16">
-        {type === 'dam' && regionSlug && (
+        {type === 'dam' && regionSlug && !mediaMode && (
           <Breadcrumb className="mb-2">
             <BreadcrumbList>
               <BreadcrumbItem>
@@ -159,7 +200,7 @@ export function RegionDamClient({
           ytdInflow={null}
           ytdOutflow={null}
           t={t}
-          animate
+          animate={!mediaMode}
           totalInflowSince={regionTotal.inflow.totalSince}
         />
 
@@ -197,7 +238,32 @@ export function RegionDamClient({
         </div>
       </main>
 
-      <Footer />
+      <Footer hideLinks={mediaMode} />
     </div>
   );
+
+  if (mediaMode) {
+    return (
+      <div className="min-h-screen">
+        {content}
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={handleDownload}
+            disabled={isDownloading}
+            size="lg"
+            className="bg-water-600 hover:bg-water-700 text-white rounded-xl px-6 py-3 shadow-lg transition-colors"
+          >
+            {isDownloading ? (
+              <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+            ) : (
+              <Download className="h-5 w-5 mr-2" />
+            )}
+            {isDownloading ? t('downloading') : t('downloadImage')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  return content;
 }

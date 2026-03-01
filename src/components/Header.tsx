@@ -41,7 +41,13 @@ const Header: React.FC = () => {
     router.push(getLocalePath(newLocale as Locale, normalizedPath));
   }, [router, getLocalePath, getPagePath]);
 
-  const mediaHref = getLocalePath(language, '/media');
+  const mediaHref = (() => {
+    const pagePath = getPagePath();
+    // If on a region or dam page, link to its media variant
+    const match = pagePath.match(/^\/(region|dam)\/(.+)/);
+    if (match) return getLocalePath(language, `/media/${match[1]}/${match[2]}`);
+    return getLocalePath(language, '/media');
+  })();
 
   // Track if the mobile date nav has scrolled out of view
   const [showFixedNav, setShowFixedNav] = useState(false);

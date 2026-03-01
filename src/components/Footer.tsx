@@ -18,20 +18,21 @@ function levelColor(pct: number): string {
   return '#22c55e';
 }
 
-const Footer: React.FC = () => {
+const Footer: React.FC<{ hideLinks?: boolean }> = ({ hideLinks }) => {
   const { language } = useLanguage();
   const { currentDataSetId } = useDataContext();
   const t = useTranslation(language);
 
   // Build dam name → current storage % lookup
   const damLevels = useMemo(() => {
+    if (hideLinks) return {};
     const data = reservoirData(currentDataSetId);
     const map: Record<string, number> = {};
     for (const r of data) {
       map[r.name] = r.storage.current.percentage;
     }
     return map;
-  }, [currentDataSetId]);
+  }, [currentDataSetId, hideLinks]);
 
   const regionSlugs = Object.keys(REGION_DAMS);
 
@@ -39,7 +40,8 @@ const Footer: React.FC = () => {
     <footer className="border-t border-gray-200 dark:border-gray-800 py-6 bg-white/60 dark:bg-gray-900/60 backdrop-blur-md">
       <div className="container mx-auto px-4">
         {/* Region/Dam links grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6 text-xs">
+        {!hideLinks && (
+        <div className="footer-links-grid grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-6 text-xs">
           {regionSlugs.map((regionSlug) => {
             const regionName = REGION_SLUG_MAP[regionSlug];
             const regionKey = regionName === 'Southern Conveyor' ? 'southernConveyor'
@@ -79,9 +81,10 @@ const Footer: React.FC = () => {
             );
           })}
         </div>
+        )}
 
         {/* Original footer content */}
-        <div className="text-center text-sm text-muted-foreground border-t border-gray-200 dark:border-gray-800 pt-4">
+        <div className={`text-center text-sm text-muted-foreground${hideLinks ? '' : ' border-t border-gray-200 dark:border-gray-800'} pt-4`}>
           <p>
             <a
               href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument"

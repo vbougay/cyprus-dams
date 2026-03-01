@@ -454,6 +454,7 @@ html {
 /* Outside @layer to ensure higher specificity than Tailwind utilities */
 .media-mode .card-details,
 .media-mode .card-vs-last-year,
-.media-mode .summary-changes {
+.media-mode .summary-changes,
+.media-mode .footer-links-grid {
   display: none !important;
 }
