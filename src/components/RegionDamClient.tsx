@@ -106,7 +106,7 @@ export function RegionDamClient({
        regionName === 'Recharge/Other' ? t('rechargeOther') :
        t(regionName.toLowerCase() as any))
     : type === 'dam' && damName
-      ? (translations[language][damName as keyof typeof translations.en] || damName)
+      ? t('damTitle').replace('{name}', translations[language][damName as keyof typeof translations.en] || damName)
       : '';
 
   return (
