@@ -117,7 +117,7 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Max Storage",
-    history: "History",
+    history: "Last 12 mo",
     high: "High",
     low: "Low",
     trend12m: "12m Trend",
@@ -281,7 +281,7 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Μέγιστη αποθήκευση",
-    history: "Ιστορικό",
+    history: "Τελ. 12 μήν.",
     high: "Μέγ.",
     low: "Ελάχ.",
     trend12m: "Τάση 12μ",
@@ -445,7 +445,7 @@ export const translations = {
     
     // ReservoirCard
     maxStorage: "Макс. запас",
-    history: "История",
+    history: "Посл. 12 мес.",
     high: "Макс.",
     low: "Мин.",
     trend12m: "Тренд 12м",
