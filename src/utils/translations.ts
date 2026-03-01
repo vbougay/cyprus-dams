@@ -66,6 +66,9 @@ export const translations = {
     dataFrom: "Data from Cyprus Water Development Department",
     apiDocs: "API",
 
+    // Breadcrumb
+    cyprus: "Cyprus",
+
     // Region names
     southernConveyor: "Southern Conveyor",
     paphos: "Paphos",
@@ -234,6 +237,9 @@ export const translations = {
     dataFrom: "Δεδομένα από το Τμήμα Αναπτύξεως Υδάτων Κύπρου",
     apiDocs: "API",
 
+    // Breadcrumb
+    cyprus: "Κύπρος",
+
     // Region names
     southernConveyor: "Νότιος Αγωγός",
     paphos: "Πάφος",
@@ -401,6 +407,9 @@ export const translations = {
     // Footer
     dataFrom: "Данные Департамента Водного Развития Кипра",
     apiDocs: "API",
+
+    // Breadcrumb
+    cyprus: "Кипр",
 
     // Region names
     southernConveyor: "Южный Конвейер",

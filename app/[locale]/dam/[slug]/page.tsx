@@ -135,6 +135,7 @@ export default async function DamPage({
       type="dam"
       damName={damInfo.name}
       damKey={damInfo.key}
+      damSlug={slug}
       forecastSelectionId={forecastSelectionId}
       initialReservoirs={reservoirs}
       initialRegionTotals={regionTotals}

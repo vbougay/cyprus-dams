@@ -15,12 +15,16 @@ import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { HistoricalStorageEntry } from '@/utils/historicalStorageData';
 import { Calendar, ArrowUpCircle, ArrowDownCircle } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import { getRegionSlugForDam, REGION_SLUG_MAP } from '@/utils/slugs';
+import { defaultLocale } from '@/utils/locale';
 
 interface RegionDamClientProps {
   type: 'region' | 'dam';
   regionName?: ReservoirRegion;
   damName?: string;
   damKey?: keyof HistoricalStorageEntry;
+  damSlug?: string;
   heatmapRegionKey?: string;
   forecastSelectionId?: string;
   initialReservoirs: Reservoir[];
@@ -47,6 +51,7 @@ export function RegionDamClient({
   regionName,
   damName,
   damKey,
+  damSlug,
   heatmapRegionKey,
   forecastSelectionId,
   initialReservoirs,
@@ -100,20 +105,53 @@ export function RegionDamClient({
 
   if (!regionTotal) return null;
 
+  const regionTranslationKey: Record<string, keyof typeof translations.en> = {
+    'Southern Conveyor': 'southernConveyor',
+    'Paphos': 'paphos',
+    'Chrysochou': 'chrysochou',
+    'Nicosia': 'nicosia',
+    'Recharge/Other': 'rechargeOther',
+  };
+
+  const translateRegion = (name: string) => t(regionTranslationKey[name] ?? 'southernConveyor');
+
   // Compute translated display name for the heading
   const displayName = type === 'region' && regionName
-    ? (regionName === 'Southern Conveyor' ? t('southernConveyor') :
-       regionName === 'Recharge/Other' ? t('rechargeOther') :
-       t(regionName.toLowerCase() as any))
+    ? translateRegion(regionName)
     : type === 'dam' && damName
       ? t('damTitle').replace('{name}', translations[language][damName as keyof typeof translations.en] || damName)
       : '';
+
+  // Breadcrumb data for dam pages
+  const localePath = (path: string) =>
+    language === defaultLocale ? (path || '/') : `/${language}${path}`;
+
+  const regionSlug = damSlug ? getRegionSlugForDam(damSlug) : undefined;
+  const breadcrumbRegionName = regionSlug ? REGION_SLUG_MAP[regionSlug] : undefined;
+  const translatedRegionName = breadcrumbRegionName ? translateRegion(breadcrumbRegionName) : '';
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
       <Header />
 
       <main className="container mx-auto px-4 pb-16">
+        {type === 'dam' && regionSlug && (
+          <Breadcrumb className="mb-2">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href={localePath('/')}>{t('cyprus')}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={localePath(`/region/${regionSlug}`)}>{translatedRegionName}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{displayName}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        )}
         <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
           {displayName}
         </h1>
