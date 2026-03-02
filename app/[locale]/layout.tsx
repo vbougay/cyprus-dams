@@ -303,7 +303,7 @@ export default async function LocaleLayout({
           {children}
         </Providers>
         <noscript>
-          <h1>{ns.heading}</h1>
+          <p><strong>{ns.heading}</strong></p>
           <p>{ns.body}</p>
         </noscript>
         <SpeedInsights />

@@ -49,7 +49,7 @@ export function DashboardClient({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
-      <Header />
+      <Header homePage />
 
       <main className="container mx-auto px-4 pb-16">
         <StatCardGrid grandTotal={grandTotal} ytdInflow={ytdInflow} ytdOutflow={ytdOutflow} t={t} animate />

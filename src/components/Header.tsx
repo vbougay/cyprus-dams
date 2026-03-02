@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import ChurchSilhouette from '@/components/ChurchSilhouette';
 
-const Header: React.FC = () => {
+const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
@@ -134,9 +134,15 @@ const Header: React.FC = () => {
                   <Droplets className="relative w-8 h-8 md:w-10 md:h-10 text-water-500 dark:text-water-400 animate-float" />
                 </div>
                 <Link href={getLocalePath(language)} className="block">
-                  <h1 className="text-2xl md:text-4xl font-bold gradient-text">
-                    {t('appTitle')}
-                  </h1>
+                  {homePage ? (
+                    <h1 className="text-2xl md:text-4xl font-bold gradient-text">
+                      {t('appTitle')}
+                    </h1>
+                  ) : (
+                    <span className="text-2xl md:text-4xl font-bold gradient-text block">
+                      {t('appTitle')}
+                    </span>
+                  )}
                   <p className="text-water-800/70 dark:text-water-300/70 text-xs md:text-base mt-1">
                     {t('subtitle')}
                   </p>
