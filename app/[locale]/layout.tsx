@@ -1,7 +1,31 @@
 import type { Metadata } from "next";
+import { Inter, Plus_Jakarta_Sans, Roboto_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { notFound } from "next/navigation";
 import { Providers } from "@/components/providers";
 import { locales, isValidLocale, type Locale } from "@/utils/locale";
+import "../globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-display",
+  display: "swap",
+});
+
+const robotoMono = Roboto_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-mono",
+  display: "swap",
+});
 
 const siteUrl = "https://fragmata.info";
 
@@ -180,6 +204,12 @@ export async function generateMetadata({
       images: ["/og-image.png"],
     },
     keywords: m.keywords,
+    icons: {
+      icon: [
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon.ico", type: "image/x-icon" },
+      ],
+    },
     other: {
       "theme-color": "#0ea5e9",
     },
@@ -214,67 +244,70 @@ export default async function LocaleLayout({
   const ns = noscriptContent[locale];
 
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            name: "Fragmata",
-            alternateName: meta[locale].alternateName,
-            description: meta[locale].description,
-            url: localeUrl(locale),
-            applicationCategory: "UtilitiesApplication",
-            operatingSystem: "Any",
-            inLanguage: locale,
-            offers: {
-              "@type": "Offer",
-              price: "0",
-              priceCurrency: "EUR",
-            },
-            about: {
-              "@type": "Dataset",
-              name: meta[locale].datasetName,
-              description: meta[locale].datasetDescription,
-              spatialCoverage: {
-                "@type": "Place",
-                name: "Cyprus",
+    <html lang={locale} className={`${inter.variable} ${plusJakartaSans.variable} ${robotoMono.variable}`} suppressHydrationWarning>
+      <body className={`${inter.className} antialiased`}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              name: "Fragmata",
+              alternateName: meta[locale].alternateName,
+              description: meta[locale].description,
+              url: localeUrl(locale),
+              applicationCategory: "UtilitiesApplication",
+              operatingSystem: "Any",
+              inLanguage: locale,
+              offers: {
+                "@type": "Offer",
+                price: "0",
+                priceCurrency: "EUR",
               },
-              temporalCoverage: "2025/..",
-              provider: {
-                "@type": "GovernmentOrganization",
-                name: "Cyprus Water Development Department",
-                url: "https://www.moa.gov.cy/moa/wdd/",
+              about: {
+                "@type": "Dataset",
+                name: meta[locale].datasetName,
+                description: meta[locale].datasetDescription,
+                spatialCoverage: {
+                  "@type": "Place",
+                  name: "Cyprus",
+                },
+                temporalCoverage: "2025/..",
+                provider: {
+                  "@type": "GovernmentOrganization",
+                  name: "Cyprus Water Development Department",
+                  url: "https://www.moa.gov.cy/moa/wdd/",
+                },
               },
-            },
-          }),
-        }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: meta[locale].faq.map((item) => ({
-              "@type": "Question",
-              name: item.question,
-              acceptedAnswer: {
-                "@type": "Answer",
-                text: item.answer,
-              },
-            })),
-          }),
-        }}
-      />
-      <Providers locale={locale}>
-        {children}
-      </Providers>
-      <noscript>
-        <h1>{ns.heading}</h1>
-        <p>{ns.body}</p>
-      </noscript>
-    </>
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: meta[locale].faq.map((item) => ({
+                "@type": "Question",
+                name: item.question,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: item.answer,
+                },
+              })),
+            }),
+          }}
+        />
+        <Providers locale={locale}>
+          {children}
+        </Providers>
+        <noscript>
+          <h1>{ns.heading}</h1>
+          <p>{ns.body}</p>
+        </noscript>
+        <SpeedInsights />
+      </body>
+    </html>
   );
 }
