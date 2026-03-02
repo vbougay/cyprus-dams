@@ -11,7 +11,11 @@ import {
   DEFAULT_DATASET_ID,
 } from "@/utils/dataManager";
 import { calculateYTDInflow, calculateYTDOutflow } from "@/utils/reservoirUtils";
-import { isValidLocale, type Locale } from "@/utils/locale";
+import { isValidLocale, locales, type Locale } from "@/utils/locale";
+
+const siteUrl = "https://fragmata.info";
+const localeUrl = (l: string, path: string) =>
+  l === "en" ? `${siteUrl}${path}/` : `${siteUrl}/${l}${path}/`;
 
 const mediaMeta: Record<Locale, { title: string; description: string }> = {
   en: {
@@ -42,6 +46,13 @@ export async function generateMetadata({
   return {
     title: m.title,
     description: m.description,
+    alternates: {
+      canonical: localeUrl(locale, "/media"),
+      languages: Object.fromEntries([
+        ...locales.map((l) => [l, localeUrl(l, "/media")]),
+        ["x-default", localeUrl("en", "/media")],
+      ]),
+    },
   };
 }
 

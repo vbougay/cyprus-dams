@@ -87,6 +87,7 @@ export async function generateMetadata({
       url: canonical,
       siteName: "Fragmata",
       type: "website",
+      images: [{ url: "/og-image.png" }],
     },
   };
 }
