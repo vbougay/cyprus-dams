@@ -2,13 +2,13 @@
 
 import React, { useState, useRef } from 'react';
 import { toBlob } from 'html-to-image';
-import { ReservoirCard, CapacityChart, MonthlyInflow } from '@/components';
+import { ReservoirCard } from '@/components';
 import StorageForecast from '@/components/StorageForecast';
 import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
 import MediaHeader from '@/components/MediaHeader';
 import { StatCardGrid } from '@/components/StatCardGrid';
 import { Button } from '@/components/ui/button';
-import { Download, Loader2, Droplets, X } from 'lucide-react';
+import { Download, Loader2, X } from 'lucide-react';
 import Link from 'next/link';
 import { YTDInflowResult, YTDOutflowResult } from '@/utils/reservoirUtils';
 import { useReservoirData } from '@/hooks/useReservoirData';
@@ -79,29 +79,14 @@ export function MediaClient({
         <MediaHeader
           dateLabel={currentDataSet?.label || ''}
           dataSetId={currentDataSet?.id}
+          entityName={t('cyprus')}
         />
 
         <main className="container mx-auto px-4 pb-6">
           <StatCardGrid grandTotal={grandTotal} ytdInflow={ytdInflow} ytdOutflow={ytdOutflow} t={t} compact drainDateLabel={t('forecastedDrainDate')} />
 
           <div className="space-y-4">
-            <div>
-              <h3 className="flex items-center gap-2 text-lg md:text-xl font-semibold tracking-tight mb-4">
-                <Droplets className="h-5 w-5 text-water-500 dark:text-water-400" />
-                <span>{t('overallStatus')}</span>
-              </h3>
-
-              <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
-                {grandTotal && (
-                  <div className="flex-shrink-0">
-                    <CapacityChart data={grandTotal} />
-                  </div>
-                )}
-                <div className="flex-1 min-w-0 overflow-x-auto">
-                  <HistoricalHeatmapStatic years={10} bare />
-                </div>
-              </div>
-            </div>
+            <HistoricalHeatmapStatic years={10} />
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {reservoirs
@@ -112,9 +97,7 @@ export function MediaClient({
                 ))}
             </div>
 
-            <MonthlyInflow />
-
-            <StorageForecast />
+            <StorageForecast selectionId="all" />
           </div>
         </main>
 

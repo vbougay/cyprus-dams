@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useRef } from 'react';
 import { toBlob } from 'html-to-image';
 import { Header, ReservoirCard, HistoricalHeatmap } from '@/components';
+import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
 import { getAllSparklineData } from '@/utils/sparklineData';
 import StorageForecast from '@/components/StorageForecast';
 import MediaHeader from '@/components/MediaHeader';
@@ -210,11 +211,20 @@ export function RegionDamClient({
 
         <div className={mediaMode ? 'space-y-4' : 'space-y-8'}>
           {/* Historical Heatmap */}
-          <HistoricalHeatmap
-            filterRegion={type === 'region' ? heatmapRegionKey : undefined}
-            filterDamKey={type === 'dam' ? damKey : undefined}
-            sparklineData={type === 'dam' && damName ? sparklineMap.get(damName) : undefined}
-          />
+          {mediaMode ? (
+            <HistoricalHeatmapStatic
+              years={10}
+              filterRegion={type === 'region' ? heatmapRegionKey : undefined}
+              filterDamKey={type === 'dam' ? damKey : undefined}
+              sparklineData={type === 'dam' && damName ? sparklineMap.get(damName) : undefined}
+            />
+          ) : (
+            <HistoricalHeatmap
+              filterRegion={type === 'region' ? heatmapRegionKey : undefined}
+              filterDamKey={type === 'dam' ? damKey : undefined}
+              sparklineData={type === 'dam' && damName ? sparklineMap.get(damName) : undefined}
+            />
+          )}
 
           {/* Dam Cards (region pages only) */}
           {type === 'region' && regionReservoirs.length > 0 && (
