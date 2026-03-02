@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { locales, defaultLocale } from '@/utils/locale';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip internal Next.js paths, static files, and API routes
