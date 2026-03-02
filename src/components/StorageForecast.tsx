@@ -86,10 +86,12 @@ const StorageForecast: React.FC<StorageForecastProps> = ({ selectionId: fixedSel
   const { language } = useLanguage();
   const t = useTranslation(language);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [selectedId, setSelectedId] = useState(fixedSelectionId ?? 'all');
   const isFixed = fixedSelectionId !== undefined;
 
   useEffect(() => {
+    setIsMounted(true);
     const timer = setTimeout(() => setIsVisible(true), 100);
     return () => clearTimeout(timer);
   }, []);
@@ -213,7 +215,7 @@ const StorageForecast: React.FC<StorageForecastProps> = ({ selectionId: fixedSel
 
         {/* Chart */}
         <div className="h-64 md:h-72 w-full">
-          <ResponsiveContainer width="100%" height="100%">
+          {isMounted && <ResponsiveContainer width="100%" height="100%">
             <AreaChart
               data={chartData}
               margin={{ top: 10, right: 5, left: 0, bottom: 30 }}
@@ -330,7 +332,7 @@ const StorageForecast: React.FC<StorageForecastProps> = ({ selectionId: fixedSel
                 animationDuration={1000}
               />
             </AreaChart>
-          </ResponsiveContainer>
+          </ResponsiveContainer>}
         </div>
 
         {/* Restriction date summary */}

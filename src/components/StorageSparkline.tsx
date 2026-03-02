@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, Tooltip, ResponsiveContainer, YAxis, ReferenceDot, ReferenceLine } from 'recharts';
 import { SparklineDataPoint } from '@/utils/sparklineData';
 
@@ -40,7 +40,10 @@ interface StorageSparklineProps {
 }
 
 const StorageSparkline: React.FC<StorageSparklineProps> = ({ data, highlightMax, highlightMin, showLevelLines, language = 'en' }) => {
-  if (data.length === 0) return null;
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
+  if (!isMounted || data.length === 0) return null;
 
   const latestPct = data[data.length - 1].percentage;
   const { stroke, fill } = getSparklineColor(latestPct);

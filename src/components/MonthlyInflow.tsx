@@ -57,6 +57,9 @@ const MonthlyInflow: React.FC = () => {
     return data.map(d => d.year).reverse();
   }, [currentDataSetId]);
 
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
   const [selectedYear, setSelectedYear] = useState<string>(() => {
     const data = yearlyInflowData(currentDataSetId);
     return data.length > 0 ? data[data.length - 1].year : '25/26';
@@ -330,7 +333,7 @@ const MonthlyInflow: React.FC = () => {
         <div className={`${isAllMode ? 'h-[26rem] md:h-[29rem]' : 'h-64 md:h-72'} w-full mt-4 transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
 
           {/* CUMULATIVE — Single Season */}
-          {viewMode === 'cumulative' && !isAllMode && cumulativeSingleData.length > 0 && (
+          {isMounted && viewMode === 'cumulative' && !isAllMode && cumulativeSingleData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={cumulativeSingleData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <defs>
@@ -353,7 +356,7 @@ const MonthlyInflow: React.FC = () => {
           )}
 
           {/* CUMULATIVE — All Seasons */}
-          {viewMode === 'cumulative' && isAllMode && cumulativeAllData.length > 0 && (
+          {isMounted && viewMode === 'cumulative' && isAllMode && cumulativeAllData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={cumulativeAllData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <defs>
@@ -387,7 +390,7 @@ const MonthlyInflow: React.FC = () => {
           )}
 
           {/* MONTHLY — Single Season (bars) */}
-          {viewMode === 'monthly' && !isAllMode && singleSeasonData.length > 0 && (
+          {isMounted && viewMode === 'monthly' && !isAllMode && singleSeasonData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={singleSeasonData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <XAxis {...xAxisProps} />
@@ -404,7 +407,7 @@ const MonthlyInflow: React.FC = () => {
           )}
 
           {/* MONTHLY — All Seasons (lines) */}
-          {viewMode === 'monthly' && isAllMode && allSeasonsData.length > 0 && (
+          {isMounted && viewMode === 'monthly' && isAllMode && allSeasonsData.length > 0 && (
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={allSeasonsData} margin={{ top: 10, right: 5, left: 0, bottom: 30 }}>
                 <XAxis {...xAxisProps} />
