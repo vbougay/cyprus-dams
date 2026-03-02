@@ -320,9 +320,13 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* St. Nicholas church bell tower silhouette */}
-      <div className="absolute bottom-0 left-[2%] md:left-[5%] translate-y-[4px] pointer-events-none z-[5]">
-        <ChurchSilhouette className="h-[70px] md:h-[120px] w-auto text-water-700/35 dark:text-water-300/30" />
+      {/* St. Nicholas church bell tower silhouette - uses container to align with content */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]">
+        <div className="container mx-auto px-4">
+          <div className="translate-y-[4px] -translate-x-1/2 md:-translate-x-full w-fit">
+            <ChurchSilhouette className="h-[70px] md:h-[120px] w-auto text-water-700/35 dark:text-water-300/30" />
+          </div>
+        </div>
       </div>
 
       {/* Flowing water wave effect */}

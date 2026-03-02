@@ -22,7 +22,7 @@ const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId, entityN
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between gap-4">
           {/* Left: Title & subtitle */}
-          <div className="flex items-center gap-3 min-w-0">
+          <div className="flex items-center gap-3 min-w-0 pl-8 md:pl-10">
             <div className="relative flex-shrink-0">
               <div className="absolute inset-0 bg-water-400/20 dark:bg-water-400/30 blur-xl rounded-full"></div>
               <Droplets className="relative w-8 h-8 md:w-10 md:h-10 text-water-500 dark:text-water-400" />
@@ -50,9 +50,13 @@ const MediaHeader: React.FC<MediaHeaderProps> = ({ dateLabel, dataSetId, entityN
         </div>
       </div>
 
-      {/* St. Nicholas church bell tower silhouette */}
-      <div className="absolute bottom-0 left-[5%] translate-y-[4px] pointer-events-none z-[5]">
-        <ChurchSilhouette className="h-[90px] md:h-[120px] w-auto text-water-700/40 dark:text-water-300/35" />
+      {/* St. Nicholas church bell tower silhouette - positioned at header bottom, aligned with container */}
+      <div className="absolute bottom-0 left-0 right-0 pointer-events-none z-[5]">
+        <div className="container mx-auto px-4">
+          <div className="translate-y-[20px] w-fit">
+            <ChurchSilhouette className="h-[60px] md:h-[80px] w-auto text-water-700/40 dark:text-water-300/35" />
+          </div>
+        </div>
       </div>
 
       {/* Wave decoration - static for screenshot compatibility, animated for live view */}
