@@ -312,11 +312,11 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
               {/* Subscribe Text - Below date controls for both mobile and desktop */}
               <div className="text-center md:text-right text-xs md:text-sm text-muted-foreground">
                 {t('subscribe')} {language === 'ru' ? (
-                  <a href="https://t.me/kiprozavodsk" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
+                  <a href="https://t.me/kiprozavodsk" target="_blank" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
                     Кипрозаводск
                   </a>
                 ) : (
-                  <a href="https://www.tiktok.com/@kiprozavodsk" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
+                  <a href="https://www.tiktok.com/@kiprozavodsk" target="_blank" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
                     Kiprozavodsk
                   </a>
                 )}!

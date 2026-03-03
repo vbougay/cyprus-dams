@@ -43,6 +43,7 @@ const Footer: React.FC<{ hideLinks?: boolean }> = ({ hideLinks }) => {
           <p className="text-center text-xs text-muted-foreground flex items-center justify-center gap-2 flex-wrap">
             <a
               href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument"
+              target="_blank"
               className="hover:text-water-600 dark:hover:text-water-400 transition-colors"
             >
               {t('dataFrom')}
@@ -107,6 +108,7 @@ const Footer: React.FC<{ hideLinks?: boolean }> = ({ hideLinks }) => {
           <p>
             <a
               href="https://www.moa.gov.cy/moa/wdd/Wdd.nsf/page18_en/page18_en?opendocument"
+              target="_blank"
               className="hover:text-water-600 dark:hover:text-water-400 transition-colors"
             >
               {t('dataFrom')}
