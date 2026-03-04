@@ -30,13 +30,13 @@ export const newsArticles: NewsArticle[] = [
   { title: 'На две минуты меньше: жителей Кипра попросили экономить воду из-за засухи', url: 'https://pogoda.mail.ru/news/69845557/', lang: 'ru', source: 'Pogoda Mail.ru' },
 
   // Greek
+  { title: 'Με περίπου κανονική βροχόπτωση έκλεισε ο Φεβρουάριος — Πληρότητα φραγμάτων σε σχέση με πέρσι', url: 'https://kitasweather.com/news/forecasts/me-peripou-kanoniki-vroxoptosi-ekleise-o-fevrouarios-xartis-plirotita-fragmaton-se-sxesi-me-persi/', lang: 'el', source: 'KitasWeather' },
+  { title: 'Αυτή είναι η πληρότητα του νερού στα φράγματα — Πόσο αυξήθηκε μετά τις βροχές', url: 'https://www.sigmalive.com/news/local/1301318/auti-inai-i-plirotita-toy-nerou-sta-fraghmta-poso-auksithike-meta-tis-vrokhes', lang: 'el', source: 'SigmaLive' },
   { title: 'Σημαντική εισροή νερού στα φράγματα – Πλησιάζει το 20% η συνολική πληρότητα', url: 'https://www.politis.com.cy/politis-news/cyprus/988448/simantiki-eisroi-nerou-sta-fraghmata-to-teleftaio-4imero-plisiazei-to-20-i-sinoliki-plirotita', lang: 'el', source: 'Politis' },
-  { title: 'Που βρίσκεται η πληρότητα νερού στα φράγματα μέχρι στιγμής', url: 'https://www.alphanews.live/cyprus/pou-vrisketai-i-plirotita-nerou-sta-fragmata-mechri-stigmis/', lang: 'el', source: 'AlphaNews' },
   { title: 'Έσωσε τη χρονιά το εντυπωσιακό «ξύπνημα» των ποταμών;', url: 'https://www.24sports.com.cy/gr/news/nea/koinonia/esose-ti-xronia-to-entyposiako-xypnima-ton-potamwn', lang: 'el', source: '24Sports' },
-  { title: 'Το νερό χάνεται στο έδαφος, όχι στα φράγματα', url: 'https://dialogos.com.cy/to-nero-chanetai-sto-edafos-ochi-sta-fragmata/', lang: 'el', source: 'Dialogos' },
-  { title: 'Οριακά απελπιστική η κατάσταση στα φράγματα', url: 'https://www.tothemaonline.com/Article/420932/oriaka-apelpistikh-h-katastash-sta-fragmata---o-heiroteros-febroyarios-thn-teleytaia-dekaetia---yparhei-kindynos-gia-perikopes', lang: 'el', source: 'ToThemaOnline' },
+  { title: 'Απογοητευτική η εισροή νερού στα φράγματα, ανησυχία παρά την αυξημένη πληρότητα', url: 'https://www.alphanews.live/cyprus/apogoiteftiki-i-eisroi-nerou-sta-fragmata-anisychia-para-tin-afximeni-plirotita/', lang: 'el', source: 'AlphaNews' },
   { title: '«Ψαλίδι» στο νερό: Πώς αποφασίστηκε η μείωση 10% στην υδροδότηση', url: 'https://www.alphanews.live/cyprus/psalidi-sto-nero-pos-apofasistike-i-meiosi-10-stin-ydrodotisi/', lang: 'el', source: 'AlphaNews' },
-  { title: 'Ιστορική ξηρασία στην Κύπρο: Τα φράγματα στο χαμηλότερο επίπεδο από το 1901', url: 'https://www.ieidiseis.gr/kosmos/697415/istoriki-xirasia-stin-kypro-ta-fragmata-sto-chamilotero-epipedo-apo-to-1901-kathe-stagona-metraei/', lang: 'el', source: 'ieidiseis.gr' },
+  { title: 'Ανάσα ζωής για την κυπριακή γη από τις βροχές — Πόσο γέμισαν τα φράγματα', url: 'https://www.tothemaonline.com/Article/447357/anasa-zwhs-gia-thn-kypriakh-gh-apo-tis-brohes-twn-teleytaiwn-hmerwn-%E2%80%93-poso-gemisan-ta-fragmata', lang: 'el', source: 'ToThemaOnline' },
   { title: 'Έρχονται αυξήσεις στο νερό; Το δίλημμα του 2026 και το στοίχημα της αφαλάτωσης', url: 'https://www.tothemaonline.com/Article/447937/erhontai-ayxhseis-sto-nero-to-dilhmma-toy-2026-kai-to-stoihhma-ths-afalatwshs', lang: 'el', source: 'ToThemaOnline' },
-  { title: 'Η Κύπρος καλεί τους κατοίκους να μειώσουν τη χρήση νερού κατά δύο λεπτά την ημέρα εν μέσω ξηρασίας', url: 'https://www.iefimerida.gr/kosmos/kypros-kalei-katoikoys-meiosoyn-hrisi-neroy-2-lepta', lang: 'el', source: 'iefimerida.gr' },
+  { title: 'Ιστορική ξηρασία στην Κύπρο: Τα φράγματα στο χαμηλότερο επίπεδο από το 1901', url: 'https://www.ieidiseis.gr/kosmos/697415/istoriki-xirasia-stin-kypro-ta-fragmata-sto-chamilotero-epipedo-apo-to-1901-kathe-stagona-metraei/', lang: 'el', source: 'ieidiseis.gr' },
 ];
