@@ -1,6 +1,6 @@
 // Historical dam storage levels (MCM) for Cyprus reservoirs
 // Source: Cyprus Water Development Department
-// Data range: January 1988 - February 2026
+// Data range: January 1988 - March 2026
 // Readings are bi-monthly (1st and 15th of each month)
 // null values indicate the reservoir did not exist or data was not recorded
 
@@ -970,6 +970,7 @@ export const historicalStorageData: HistoricalStorageEntry[] = [
   { date: "2026-02-25", kouris: 20.695, kalavasos: 1.411, lefkara: 1.753, dipotamos: 3.44, germasoyeia: 1.398, arminou: 1.803, polemidia: 1.337, asprokremmos: 11.086, evretou: 5.981, kannaviou: 4.391, mavrokolympos: 1.297, vyzakia: 0.428, xyliatos: 0.872, argaka: 0.711, pomos: 0.86, kalopanagiotis: 0.363, agiaMarina: 0.202, achna: 0.139, tamassos: 1.345, klirouMalounta: 2, solea: 3.98, totalSCP: 31.976, totalAll: 65.492 },
   { date: "2026-02-27", kouris: 21.09, kalavasos: 1.446, lefkara: 1.714, dipotamos: 3.491, germasoyeia: 1.442, arminou: 1.756, polemidia: 1.361, asprokremmos: 11.244, evretou: 6.075, kannaviou: 4.446, mavrokolympos: 1.322, vyzakia: 0.44, xyliatos: 0.891, argaka: 0.717, pomos: 0.86, kalopanagiotis: 0.363, agiaMarina: 0.203, achna: 0.139, tamassos: 1.368, klirouMalounta: 2, solea: 4.067, totalSCP: 32.439, totalAll: 66.435 },
   { date: "2026-03-02", kouris: 21.692, kalavasos: 1.421, lefkara: 1.667, dipotamos: 3.565, germasoyeia: 1.579, arminou: 1.62, polemidia: 1.361, asprokremmos: 11.334, evretou: 6.186, kannaviou: 4.516, mavrokolympos: 1.336, vyzakia: 0.463, xyliatos: 0.914, argaka: 0.713, pomos: 0.86, kalopanagiotis: 0.363, agiaMarina: 0.206, achna: 0.142, tamassos: 1.39, klirouMalounta: 2, solea: 4.165, totalSCP: 33.047, totalAll: 67.493 },
+  { date: "2026-03-04", kouris: 21.974, kalavasos: 1.398, lefkara: 1.64, dipotamos: 3.606, germasoyeia: 1.598, arminou: 1.608, polemidia: 1.337, asprokremmos: 11.404, evretou: 6.257, kannaviou: 4.543, mavrokolympos: 1.339, vyzakia: 0.471, xyliatos: 0.925, argaka: 0.713, pomos: 0.86, kalopanagiotis: 0.363, agiaMarina: 0.207, achna: 0.142, tamassos: 1.394, klirouMalounta: 2, solea: 4.247, totalSCP: 33.303, totalAll: 68.026 },
 ];
 
 /** Get all unique years in the dataset */

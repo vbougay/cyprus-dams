@@ -27,12 +27,12 @@ Recent articles covering the Cyprus water shortage and reservoir crisis (Dec 202
 
 ## Greek
 
+- [Με περίπου κανονική βροχόπτωση έκλεισε ο Φεβρουάριος — Πληρότητα φραγμάτων σε σχέση με πέρσι](https://kitasweather.com/news/forecasts/me-peripou-kanoniki-vroxoptosi-ekleise-o-fevrouarios-xartis-plirotita-fragmaton-se-sxesi-me-persi/) — KitasWeather, Mar 2026
+- [Αυτή είναι η πληρότητα του νερού στα φράγματα — Πόσο αυξήθηκε μετά τις βροχές](https://www.sigmalive.com/news/local/1301318/auti-inai-i-plirotita-toy-nerou-sta-fraghmta-poso-auksithike-meta-tis-vrokhes) — SigmaLive, Feb 2026
 - [Σημαντική εισροή νερού στα φράγματα – Πλησιάζει το 20% η συνολική πληρότητα](https://www.politis.com.cy/politis-news/cyprus/988448/simantiki-eisroi-nerou-sta-fraghmata-to-teleftaio-4imero-plisiazei-to-20-i-sinoliki-plirotita) — Politis, Feb 2026
-- [Που βρίσκεται η πληρότητα νερού στα φράγματα μέχρι στιγμής](https://www.alphanews.live/cyprus/pou-vrisketai-i-plirotita-nerou-sta-fragmata-mechri-stigmis/) — AlphaNews, Feb 2026
 - [Έσωσε τη χρονιά το εντυπωσιακό «ξύπνημα» των ποταμών;](https://www.24sports.com.cy/gr/news/nea/koinonia/esose-ti-xronia-to-entyposiako-xypnima-ton-potamwn) — 24Sports, Feb 16, 2026
-- [Το νερό χάνεται στο έδαφος, όχι στα φράγματα](https://dialogos.com.cy/to-nero-chanetai-sto-edafos-ochi-sta-fragmata/) — Dialogos, Feb 2026
-- [Οριακά απελπιστική η κατάσταση στα φράγματα](https://www.tothemaonline.com/Article/420932/oriaka-apelpistikh-h-katastash-sta-fragmata---o-heiroteros-febroyarios-thn-teleytaia-dekaetia---yparhei-kindynos-gia-perikopes) — ToThemaOnline, Feb 2026
+- [Απογοητευτική η εισροή νερού στα φράγματα, ανησυχία παρά την αυξημένη πληρότητα](https://www.alphanews.live/cyprus/apogoiteftiki-i-eisroi-nerou-sta-fragmata-anisychia-para-tin-afximeni-plirotita/) — AlphaNews, Feb 2026
 - [«Ψαλίδι» στο νερό: Πώς αποφασίστηκε η μείωση 10% στην υδροδότηση](https://www.alphanews.live/cyprus/psalidi-sto-nero-pos-apofasistike-i-meiosi-10-stin-ydrodotisi/) — AlphaNews, Feb 15, 2026
-- [Ιστορική ξηρασία στην Κύπρο: Τα φράγματα στο χαμηλότερο επίπεδο από το 1901](https://www.ieidiseis.gr/kosmos/697415/istoriki-xirasia-stin-kypro-ta-fragmata-sto-chamilotero-epipedo-apo-to-1901-kathe-stagona-metraei/) — ieidiseis.gr
+- [Ανάσα ζωής για την κυπριακή γη από τις βροχές — Πόσο γέμισαν τα φράγματα](https://www.tothemaonline.com/Article/447357/anasa-zwhs-gia-thn-kypriakh-gh-apo-tis-brohes-twn-teleytaiwn-hmerwn-%E2%80%93-poso-gemisan-ta-fragmata) — ToThemaOnline, Feb 2026
 - [Έρχονται αυξήσεις στο νερό; Το δίλημμα του 2026 και το στοίχημα της αφαλάτωσης](https://www.tothemaonline.com/Article/447937/erhontai-ayxhseis-sto-nero-to-dilhmma-toy-2026-kai-to-stoihhma-ths-afalatwshs) — ToThemaOnline
-- [Η Κύπρος καλεί τους κατοίκους να μειώσουν τη χρήση νερού κατά δύο λεπτά την ημέρα εν μέσω ξηρασίας](https://www.iefimerida.gr/kosmos/kypros-kalei-katoikoys-meiosoyn-hrisi-neroy-2-lepta) — iefimerida.gr, Feb 18, 2026
+- [Ιστορική ξηρασία στην Κύπρο: Τα φράγματα στο χαμηλότερο επίπεδο από το 1901](https://www.ieidiseis.gr/kosmos/697415/istoriki-xirasia-stin-kypro-ta-fragmata-sto-chamilotero-epipedo-apo-to-1901-kathe-stagona-metraei/) — ieidiseis.gr
