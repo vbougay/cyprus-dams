@@ -4,7 +4,6 @@ export const translations = {
     appTitle: "Φράγματα",
     subtitle: "Fragmata.info – Cyprus Water Dam/Reservoir Data Visualizer",
     selectDate: "Select date",
-    subscribe: "Subscribe to",
     
     // Dashboard
     totalCapacity: "Total Capacity",
@@ -176,7 +175,6 @@ export const translations = {
     appTitle: "Φράγματα",
     subtitle: "Fragmata.info – Οπτικοποίηση Δεδομένων Φραγμάτων/Ταμιευτήρων Κύπρου",
     selectDate: "Επιλογή ημερομηνίας",
-    subscribe: "Εγγραφείτε στο",
     
     // Dashboard
     totalCapacity: "Συνολική χωρητικότητα",
@@ -348,7 +346,6 @@ export const translations = {
     appTitle: "Φράγματα",
     subtitle: "Fragmata.info – Визуализация данных плотин/водохранилищ Кипра",
     selectDate: "Выбрать дату",
-    subscribe: "Подписаться на",
     
     // Dashboard
     totalCapacity: "Общая вместимость",

@@ -309,17 +309,12 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
                 </div>
               </div>
 
-              {/* Subscribe Text - Below date controls for both mobile and desktop */}
+              {/* Giatroi app link */}
               <div className="text-center md:text-right text-xs md:text-sm text-muted-foreground">
-                {t('subscribe')} {language === 'ru' ? (
-                  <a href="https://t.me/kiprozavodsk" target="_blank" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
-                    Кипрозаводск
-                  </a>
-                ) : (
-                  <a href="https://www.tiktok.com/@kiprozavodsk" target="_blank" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
-                    Kiprozavodsk
-                  </a>
-                )}!
+                {language === 'el' ? 'Επίσης' : language === 'ru' ? 'Также' : 'Also'}{' '}
+                <a href={language === 'el' ? 'https://giatroi.info/el/' : language === 'ru' ? 'https://giatroi.info/ru/' : 'https://giatroi.info/'} target="_blank" className="text-water-600 dark:text-water-400 hover:text-water-800 dark:hover:text-water-300 transition-colors underline">
+                  {language === 'el' ? 'βρείτε γιατρό και κλείστε ραντεβού στην Κύπρο' : language === 'ru' ? 'врачи Кипра — поиск и запись на приём' : 'search doctors and book appointments in Cyprus'}
+                </a>
               </div>
             </div>
           </div>
