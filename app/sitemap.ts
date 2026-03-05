@@ -3,7 +3,7 @@ import { getAllRegionSlugs, getAllDamSlugs } from "@/utils/slugs";
 
 const siteUrl = "https://fragmata.info";
 
-const pages = ["", "/media"];
+const pages = [""];
 const locales = ["en", "el", "ru"] as const;
 
 function localeUrl(locale: string, path: string) {
