@@ -92,13 +92,9 @@ export async function generateMetadata({
   };
 }
 
-// Check if a dam key has forecast data available
+// Check if a dam key has forecast data available (any dam in a non-recharge region)
 function hasForecastData(key: string): boolean {
-  // Major dams have individual forecasts
   if ((MAJOR_DAM_KEYS as string[]).includes(key)) return true;
-  // Dams in forecast regions can use region-level forecast
-  // But for individual dam pages, we only show individual dam forecasts
-  // Check if this key is in any region (non-recharge)
   for (const regionKeys of Object.values(REGION_KEYS)) {
     if ((regionKeys as string[]).includes(key)) return true;
   }
