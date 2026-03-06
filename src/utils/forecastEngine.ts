@@ -189,7 +189,7 @@ interface CycleInfo {
   analogYears: string[];
 }
 
-function classifyCycle(currentStorage: number, reportDate: string): CycleInfo {
+function classifyCycle(reportDate: string): CycleInfo {
   const octSeries = getOctoberSeries();
   if (octSeries.length < 5) {
     return { phase: 'declining', yearsInPhase: 1, analogYears: [] };
@@ -200,6 +200,13 @@ function classifyCycle(currentStorage: number, reportDate: string): CycleInfo {
   const wyStart = parsed
     ? (parsed.month >= 10 ? parsed.year : parsed.year - 1)
     : 2025;
+
+  // Use grand total current storage for system-wide cycle classification
+  const grandTotalStorage = getMonthlyStorageForKeys(MAIN_RES_KEYS);
+  const currentKey = parsed
+    ? `${parsed.year}-${String(parsed.month).padStart(2, '0')}`
+    : '2026-02';
+  const currentStorage = grandTotalStorage.get(currentKey) ?? octSeries[octSeries.length - 1].storage;
 
   // Direction from recent 3-year trend
   const recent = octSeries.filter(r => r.year >= wyStart - 3 && r.year <= wyStart);
@@ -424,7 +431,7 @@ export function calculateForecast(
   }
 
   // 1. Classify cycle phase (always uses grand total for system-wide cycle)
-  const cycle = classifyCycle(currentStorage, reportDate);
+  const cycle = classifyCycle(reportDate);
 
   // 2. Build scenario profiles from historical water year data for these keys
   const wyProfiles = computeWaterYearProfiles(reservoirKeys);
@@ -549,17 +556,7 @@ export function getExpectedInflowYears(reportDate: string): { type: 'dry' | 'mod
   const wetYears = recent.slice(n - third);
 
   // Determine current cycle phase (uses grand total storage for classification)
-  const parsed = parseReportDate(reportDate);
-  const calMonth = parsed?.month ?? 2;
-  // Rough estimate of current grand total storage for cycle classification
-  // We only need the phase, so a rough value is fine
-  const storageMap = getMonthlyStorageForKeys(MAIN_RES_KEYS);
-  const currentKey = parsed
-    ? `${parsed.year}-${String(parsed.month).padStart(2, '0')}`
-    : '2026-02';
-  const currentStorage = storageMap.get(currentKey) ?? 100;
-
-  const cycle = classifyCycle(currentStorage, reportDate);
+  const cycle = classifyCycle(reportDate);
 
   // Replicate getYearProfile logic for 'expected' scenario at offset 0
   const isInDecline = cycle.phase === 'declining' || cycle.phase === 'trough';

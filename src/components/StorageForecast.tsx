@@ -74,7 +74,11 @@ function getAllOptions(): ForecastOption[] {
 }
 
 function getOptionById(id: string): ForecastOption {
-  return getAllOptions().find(o => o.id === id) ?? ALL_OPTION;
+  const found = getAllOptions().find(o => o.id === id);
+  if (found) return found;
+  // For individual dam keys not in the dropdown (non-major dams),
+  // create an ad-hoc option so the forecast uses that dam's data
+  return { id, keys: [id as keyof HistoricalStorageEntry], thresholdPct: 7 };
 }
 
 interface StorageForecastProps {
