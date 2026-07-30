@@ -2,8 +2,9 @@
 
 **Session:** 95bccc2b-06cf-492a-a10e-5c0ab52038ea
 **Date:** 2026-07-30
-**Status:** Code built and tested locally. Not live until the environment variables, the
-cloud-environment allowlist, and the routine changes below are in place.
+**Status:** Live. Verified end to end on 2026-07-30 — a forced run reached gov.cy from the
+cloud environment, found no bulletin newer than the deployed dataset, and correctly made no
+dataset commit and sent no Telegram post.
 
 Replaces `scripts/watch-wdd.sh`, which polled gov.cy every 5 minutes from a laptop and
 launched Claude Code locally. The deterministic check now runs inside the app; the agent
@@ -48,7 +49,7 @@ The routine reaches back into the app for the two things a fresh checkout doesn'
 The routine token is shown once when generated. If it's lost, generate a new one on the
 routine at claude.ai/code/routines and update this variable.
 
-### 2. Claude cloud environment (`env_01RR7jJGgxGQVpgmWDAzSqGY`)
+### 2. Claude cloud environment (`env_01WHkXtHbqGCnA55mBF8iqnj`)
 
 - **Environment variable** `INTERNAL_API_SECRET` — same value as in Vercel. Note that
   environment variables are visible to anyone who uses that environment, which is exactly
@@ -62,9 +63,20 @@ routine at claude.ai/code/routines and update this variable.
 
 ### 3. Routine configuration
 
-Prompt updated to reference the fire payload and the skill; output branch set to `main` so
-a run deploys itself. Model is `claude-opus-4-8` — the local script used Sonnet, so that's
-a cost lever if these runs feel expensive.
+Routine `trig_01QjK5oSx5c9vib3qxwNYmpC`. Its prompt references the fire payload and the
+skill, and its output branch must be **`main`** so that a run deploys itself. Model is
+`claude-sonnet-5`, matching what the local script used.
+
+> **Editing the routine in the web UI resets the output branch** to a fresh auto-generated
+> name (`claude/dreamy-cannon`, `claude/loving-tesla`, …) — observed twice on 2026-07-30. A
+> run that pushes to a branch never deploys, so the check keeps seeing the old dataset and
+> re-fires every hour until the branch is merged.
+>
+> After *any* UI edit to this routine, put the branch back to `main`. The field is
+> `job_config.ccr.session_context.outcomes[0].git_repository.git_info.branches`; the simplest
+> fix is to ask Claude Code to restore it, which it does through the claude.ai remote-trigger
+> API. The routine's own `/fire` token is not the credential for that endpoint, so don't
+> expect a plain curl with `$CLAUDE_ROUTINE_TOKEN` to work.
 
 ## Schedule
 
