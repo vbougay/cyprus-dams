@@ -21,6 +21,42 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 - After push, send the latest community post to Telegram (see **Telegram delivery** below)
 - Exit once done
 
+## Cloud runs (the "Fragmata data update" routine)
+
+The update also runs unattended in the cloud: a Vercel cron job checks the gov.cy pages
+hourly and fires this routine when a newer bulletin appears (see `CLOUD-AUTOMATION.md`).
+A cloud session is a **fresh checkout**, so anything gitignored is simply absent —
+`community/`, `logs/`, `.env.local`, and all of `scripts/` except `scripts/og/`.
+When those files are missing, you are in a cloud run: apply these overrides.
+
+- **Install first**: `corepack enable && pnpm install --frozen-lockfile`. Retry once on registry failure.
+- **The fire payload**: the `<routine-fire-payload>` block carries `detected_bulletin_date`
+  and the `deployed_dataset` the cron compared against. Treat the date as a hint that saves
+  you a lookup — still confirm it against the pages, and if the data XLSX for it isn't
+  linked yet, probe the predictable URLs (see the stale-link note above).
+- **Narrative context** replaces reading `community/TELEGRAM.md`:
+  ```bash
+  curl -s -H "Authorization: Bearer $INTERNAL_API_SECRET" \
+    "https://fragmata.info/api/internal/narrative?limit=6"
+  ```
+  Returns the recent datasets' `getSummaryChanges` narratives in all three languages,
+  newest first, plus `daysSinceLatest` — use that for the major/minor post rule.
+- **Telegram** replaces `tsx scripts/post-telegram.ts`:
+  ```bash
+  curl -s -X POST "https://fragmata.info/api/internal/telegram" \
+    -H "Authorization: Bearer $INTERNAL_API_SECRET" \
+    -H "Content-Type: application/json" \
+    -d @post.json   # {"text": "<the Telegram post body>"}   add "dryRun": true to preview
+  ```
+  Write the body to a temp JSON file rather than inlining it, to avoid shell-quoting
+  problems. Expect `{"ok":true,"messageId":…,"chatId":…}`; a 422 means the post exceeds
+  Telegram's 4096-char limit — shorten it and retry. Retry once on a network failure.
+- **Don't write `community/*.md`** — untracked, so the edit is lost when the session ends.
+  Print the exact Telegram post text plus the returned `messageId` in your final report
+  instead; that report is the record.
+- **Push straight to `main`** — Vercel deploys from it, which is what closes the loop and
+  stops the cron from firing again for the same bulletin.
+
 ## Best Practices to Avoid Issues
 
 **Inline Node.js in Bash:**
@@ -52,7 +88,7 @@ The historical heatmap chart uses `src/utils/historicalStorageData.ts` — it mu
 - The storage values come from each reservoir's `storage.current.amount` in the new data module
 
 **Narrative coherence** — the `getSummaryChanges` text, articles, and community posts are all part of one evolving story. Before writing any of them:
-- Read the recent entries in `community/TELEGRAM.md` and the latest `getSummaryChanges` to understand the current narrative arc
+- Read the recent entries in `community/TELEGRAM.md` and the latest `getSummaryChanges` to understand the current narrative arc (cloud runs: the narrative endpoint above returns the same `getSummaryChanges` history)
 - Each new update should advance the story — reference what changed since the last post, build on previous milestones, and avoid restating old news as if it's new
 - Let the data drive the narrative: when the situation shifts (e.g. a drought easing, a new region recovering, a plateau forming), the tone and focus should shift with it
 - Keep all three outputs consistent — they can differ in length and format but should not contradict each other or tell different stories
@@ -88,6 +124,9 @@ Each data module should export a `getDamSummary(damName, language)` function tha
 - The function is exposed via `dataManager.ts` (`getDamSummary` wrapper) — no changes needed there, it auto-detects the function
 
 **Telegram delivery:**
+
+(Local runs. In a cloud run the script isn't in the checkout — POST to the relay endpoint
+in **Cloud runs** above instead.)
 
 After the git push, send the Telegram version of the community post you just wrote by piping it into the CLI:
 
@@ -134,7 +173,7 @@ The dashboard has a scrolling news ticker showing recent water crisis articles. 
 After each data update, append a new community post entry to both `community/TELEGRAM.md` and `community/WHATSAPP.md`. Each entry carries the same `## <date>` heading and summary line in both files, followed by that platform's code block (`### Telegram` in TELEGRAM.md, `### WhatsApp` in WHATSAPP.md).
 
 - **Schedule**: Major updates on Mon/Wed/Fri, minor updates on Tue/Thu. If more than 1 day has passed since the last data update, always do a major update regardless of day.
-- **Determining the last update**: Check the last `## March XX` heading in `community/TELEGRAM.md` to find when the previous post was made.
+- **Determining the last update**: Check the last `## March XX` heading in `community/TELEGRAM.md` to find when the previous post was made. In a cloud run that file doesn't exist — use `daysSinceLatest` from the narrative endpoint.
 
 **Minor data updates** (📊):
 - Headline: total storage % and MCM, delta from previous update (e.g. "up from 26.9% yesterday")
