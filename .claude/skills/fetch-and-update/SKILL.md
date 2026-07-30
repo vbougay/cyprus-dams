@@ -24,7 +24,8 @@ You're an agent that updates data on https://cyprus-dams.bougay.com/ automatical
 ## Cloud runs (the "Fragmata data update" routine)
 
 The update also runs unattended in the cloud: a Vercel cron job checks the gov.cy pages
-hourly and fires this routine when a newer bulletin appears (see `CLOUD-AUTOMATION.md`).
+every 10 minutes and fires this routine when a newer bulletin appears (see
+`CLOUD-AUTOMATION.md`).
 A cloud session is a **fresh checkout**, so anything gitignored is simply absent —
 `community/`, `logs/`, `.env.local`, and all of `scripts/` except `scripts/og/`.
 When those files are missing, you are in a cloud run: apply these overrides.

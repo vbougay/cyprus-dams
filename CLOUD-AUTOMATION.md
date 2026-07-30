@@ -12,7 +12,7 @@ work runs in the existing **Fragmata data update** routine.
 
 ```
 Vercel Cron ──► GET /api/cron/check-wdd ──► POST …/routines/{id}/fire ──► routine session
- (hourly)        compares gov.cy vs the        only when the bulletin        pushes to main
+ (every 10m)     compares gov.cy vs the        only when the bulletin        pushes to main
                  deployed dataset             is actually newer            → Vercel deploys
 ```
 
@@ -80,17 +80,22 @@ skill, and its output branch must be **`main`** so that a run deploys itself. Mo
 
 ## Schedule
 
-`17 5-15 * * *` — hourly at :17, 05:00–15:00 UTC (≈08:00–18:00 Cyprus in summer,
+`*/10 5-15 * * *` — every 10 minutes, 05:00–15:00 UTC (≈08:00–18:00 Cyprus in summer,
 07:00–17:00 in winter), every day. Bulletins have historically appeared 09:30–15:00 Cyprus
-time on weekdays; the window covers that with room on both sides, and weekends cost 11
+time on weekdays; the window covers that with room on both sides, and weekends cost 66
 trivial invocations for insurance.
 
-**Why hourly and not every 30 minutes.** A run takes 7–10 minutes locally and longer in the
-cloud (`pnpm install` + build), and it pushes only at the end — so for the whole run the
-deployed site still reports the old dataset. Hourly spacing plus the push guard means a
-second fire for the same bulletin needs a run to exceed ~55 minutes. Tightening to
-`17,47 5-15 * * *` shrinks the safety margin to ~25 minutes; only do that with a real lock
-(Vercel KV / Edge Config) recording the in-flight bulletin.
+**Duplicate-run risk at this interval.** A run takes ~10 minutes and pushes only at the
+end, so for the whole run the deployed site still reports the old dataset. The only thing
+preventing a second fire for the same bulletin is `mainHasDataset()`, which sees the run
+only *after* its push lands. At 10-minute ticks that leaves no margin: a run that takes
+longer than one tick — a slow `pnpm install`, a retry, anything — gets a second routine
+fired on top of it, and the cost of that is a duplicate Telegram post, not just wasted
+compute. Chosen deliberately on 2026-07-30 in exchange for ~10-minute detection latency.
+
+Closing the gap properly needs a real lock recording the in-flight bulletin (Vercel KV or
+Edge Config, written before the fire and cleared by the run) — no such store is wired up
+today.
 
 Vercel Pro is required for sub-daily crons — Hobby rejects these expressions at deploy time.
 
