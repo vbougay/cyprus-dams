@@ -1,5 +1,24 @@
 # Session Log
 
+## 2026-07-30 — Session `95bccc2b-06cf-492a-a10e-5c0ab52038ea`
+
+- Moved the data watcher off the laptop: `scripts/watch-wdd.sh` (5-min poll + local `claude -p`) replaced by Vercel Cron → in-app check → `/fire` on the user's existing "Fragmata data update" routine
+- Verified the two contracts the design rested on from docs: `POST /v1/claude_code/routines/{id}/fire` (bearer + `experimental-cc-routine-2026-04-01` beta header, `text` arrives wrapped in an untrusted `<routine-fire-payload>` block the saved prompt must opt into) and Vercel's cron limits (Hobby = daily only, Pro = per-minute)
+- Audited the existing routine (`trig_01QjK5oSx5c9vib3qxwNYmpC`) and found 5 blockers to cloud operation: cloud env network is allowlist-only (gov.cy would 403), `scripts/post-telegram.ts` and `community/` are both gitignored so absent from a fresh checkout, output branch pointed at a `claude/*` branch (nothing deploys → repeat firing), and no `.env.local` for the bot token
+- User chose: Pro cadence, push straight to `main`, and a relay route so the Telegram token stays in Vercel
+- Built [check-wdd/route.ts](app/api/cron/check-wdd/route.ts) (fetch both gov.cy pages, compare to the deployed dataset, fire only when newer) + [wddDates.ts](src/utils/wddDates.ts) (both filename schemes + the `Graphs-*` early signal), [internal/telegram](app/api/internal/telegram/route.ts), [internal/narrative](app/api/internal/narrative/route.ts) (serves committed `getSummaryChanges` history as continuity for gitignored `community/`), [internalAuth.ts](src/utils/internalAuth.ts), [vercel.json](vercel.json)
+- Chose hourly (`17 5-15 * * *`) over 30-min after measuring real run durations from `logs/watch-wdd-*.log` (7–10 min), paired with a push guard that reads `dataManager.ts` from `main` — closes the push→deploy window so two sessions can't race one bulletin; fails closed when GitHub is unreachable
+- Verified before shipping: live parsing → `29-JUL-2026` (Greek `ΔΕΛΤΙΟ_ΝΕΡΟΥ_DASHBOARD` file correctly ignored, `31_02_2026` rejected, stale-data/fresh-Graphs case picks the newer date), route 401s without the secret, push guard, narrative (real trilingual summaries), Telegram dry-run, clean build, no new lint findings
+- Set 5 production env vars via the Vercel CLI — 2 generated with `openssl rand -hex 32`, Telegram creds piped from `.env.local`, no value printed; left `CLAUDE_ROUTINE_TOKEN` for the user rather than handling a live token
+- Rewrote the routine prompt to explicitly opt into the fire payload and point at the skill's new "Cloud runs" section; committed [a85ceb2](https://github.com/vbougay/fragmata.info/commit/a85ceb251a771e69bb0041315e5228b6995c560d) and pushed
+- Live smoke test confirmed gov.cy serves Vercel's serverless IPs with the browser UA (`pagesFetched: 2`) — the one assumption that would have forced a proxy redesign
+- Forced test run behaved correctly: no dataset commit, no Telegram post (nothing newer than the deployed bulletin), and the routine pushed a real skill fix of its own — Node holding the event loop open on an idle gov.cy keep-alive socket and being mislabeled as hung
+- Caught a regression where editing the routine in the web UI reset its output branch to a generated `claude/*` name (silently stops runs from deploying); restored `main`, kept the user's new environment + Sonnet model, and documented the trap in [CLOUD-AUTOMATION.md](CLOUD-AUTOMATION.md) ([6ed86f7](https://github.com/vbougay/fragmata.info/commit/6ed86f7))
+- Corrected a command in that runbook that implied the routine's `/fire` token works against the trigger-management endpoint — it doesn't; the update went through the claude.ai OAuth path
+- Open: no run has yet exercised the path where new data exists (commits a dataset + posts to Telegram) — that waits on the next real bulletin; `watch-wdd.sh` stays available until then. Also noted claude.ai session URLs 403 to both curl and WebFetch, so run logs can't be read from the CLI
+
+---
+
 ## 2026-07-07 — Session `db8ee96f-1b65-4b72-977d-61a90c6e54ea`
 
 - Investigated why OG images don't show in Google search results; verified the OG setup is actually **correct** (og:image → 200, image/png, 1200×630, absolute, all locales) — the premise was a category confusion
