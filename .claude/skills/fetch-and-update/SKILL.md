@@ -64,6 +64,9 @@ When those files are missing, you are in a cloud run: apply these overrides.
 - Use single quotes around the entire `-e` script to prevent bash variable substitution issues
 - Reference objects/arrays with proper syntax: `jsonData[i][j]` works, but avoid template expressions
 - Test extraction logic with simple console.logs before building complex transformations
+- **Make the script exit cleanly.** Node keeps running until the event loop drains, and an idle keep-alive socket to gov.cy can hold it open long past the point where all output has printed — the process then gets reaped by the Bash timeout and mislabeled as "hung." Two guards, use both:
+  - Send `"Connection": "close"` in the request headers so sockets don't linger.
+  - End the top-level async IIFE with `.then(() => process.exit(0), e => { console.error(e); process.exit(1); })` so the process terminates the moment its work is done. (All `console.log`s have already run by then, so nothing is lost.)
 
 **File Creation:**
 
