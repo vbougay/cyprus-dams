@@ -169,13 +169,13 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
     return `
 ### Πρόσφατες Αλλαγές (29 — 31 Ιουλίου 2026)
 
-Δελτίο Παρασκευής: συνολική αποθήκευση **39.8%** (115.8 ΕΚΜ) — από 40.0% στις 29 Ιουλίου, μια απώλεια 0.4 ΕΚΜ σε δύο ημέρες. Ο ρυθμός υποχώρησης παραμένει ήπιος, χωρίς μεγάλες κινήσεις σε κανένα φράγμα — η [Αγία Μαρίνα](/el/dam/agia-marina/) κατέγραψε τη μεγαλύτερη πτώση (-1.7μ.π.). Ο [Αρμίνου](/el/dam/arminou/) παραμένει σταθερός στο **59.0%**, χωρίς νέα εισροή. Το χάσμα με πέρυσι κρατά στο **+22.9μ.π.** Εισροή σεζόν 25/26: **115.5 ΕΚΜ**. Η μεταφορά [Αρμίνου](/el/dam/arminou/)→[Κούρης](/el/dam/kouris/) παραμένει στα **20.44 ΕΚΜ**.
+Δελτίο Παρασκευής: συνολική αποθήκευση **39.8%** (115.8 ΕΚΜ) — από 40.0% στις 29 Ιουλίου, μια απώλεια 0.4 ΕΚΜ σε δύο ημέρες. Ο ρυθμός υποχώρησης παραμένει ήπιος, χωρίς μεγάλες κινήσεις σε κανένα φράγμα — η [Αγία Μαρίνα](/el/dam/agia-marina/) κατέγραψε τη μεγαλύτερη πτώση (-1.7μ.π.). Ο [Αρμίνου](/el/dam/arminou/) ανέβηκε ελαφρώς στο **59.0%** (+0.1μ.π.), σπάζοντας το διήμερο πλατό του από τις 29 Ιουλίου. Το χάσμα με πέρυσι κρατά στο **+22.9μ.π.** Εισροή σεζόν 25/26: **115.5 ΕΚΜ**. Η μεταφορά [Αρμίνου](/el/dam/arminou/)→[Κούρης](/el/dam/kouris/) παραμένει στα **20.44 ΕΚΜ**.
 
 **Αξιοσημείωτα (έναντι 29 Ιουλίου):**
 - [Αγία Μαρίνα](/el/dam/agia-marina/) **80.5%** (-1.7μ.π.) — η μεγαλύτερη πτώση της περιόδου
 - [Πόμος](/el/dam/pomos/) **81.0%** (-1.4μ.π.) — συνεχίζει να υποχωρεί από το σχεδόν πλήρες
 - [Μαυροκόλυμπος](/el/dam/mavrokolympos/) **63.0%** (-1.0μ.π.) — κάτω από το 64%
-- [Ξυλιάτος](/el/dam/xyliatos/) **90.0%** — ακριβώς στη στρογγυλή τιμή
+- [Αρμίνου](/el/dam/arminou/) **59.0%** (+0.1μ.π.) — ελαφρά άνοδος, έσπασε το πλατό του
 - [Καλοπαναγιώτης](/el/dam/kalopanagiotis/) **100%** — παραμένει το μόνο φράγμα σε υπερχείλιση
 - [Αχνά](/el/dam/achna/) **1.9%** — αμετάβλητη, μηδέν εισροή όλη τη σεζόν
 
@@ -186,13 +186,13 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
     return `
 ### Последние изменения (29 — 31 июля 2026)
 
-Бюллетень пятницы: общий запас **39.8%** (115.8 МКМ) — против 40.0% на 29 июля, потеря 0.4 МКМ за два дня. Темп снижения остаётся мягким, без резких движений ни по одному водохранилищу — крупнейшее падение у [Агия Марина](/ru/dam/agia-marina/) (-1.7пп). [Арминоу](/ru/dam/arminou/) держится стабильно на **59.0%**, без нового притока. Разрыв с прошлым годом держится на **+22.9пп**. Приток сезона 25/26: **115.5 МКМ**. Перекачка [Арминоу](/ru/dam/arminou/)→[Курис](/ru/dam/kouris/) без изменений: **20.44 МКМ**.
+Бюллетень пятницы: общий запас **39.8%** (115.8 МКМ) — против 40.0% на 29 июля, потеря 0.4 МКМ за два дня. Темп снижения остаётся мягким, без резких движений ни по одному водохранилищу — крупнейшее падение у [Агия Марина](/ru/dam/agia-marina/) (-1.7пп). [Арминоу](/ru/dam/arminou/) немного подрос до **59.0%** (+0.1пп), прервав своё двухдневное плато с 29 июля. Разрыв с прошлым годом держится на **+22.9пп**. Приток сезона 25/26: **115.5 МКМ**. Перекачка [Арминоу](/ru/dam/arminou/)→[Курис](/ru/dam/kouris/) без изменений: **20.44 МКМ**.
 
 **Основные изменения (за 2 дня с 29 июля):**
 - [Агия Марина](/ru/dam/agia-marina/) **80.5%** (-1.7пп) — крупнейшее падение периода
 - [Помос](/ru/dam/pomos/) **81.0%** (-1.4пп) — продолжает отступать от почти полного уровня
 - [Мавроколимпос](/ru/dam/mavrokolympos/) **63.0%** (-1.0пп) — опустился ниже 64%
-- [Ксилиатос](/ru/dam/xyliatos/) **90.0%** — ровно на круглой отметке
+- [Арминоу](/ru/dam/arminou/) **59.0%** (+0.1пп) — небольшой рост, прервал своё плато
 - [Калопанайотис](/ru/dam/kalopanagiotis/) **100%** — по-прежнему единственное переливающееся водохранилище
 - [Ахна](/ru/dam/achna/) **1.9%** — без изменений, без притока за весь сезон
 
@@ -202,13 +202,13 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
   return `
 ### Recent Changes (July 29 — July 31, 2026)
 
-Friday bulletin: total storage at **39.8%** (115.8 MCM) — down from 40.0% on July 29, a loss of 0.4 MCM over two days. The pace of decline stayed mild, with no sharp moves at any single dam — [Agia Marina](/dam/agia-marina/) posted the largest drop (-1.7pp). [Arminou](/dam/arminou/) held steady at **59.0%** with no fresh inflow. The gap over last year holds at **+22.9pp**. Season total inflow: **115.5 MCM**. The [Arminou](/dam/arminou/)→[Kouris](/dam/kouris/) transfer remains at **20.44 MCM**.
+Friday bulletin: total storage at **39.8%** (115.8 MCM) — down from 40.0% on July 29, a loss of 0.4 MCM over two days. The pace of decline stayed mild, with no sharp moves at any single dam — [Agia Marina](/dam/agia-marina/) posted the largest drop (-1.7pp). [Arminou](/dam/arminou/) ticked up slightly to **59.0%** (+0.1pp), snapping the two-post plateau it settled into on July 29. The gap over last year holds at **+22.9pp**. Season total inflow: **115.5 MCM**. The [Arminou](/dam/arminou/)→[Kouris](/dam/kouris/) transfer remains at **20.44 MCM**.
 
 **Notable movements (vs. July 29):**
 - [Agia Marina](/dam/agia-marina/) **80.5%** (-1.7pp) — the largest decline of the period
 - [Pomos](/dam/pomos/) **81.0%** (-1.4pp) — continues easing back from near-full
 - [Mavrokolympos](/dam/mavrokolympos/) **63.0%** (-1.0pp) — dropped below 64%
-- [Xyliatos](/dam/xyliatos/) **90.0%** — landed right on the round number
+- [Arminou](/dam/arminou/) **59.0%** (+0.1pp) — a slight uptick, snapping its plateau
 - [Kalopanagiotis](/dam/kalopanagiotis/) **100%** — still the only dam overflowing
 - [Achna](/dam/achna/) **1.9%** — unchanged, zero inflow all season
 

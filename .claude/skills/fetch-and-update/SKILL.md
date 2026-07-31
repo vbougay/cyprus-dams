@@ -41,7 +41,11 @@ When those files are missing, you are in a cloud run: apply these overrides.
     "https://fragmata.info/api/internal/narrative?limit=6"
   ```
   Returns the recent datasets' `getSummaryChanges` narratives in all three languages,
-  newest first, plus `daysSinceLatest` — use that for the major/minor post rule.
+  newest first, plus `daysSinceLatest` — use that for the major/minor post rule. Note this
+  gives the *website* narrative (markdown, links, different structure), not actual past
+  Telegram post text — `community/TELEGRAM.md` is absent in a cloud run and there's no
+  read/history endpoint for it, so the exact Telegram shape must come from the template in
+  **Platform formatting** below, not from this endpoint.
 - **Telegram** replaces `tsx scripts/post-telegram.ts`:
   ```bash
   curl -s -X POST "https://fragmata.info/api/internal/telegram" \
@@ -204,6 +208,39 @@ Telegram (`### Telegram`):
 - Bold is applied manually after pasting (select + Cmd+B)
 - 📊 or 📰 emoji prefix on the first line
 - End with `🔗 https://fragmata.info`
+- **Follow this exact shape** — established across 80+ prior posts (see `community/TELEGRAM.md`
+  history; in a cloud run that file is absent, so this template IS the spec, don't improvise):
+  ```
+  [emoji] Cyprus Dams — [Month Day]
+
+  [Day-of-week] bulletin: total storage [X]% ([Y] MCM) — [down/up] [Z] MCM from [prior day-name
+  or date], [pace commentary, e.g. "the same slow drawdown pace continuing"]. [Optional 1-sentence
+  standout story — often a running thread like Arminou's rise/plateau]. Gap over last year:
+  +[N]pp. Season inflow: [N] MCM (July so far: [N] MCM). Arminou→Kouris transfer unchanged at
+  20.44 MCM.
+
+  • [Dam] X% (±N.Npp) — [short context]
+  • [Dam] X% (±N.Npp) — [short context]
+  • [Dam] X% (±N.Npp) — [short context]
+  • Kalopanagiotis 100% — still the only dam overflowing
+  • Achna 1.9% — unchanged, zero inflow all season
+
+  Gap vs last year: +[N]pp.
+
+  🔗 https://fragmata.info
+  ```
+  - The title line is mandatory: `[emoji] Cyprus Dams — [Month Day]` (no year, no "Update" suffix
+    in recent posts), blank line, then the paragraph.
+  - The paragraph opens with the day of week ("Friday bulletin:", "Monday bulletin, covering the
+    weekend:") — use the day name for gaps up to ~3 days; switch to an explicit date ("down from
+    40.9% on July 16") for longer gaps.
+  - `Kalopanagiotis 100%` and `Achna 1.9%` are recurring anchor bullets — include them nearly
+    every post since they're part of the running narrative, not just "notable movements."
+  - `Gap vs last year: +N pp.` appears **twice** — once inline in the paragraph, once again as
+    its own line right before the closing link. Keep both; it's the established convention, not
+    a duplication bug.
+  - Track any multi-post storyline (e.g. "Arminou is the only riser") and give it a line even
+    when the move is small (+0.1pp) — the continuity is the point.
 
 WhatsApp (`### WhatsApp`):
 - Wrap key numbers and headings in `*asterisks*` for native bold rendering
