@@ -1,5 +1,18 @@
 # Session Log
 
+## 2026-07-31 — Session `e7c6f901-5912-4930-ad36-28647fac1386`
+
+- Synced GSC data (July 1–30, closing the July 7 gap) and ran a period-over-period SEO analysis: clicks +15% (1,759) on -27% impressions, CTR 8.9%→14.0%, driven by a Greek-query spike July 7–10 (~6× baseline, likely news-driven); `/el` gained 252 clicks while `/` stayed flat
+- Flagged that the English "dam levels" cluster's position collapse (1.3→10+) is a mirage — daily data shows pos ~1.0 held; the average is dragged by sporadic low-ranking foreign impressions
+- Deep-dived opportunity #2 (per-dam pages at pos 9–12, ~0 CTR for "asprokremmos dam"-type queries): pages are technically sound but thin (~230 SSR words, one dam-specific sentence) and the homepage cannibalizes dam queries (pos 1.6 vs 4.4 for `kouris dam water level today`)
+- Shipped the four-part fix ([d98a9b7](https://github.com/vbougay/fragmata.info/commit/d98a9b7)): (A) server-rendered "About the Dam" prose for all 21 dams × 3 locales in `content/dams/<slug>/<lang>.md` (article-style storage), researched and written by 5 parallel subagents (one per region) from the anatomy article + damMetadata + web verification
+- (B) FAQ JSON-LD expanded to 3 questions per dam (current level, capacity, year built); (C) `Reservoir` schema with geo coordinates + el/ru `alternateName`s via new `getDamCoordinates` in [damMapLinks.ts](src/utils/damMapLinks.ts); (D) new [autoLinkDams.ts](src/utils/autoLinkDams.ts) auto-links first dam mentions in articles and dam/region mentions in About prose (Greek genitives + Southern Conveyor prose aliases like "Νότιος Μεταφορέας"/"Южный водовод"; no self-links)
+- Verified end-to-end: SSR word count roughly doubled (Kouris 469 vs ~232), JSON-LD graph correct, links styled/navigable in all locales, clean build; lint's 47 problems confirmed pre-existing via stash test
+- Subagent content flags to skim: a few general-knowledge facts (Kalavasos archaeology, Germasoyeia rowing, Kalopanagiotis monastery name) and Greek/Russian dam-name spelling variants vs the anatomy article; also caught the article's EN "Rockfill" list mislisting Asprokremmos (earthfill)
+- Committed and pushed straight to main; follow-up: re-check the dam-name query cluster in GSC in 2–3 weeks
+
+---
+
 ## 2026-07-30 — Session `95bccc2b-06cf-492a-a10e-5c0ab52038ea`
 
 - Moved the data watcher off the laptop: `scripts/watch-wdd.sh` (5-min poll + local `claude -p`) replaced by Vercel Cron → in-app check → `/fire` on the user's existing "Fragmata data update" routine
