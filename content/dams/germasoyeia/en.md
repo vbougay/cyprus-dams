@@ -1,0 +1,5 @@
+The Germasoyeia Dam impounds the Germasogeia river just north of Limassol, Cyprus, above the village of the same name. Completed in 1968, it is one of the oldest large dams on the island — an earthfill embankment 49 metres high with a storage capacity of 13.5 MCM (million cubic metres).
+
+What sets Germasoyeia apart is that it was never meant simply to hoard water. The dam is the key node of an artificial groundwater recharge scheme: it deliberately releases water down the riverbed so it can soak into the alluvial aquifer below, from which boreholes then pump supply for the Limassol area. In effect the dam re-banks its water underground, where the fierce Cypriot sun — which evaporates close to two metres of open-water depth a year — cannot reach it.
+
+Within the Southern Conveyor system, the network centred on the giant Kouris reservoir a few valleys to the west, Germasoyeia plays a supporting role, providing local storage and recharge for Limassol while the Conveyor moves Kouris water eastward across the island. The reservoir is also a rare inland watersports venue: its calm waters have long been used for rowing and canoeing training.

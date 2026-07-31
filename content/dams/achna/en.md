@@ -1,0 +1,5 @@
+The Achna Dam, in the Famagusta district of eastern Cyprus, is unlike any other large reservoir on the island: it has no river of its own. Completed in 1987 as a low earthfill embankment just 16 metres high, it is an off-river storage basin with a capacity of 6.8 MCM (million cubic metres), filled entirely with water piped in from elsewhere.
+
+That water arrives through the Southern Conveyor, the pipeline that carries surplus flow from the giant Kouris reservoir near Limassol eastward across Cyprus. Achna is the eastern terminus of the system — the last tank on the line — where Conveyor water is banked before being distributed for irrigation and supply in the island's driest, flattest corner, the farming country around the free Famagusta area.
+
+Because its level depends on deliveries rather than rainfall, Achna behaves differently from every rain-fed dam: it is drawn down through the irrigation season and refilled when the Conveyor runs. The shallow, fluctuating lake has also become a haven for wildlife — the reservoir has been protected as a Natura 2000 bird sanctuary since 2008, and its margins are one of the best birdwatching spots in eastern Cyprus.

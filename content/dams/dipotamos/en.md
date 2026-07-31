@@ -1,0 +1,5 @@
+The Dipotamos Dam impounds the Pentaschoinos river in southeastern Cyprus, between Larnaca and the Troodos foothills. Its name means "two rivers" in Greek, taken from the confluence of streams on which the reservoir sits. Completed in 1986, the dam is a rockfill embankment 60 metres high with a capacity of 15.5 MCM (million cubic metres).
+
+Dipotamos was built as part of the Southern Conveyor Project, the island-spanning pipeline that moves water from the large Kouris reservoir near Limassol eastward to the thirstier districts of Larnaca and Famagusta. Sitting along that route, it works as a mid-course storage and regulation reservoir: it captures the runoff of its own valley and banks water delivered by the Conveyor, releasing it on demand further down the line.
+
+The water serves both drinking supply and agriculture — the dam's irrigation network waters some 2,800 plots of farmland in the surrounding area. Together with the neighbouring Lefkara reservoir, Dipotamos forms the eastern storage pair of the Conveyor system, buffering the big western catchments against the dry farmlands and towns at the island's eastern end.

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useMemo, useState, useEffect, useRef } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { toBlob } from 'html-to-image';
 import { Header, ReservoirCard, HistoricalHeatmap } from '@/components';
 import HistoricalHeatmapStatic from '@/components/HistoricalHeatmapStatic';
@@ -40,6 +41,8 @@ interface RegionDamClientProps {
   initialGrandTotal: RegionTotal;
   initialYtdInflow: YTDInflowResult | null;
   initialYtdOutflow: YTDOutflowResult | null;
+  /** Server-rendered "About" prose for dam pages, keyed by locale (markdown). */
+  aboutMd?: Partial<Record<'en' | 'el' | 'ru', string>>;
 }
 
 function reservoirToRegionTotal(r: Reservoir): RegionTotal {
@@ -68,6 +71,7 @@ export function RegionDamClient({
   initialGrandTotal,
   initialYtdInflow,
   initialYtdOutflow,
+  aboutMd,
 }: RegionDamClientProps) {
   const [isDownloading, setIsDownloading] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
@@ -174,6 +178,8 @@ export function RegionDamClient({
   const damSummaryText = type === 'dam' && damName
     ? getDamSummary(damName, language as 'en' | 'el' | 'ru', currentDataSetId)
     : null;
+
+  const aboutText = aboutMd?.[language as 'en' | 'el' | 'ru'] ?? aboutMd?.en ?? null;
 
   // Breadcrumb data for dam pages
   const localePath = (path: string) =>
@@ -286,6 +292,21 @@ export function RegionDamClient({
             <div className="text-center text-sm text-muted-foreground py-8 bg-white/60 dark:bg-gray-900/60 rounded-2xl backdrop-blur-md">
               {t('forecastNotAvailable')}
             </div>
+          )}
+
+          {/* About the dam — static server-rendered prose (SEO) */}
+          {type === 'dam' && !mediaMode && aboutText && (
+            <section
+              aria-label={t('aboutDamTitle')}
+              className="rounded-2xl bg-white/60 dark:bg-gray-900/60 backdrop-blur-md px-5 py-5 md:px-8 md:py-6"
+            >
+              <h2 className="text-lg md:text-xl font-semibold text-foreground mb-3">
+                {t('aboutDamTitle')}
+              </h2>
+              <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none text-muted-foreground [&>p]:mb-3 prose-a:text-water-600 dark:prose-a:text-water-400">
+                <ReactMarkdown>{aboutText}</ReactMarkdown>
+              </div>
+            </section>
           )}
         </div>
       </main>

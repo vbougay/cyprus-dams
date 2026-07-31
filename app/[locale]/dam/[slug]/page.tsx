@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import { promises as fs } from "fs";
+import path from "path";
 import { RegionDamClient } from "@/components/RegionDamClient";
+import { getDamMetadata } from "@/utils/damMetadata";
+import { getDamCoordinates } from "@/utils/damMapLinks";
 import {
   getReservoirsWithDrainDates,
   calculateRegionTotals,
@@ -21,9 +25,16 @@ import {
   REGION_SLUG_MAP,
 } from "@/utils/slugs";
 import { translations, damNameGenitiveEl } from "@/utils/translations";
+import { autoLinkDams } from "@/utils/autoLinkDams";
 import { REGION_KEYS } from "@/utils/forecastEngine";
 
 const siteUrl = "https://fragmata.info";
+
+// Static "About" prose per dam, stored like articles: content/dams/<slug>/<lang>.md
+function readDamAboutMd(slug: string, lang: string): Promise<string | null> {
+  const mdPath = path.join(process.cwd(), "content", "dams", slug, `${lang}.md`);
+  return fs.readFile(mdPath, "utf-8").catch(() => null);
+}
 
 export async function generateStaticParams() {
   const damSlugs = getAllDamSlugs();
@@ -141,7 +152,22 @@ export default async function DamPage({
     ? (damInfo.key as string)
     : undefined;
 
-  // FAQ structured data with dam-specific question & one-liner answer
+  // Static "About" prose (all locales, so the client can switch language in place)
+  const [aboutEn, aboutEl, aboutRu] = await Promise.all([
+    readDamAboutMd(slug, "en"),
+    readDamAboutMd(slug, "el"),
+    readDamAboutMd(slug, "ru"),
+  ]);
+  // Link mentions of other dams and regions in the prose to their pages
+  const linkOpts = { excludeDamSlug: slug, includeRegions: true };
+  const aboutMd = {
+    ...(aboutEn ? { en: autoLinkDams(aboutEn, "en", linkOpts) } : {}),
+    ...(aboutEl ? { el: autoLinkDams(aboutEl, "el", linkOpts) } : {}),
+    ...(aboutRu ? { ru: autoLinkDams(aboutRu, "ru", linkOpts) } : {}),
+  };
+
+  // FAQ structured data with dam-specific questions; answers mirror content
+  // visible on the page (summary line, DamFacts strip, stat cards).
   const t = translations[lang];
   const translatedDamName = t[damInfo.name as keyof typeof t] || damInfo.name;
   const elGenitive = damNameGenitiveEl[damInfo.name] ?? translatedDamName;
@@ -152,6 +178,56 @@ export default async function DamPage({
       : lang === "el"
         ? `Ποιο είναι το τρέχον επίπεδο νερού στο φράγμα ${elGenitive};`
         : `Какой текущий уровень воды на плотине ${translatedDamName}?`;
+
+  const meta = getDamMetadata(damInfo.name);
+  const reservoir = reservoirs.find((r) => r.name === damInfo.name);
+  const staticFaq: { q: string; a: string }[] = [];
+  if (reservoir) {
+    const capacity = Math.round(reservoir.capacity * 10) / 10;
+    staticFaq.push(
+      lang === "en"
+        ? {
+            q: `How big is ${damInfo.name} Dam?`,
+            a: `${damInfo.name} reservoir has a total capacity of ${capacity} million cubic metres (MCM).`,
+          }
+        : lang === "el"
+          ? {
+              q: `Πόσο μεγάλο είναι το φράγμα ${elGenitive};`,
+              a: `Ο ταμιευτήρας ${elGenitive} έχει συνολική χωρητικότητα ${capacity} εκατομμύρια κυβικά μέτρα (ΕΚΜ).`,
+            }
+          : {
+              q: `Насколько велика плотина ${translatedDamName}?`,
+              a: `Водохранилище ${translatedDamName} имеет общую ёмкость ${capacity} млн кубометров (МКМ).`,
+            }
+    );
+  }
+  if (meta) {
+    staticFaq.push(
+      lang === "en"
+        ? {
+            q: `When was ${damInfo.name} Dam built?`,
+            a: `${damInfo.name} Dam was completed in ${meta.yearBuilt}. It is a ${meta.height}-metre ${meta.type} dam${meta.river ? ` on the ${meta.river} river` : ""}.`,
+          }
+        : lang === "el"
+          ? {
+              q: `Πότε κατασκευάστηκε το φράγμα ${elGenitive};`,
+              a: `Το φράγμα ${elGenitive} ολοκληρώθηκε το ${meta.yearBuilt}. Έχει ύψος ${meta.height} μέτρα${meta.river ? ` και φράσσει τον ποταμό ${meta.river}` : ""}.`,
+            }
+          : {
+              q: `Когда была построена плотина ${translatedDamName}?`,
+              a: `Плотина ${translatedDamName} была завершена в ${meta.yearBuilt} году. Её высота — ${meta.height} м${meta.river ? `, она перекрывает реку ${meta.river}` : ""}.`,
+            }
+    );
+  }
+
+  const coords = getDamCoordinates(damInfo.name);
+  const alternateNames = Array.from(
+    new Set(
+      (["en", "el", "ru"] as const)
+        .map((l) => translations[l][damInfo.name as keyof typeof translations.en] || damInfo.name)
+        .filter((n) => n !== translatedDamName)
+    )
+  );
 
   // Absolute raster image for Google's SERP thumbnail (og:image is ignored by Search).
   const ogImage = `${siteUrl}/og/dam/${slug}.${lang}.png?v=${reportDate}`;
@@ -185,19 +261,44 @@ export default async function DamPage({
                   height: 630,
                 },
               },
-              ...(damSummary
+              {
+                "@type": "Reservoir",
+                name: pageName,
+                ...(alternateNames.length ? { alternateName: alternateNames } : {}),
+                url: canonical,
+                ...(coords
+                  ? {
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: coords.lat,
+                        longitude: coords.lng,
+                      },
+                    }
+                  : {}),
+                containedInPlace: { "@type": "Country", name: "Cyprus" },
+              },
+              ...(damSummary || staticFaq.length
                 ? [
                     {
                       "@type": "FAQPage",
                       mainEntity: [
-                        {
+                        ...(damSummary
+                          ? [
+                              {
+                                "@type": "Question",
+                                name: faqQuestion,
+                                acceptedAnswer: {
+                                  "@type": "Answer",
+                                  text: damSummary,
+                                },
+                              },
+                            ]
+                          : []),
+                        ...staticFaq.map(({ q, a }) => ({
                           "@type": "Question",
-                          name: faqQuestion,
-                          acceptedAnswer: {
-                            "@type": "Answer",
-                            text: damSummary,
-                          },
-                        },
+                          name: q,
+                          acceptedAnswer: { "@type": "Answer", text: a },
+                        })),
                       ],
                     },
                   ]
@@ -217,6 +318,7 @@ export default async function DamPage({
       initialGrandTotal={grandTotal}
       initialYtdInflow={ytdInflow}
       initialYtdOutflow={ytdOutflow}
+      aboutMd={aboutMd}
     />
     </>
   );

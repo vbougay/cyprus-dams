@@ -5,6 +5,7 @@ import path from "path";
 import { ArticleClient } from "@/components/ArticleClient";
 import { locales, isValidLocale } from "@/utils/locale";
 import { getAllArticles, getAllArticleSlugs, getArticleBySlug } from "@/utils/articles";
+import { autoLinkDams } from "@/utils/autoLinkDams";
 
 const siteUrl = "https://fragmata.info";
 
@@ -104,8 +105,10 @@ export default async function ArticlePage({
   const article = getArticleBySlug(slug);
   if (!article) notFound();
 
-  const markdown = await readArticleMd(slug, lang);
-  if (!markdown) notFound();
+  const rawMarkdown = await readArticleMd(slug, lang);
+  if (!rawMarkdown) notFound();
+  // Link each dam's first mention to its /dam/<slug> page (internal linking for SEO)
+  const markdown = autoLinkDams(rawMarkdown, lang);
 
   // Compute prev/next articles (sorted newest-first)
   const allArticles = getAllArticles();

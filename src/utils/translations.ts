@@ -34,6 +34,7 @@ export const translations = {
     viewOnMap: "View on Google Maps",
 
     // Dam facts
+    aboutDamTitle: "About the Dam",
     damFactsTitle: "Dam facts",
     damFactsBuilt: "Built",
     damFactsHeight: "Height",
@@ -235,6 +236,7 @@ export const translations = {
     viewOnMap: "Προβολή στο Google Maps",
 
     // Dam facts
+    aboutDamTitle: "Σχετικά με το Φράγμα",
     damFactsTitle: "Στοιχεία φράγματος",
     damFactsBuilt: "Έτος κατασκευής",
     damFactsHeight: "Ύψος",
@@ -436,6 +438,7 @@ export const translations = {
     viewOnMap: "Посмотреть на Google Maps",
 
     // Dam facts
+    aboutDamTitle: "Об этой плотине",
     damFactsTitle: "О плотине",
     damFactsBuilt: "Год постройки",
     damFactsHeight: "Высота",

@@ -1,0 +1,5 @@
+The Polemidia Dam impounds the Garyllis river on the northern edge of Limassol, Cyprus. Completed in 1965, it is the oldest of the Southern Conveyor group of dams and one of the older large dams on the island — an earthfill embankment 45 metres high with a capacity of 3.4 MCM (million cubic metres).
+
+Polemidia belongs to the first generation of modern Cypriot dams, built in the 1960s when the island began systematically taming its winter torrents. Its water has traditionally served irrigation for the farmland around Limassol, and the dam also moderates the Garyllis, the stream that runs through the city itself on its way to the sea.
+
+As Limassol sprawled uphill toward the reservoir, its surroundings were deliberately protected: the dam sits inside a forest park of some 46 hectares, planted to guard the watershed, which today doubles as one of the city's closest green retreats. Within the Southern Conveyor system — the pipeline network centred on the giant Kouris reservoir in the next valley west — Polemidia is a small local node rather than a trunk storage, but its position on a city's doorstep makes it one of the most visited reservoirs in Cyprus.

@@ -1,0 +1,5 @@
+The Arminou Dam impounds the Diarizos river in the Paphos hills of western Cyprus, near the village of Arminou. Completed in 1998, it is a hybrid earthfill-and-rockfill embankment 45 metres high with a capacity of 4.3 MCM (million cubic metres) — small by reservoir standards, and deliberately so.
+
+Arminou was never meant to be a big store of water. Its main job is diversion: the dam intercepts the flow of the Diarizos and sends it through a 14.5 km tunnel eastward into the Kouris reservoir, the largest in Cyprus and the head of the Southern Conveyor pipeline that supplies much of the island's south and east. In wet months the transfer runs almost continuously, which is why Kouris can receive far more water than its own three rivers deliver. Arminou is, in effect, the western intake of the whole Conveyor system.
+
+Alongside that role, the reservoir regulates the Diarizos itself, supporting irrigation for the villages and farmland of the valley downstream. Its setting — a green gorge on the southern flank of the Troodos mountains — has also made it a favourite stop on drives through the Paphos forest region.

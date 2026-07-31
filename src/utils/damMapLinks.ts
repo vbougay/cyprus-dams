@@ -54,6 +54,11 @@ const knownPlaceLinks: Record<string, string> = {
  * Get a Google Maps URL for a dam by name.
  * Returns a well-defined place link if available, otherwise a coordinate-based URL.
  */
+/** Get a dam's coordinates by display name (used for structured data). */
+export function getDamCoordinates(damName: string): { lat: number; lng: number } | undefined {
+  return reservoirCoordinates[damName];
+}
+
 export function getDamMapUrl(damName: string): string | undefined {
   if (knownPlaceLinks[damName]) {
     return knownPlaceLinks[damName];
