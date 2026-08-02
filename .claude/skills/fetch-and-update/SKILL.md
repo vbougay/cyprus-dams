@@ -27,25 +27,30 @@ The update also runs unattended in the cloud: a Vercel cron job checks the gov.c
 every 10 minutes and fires this routine when a newer bulletin appears (see
 `CLOUD-AUTOMATION.md`).
 A cloud session is a **fresh checkout**, so anything gitignored is simply absent —
-`community/`, `logs/`, `.env.local`, and all of `scripts/` except `scripts/og/`.
-When those files are missing, you are in a cloud run: apply these overrides.
+`community/*` (except the tracked `community/TELEGRAM.md`), `logs/`, `.env.local`, and all
+of `scripts/` except `scripts/og/`. When those files are missing, you are in a cloud run:
+apply these overrides.
 
 - **Install first**: `corepack enable && pnpm install --frozen-lockfile`. Retry once on registry failure.
 - **The fire payload**: the `<routine-fire-payload>` block carries `detected_bulletin_date`
   and the `deployed_dataset` the cron compared against. Treat the date as a hint that saves
   you a lookup — still confirm it against the pages, and if the data XLSX for it isn't
   linked yet, probe the predictable URLs (see the stale-link note above).
-- **Narrative context** replaces reading `community/TELEGRAM.md`:
+- **`community/TELEGRAM.md` is present and git-tracked** — read it the same way a local run
+  would, for both the `daysSinceLatest`/schedule check and the exact Telegram post shape (see
+  the template in **Platform formatting** below). `community/WHATSAPP.md` and any other
+  sibling file are still gitignored and absent — cloud runs only post to Telegram, not
+  WhatsApp; leave that platform's post to a local run.
+- **Narrative context** — optional supplement for the *website* `getSummaryChanges` story arc
+  (markdown, links, different structure from the Telegram file):
   ```bash
   curl -s -H "Authorization: Bearer $INTERNAL_API_SECRET" \
     "https://fragmata.info/api/internal/narrative?limit=6"
   ```
-  Returns the recent datasets' `getSummaryChanges` narratives in all three languages,
-  newest first, plus `daysSinceLatest` — use that for the major/minor post rule. Note this
-  gives the *website* narrative (markdown, links, different structure), not actual past
-  Telegram post text — `community/TELEGRAM.md` is absent in a cloud run and there's no
-  read/history endpoint for it, so the exact Telegram shape must come from the template in
-  **Platform formatting** below, not from this endpoint.
+  Returns the recent datasets' `getSummaryChanges` narratives in all three languages, newest
+  first, plus `daysSinceLatest`. Since the recent `data-*.ts` modules are also tracked and
+  present in the checkout, reading them directly works just as well — use whichever is
+  convenient.
 - **Telegram** replaces `tsx scripts/post-telegram.ts`:
   ```bash
   curl -s -X POST "https://fragmata.info/api/internal/telegram" \
@@ -56,9 +61,11 @@ When those files are missing, you are in a cloud run: apply these overrides.
   Write the body to a temp JSON file rather than inlining it, to avoid shell-quoting
   problems. Expect `{"ok":true,"messageId":…,"chatId":…}`; a 422 means the post exceeds
   Telegram's 4096-char limit — shorten it and retry. Retry once on a network failure.
-- **Don't write `community/*.md`** — untracked, so the edit is lost when the session ends.
-  Print the exact Telegram post text plus the returned `messageId` in your final report
-  instead; that report is the record.
+- **Append the sent post to `community/TELEGRAM.md`** the same way a local run does (see
+  **After a successful send** below) and commit it alongside the dataset commit — it's
+  tracked now, so the edit isn't lost when the session ends. Never write a future-dated /
+  not-yet-sent draft into this file (it's a public repo); drafts belong in the still-gitignored
+  `community/DRAFTS.md` until they've actually gone out.
 - **Push straight to `main`** — Vercel deploys from it, which is what closes the loop and
   stops the cron from firing again for the same bulletin.
 
@@ -96,11 +103,11 @@ The historical heatmap chart uses `src/utils/historicalStorageData.ts` — it mu
 - The storage values come from each reservoir's `storage.current.amount` in the new data module
 
 **Narrative coherence** — the `getSummaryChanges` text, articles, and community posts are all part of one evolving story. Before writing any of them:
-- Read the recent entries in `community/TELEGRAM.md` and the latest `getSummaryChanges` to understand the current narrative arc (cloud runs: the narrative endpoint above returns the same `getSummaryChanges` history)
+- Read the recent entries in `community/TELEGRAM.md` (tracked, present in every run including cloud) and the latest `getSummaryChanges` to understand the current narrative arc
 - Each new update should advance the story — reference what changed since the last post, build on previous milestones, and avoid restating old news as if it's new
 - Let the data drive the narrative: when the situation shifts (e.g. a drought easing, a new region recovering, a plateau forming), the tone and focus should shift with it
 - Keep all three outputs consistent — they can differ in length and format but should not contradict each other or tell different stories
-- Articles or community posts with future dates are pre-scheduled drafts — ignore them when determining the current narrative state
+- Articles with future dates are pre-scheduled drafts — ignore them when determining the current narrative state. Community posts don't have this problem: `community/TELEGRAM.md` only ever holds posts that have actually been sent (see **Community Post** below on where drafts belong instead)
 
 **Summary / Recent Changes (`getSummaryChanges`):**
 
@@ -162,8 +169,10 @@ EOF
   `` ``` ``
   ...message text...
   `` ``` ``
-- Use the exact `message_id` and `chat_id` printed by the script, and the current UTC timestamp for `at=`
-- `community/` is gitignored — the annotation stays in the local file; no commit needed
+- Use the exact `message_id` and `chat_id` printed by the script (or by the relay's JSON
+  response in a cloud run), and the current UTC timestamp for `at=`
+- `community/TELEGRAM.md` is git-tracked — commit this edit (local runs: as part of the normal
+  commit; cloud runs: alongside the dataset commit, before pushing to `main`)
 - If the send fails, skip this step — nothing to record
 
 **News Ticker Refresh:**
@@ -180,8 +189,14 @@ The dashboard has a scrolling news ticker showing recent water crisis articles. 
 
 After each data update, append a new community post entry to both `community/TELEGRAM.md` and `community/WHATSAPP.md`. Each entry carries the same `## <date>` heading and summary line in both files, followed by that platform's code block (`### Telegram` in TELEGRAM.md, `### WhatsApp` in WHATSAPP.md).
 
+`community/TELEGRAM.md` is git-tracked (this is a **public** repo) — only ever append a post
+*after* it has been sent; never write a future-dated or not-yet-sent draft into it. Drafts go
+in the still-gitignored `community/DRAFTS.md` and move over once sent. `community/WHATSAPP.md`
+(and any other sibling file) stays gitignored/local-only, no such restriction there.
+
 - **Schedule**: Major updates on Mon/Wed/Fri, minor updates on Tue/Thu. If more than 1 day has passed since the last data update, always do a major update regardless of day.
-- **Determining the last update**: Check the last `## March XX` heading in `community/TELEGRAM.md` to find when the previous post was made. In a cloud run that file doesn't exist — use `daysSinceLatest` from the narrative endpoint.
+- **Determining the last update**: Check the last `## <date>` heading in `community/TELEGRAM.md` to find when the previous post was made — the file is tracked and present in every run, local or cloud. (`daysSinceLatest` from the narrative endpoint works too, if you're already fetching it for the website narrative.)
+- **Drafts vs. sent posts**: `community/TELEGRAM.md` is a public, git-tracked file — only append an entry *after* the post has actually been sent (i.e. you have a real `message_id`). Anything written ahead of time (a scheduled article announcement, a pre-planned post) belongs in `community/DRAFTS.md` instead, which stays gitignored. Move it into `TELEGRAM.md` once it's actually gone out.
 
 **Minor data updates** (📊):
 - Headline: total storage % and MCM, delta from previous update (e.g. "up from 26.9% yesterday")

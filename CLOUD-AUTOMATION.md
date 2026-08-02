@@ -16,12 +16,19 @@ Vercel Cron ──► GET /api/cron/check-wdd ──► POST …/routines/{id}/f
                  deployed dataset             is actually newer            → Vercel deploys
 ```
 
-The routine reaches back into the app for the two things a fresh checkout doesn't have:
+The routine reaches back into the app for the one thing a fresh checkout still doesn't have:
 
 | Endpoint | Replaces | Why |
 |---|---|---|
 | `POST /api/internal/telegram` | `scripts/post-telegram.ts` | `scripts/*` is gitignored; keeps the bot token in Vercel only |
-| `GET /api/internal/narrative` | reading `community/TELEGRAM.md` | `community/` is gitignored; serves the same story arc from committed `getSummaryChanges` |
+
+`community/TELEGRAM.md` itself is git-tracked (as of 2026-07-31 — see `.gitignore`), so a cloud
+checkout has it directly; the routine reads/appends it the same way a local run does. Only
+`community/WHATSAPP.md` and other sibling files stay gitignored, since those still need
+`scripts/*` or manual posting. `GET /api/internal/narrative` is kept as an optional convenience
+for the *website* `getSummaryChanges` story arc (a different, markdown-flavored narrative from
+the plain-text Telegram history) — not required, since the recent `data-*.ts` modules are also
+tracked and readable directly.
 
 ## Files
 

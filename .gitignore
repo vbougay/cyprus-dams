@@ -24,7 +24,13 @@ dist-ssr
 *.sw?
 
 .next
-community/
+# community/ is mostly local-only drafting (WHATSAPP.md, REDDIT.md, welcome copy) and may
+# hold future-dated pre-scheduled drafts, which must never be committed to this public repo.
+# TELEGRAM.md is the exception: it's post-hoc history only (entries added after a post is
+# actually sent), so cloud runs need it tracked to read/append it directly. Future-dated
+# Telegram drafts belong in the still-gitignored community/DRAFTS.md until they've gone out.
+community/*
+!community/TELEGRAM.md
 *.tsbuildinfo
 next-env.d.ts
 
