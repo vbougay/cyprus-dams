@@ -81,14 +81,14 @@ export const getDamSummary = (damName: string, language: 'en' | 'el' | 'ru' = 'e
       ru: 'Гермасойя на 55.3% (7.46 МКМ) — постепенное летнее снижение. +41.4пп выше прошлогодних 13.9%.',
     },
     'Arminou': {
-      en: 'Arminou at 58.9% (2.53 MCM) — flat for the second week running. Season inflow 22.3 MCM = 5.2× capacity.',
-      el: 'Ο Αρμίνου στο 58.9% (2.53 ΕΚΜ) — αμετάβλητος για δεύτερη εβδομάδα. Εισροή σεζόν: 22.3 ΕΚΜ = 5.2× χωρητικότητα.',
-      ru: 'Арминоу на 58.9% (2.53 МКМ) — без изменений вторую неделю подряд. Приток сезона: 22.3 МКМ = 5.2× ёмкости.',
+      en: 'Arminou at 58.9% (2.53 MCM) — Friday\'s brief uptick to 59.0% didn\'t hold. Season inflow 22.3 MCM = 5.2× capacity.',
+      el: 'Ο Αρμίνου στο 58.9% (2.53 ΕΚΜ) — η σύντομη άνοδος της Παρασκευής στο 59.0% δεν κράτησε. Εισροή σεζόν: 22.3 ΕΚΜ = 5.2× χωρητικότητα.',
+      ru: 'Арминоу на 58.9% (2.53 МКМ) — пятничный рост до 59.0% не удержался. Приток сезона: 22.3 МКМ = 5.2× ёмкости.',
     },
     'Polemidia': {
-      en: 'Polemidia at 46.1% (1.57 MCM) — down 2.3pp over the weekend, dropping further below the 50% mark. Still 16.6pp above last year\'s 29.5%.',
-      el: 'Η Πολεμίδια στο 46.1% (1.57 ΕΚΜ) — υποχώρησε 2.3μ.π. το σαββατοκύριακο, κάτω από το 50%. 16.6μ.π. πάνω από πέρυσι (29.5%).',
-      ru: 'Полемидия на 46.1% (1.57 МКМ) — снизилась на 2.3пп за выходные, ниже отметки 50%. +16.6пп выше прошлогодних 29.5%.',
+      en: 'Polemidia at 46.1% (1.57 MCM) — down 2.1pp over the weekend, dropping further below the 50% mark. Still 16.6pp above last year\'s 29.5%.',
+      el: 'Η Πολεμίδια στο 46.1% (1.57 ΕΚΜ) — υποχώρησε 2.1μ.π. το σαββατοκύριακο, κάτω από το 50%. 16.6μ.π. πάνω από πέρυσι (29.5%).',
+      ru: 'Полемидия на 46.1% (1.57 МКМ) — снизилась на 2.1пп за выходные, ниже отметки 50%. +16.6пп выше прошлогодних 29.5%.',
     },
     'Achna': {
       en: 'Achna critically low at 1.8% (0.12 MCM), zero inflow all season. Far below last year\'s 5.1%. No recovery expected before autumn.',
@@ -106,7 +106,7 @@ export const getDamSummary = (damName: string, language: 'en' | 'el' | 'ru' = 'e
       ru: 'Каннавиу на 48.0% (8.24 МКМ) — чуть ниже границы 50%, +29.9пп выше прошлогодних 18.1%.',
     },
     'Mavrokolympos': {
-      en: 'Mavrokolympos at 62.2% (1.36 MCM) — continued easing from its summer peak, down 1.8pp over the weekend. Was 0% last year.',
+      en: 'Mavrokolympos at 62.2% (1.36 MCM) — continued easing from its summer peak, down 0.8pp over the weekend. Was 0% last year.',
       el: 'Ο Μαυροκόλυμπος στο 62.2% (1.36 ΕΚΜ) — συνεχίζει να υποχωρεί από την κορύφωση του καλοκαιριού. Από 0% πέρυσι.',
       ru: 'Мавроколимпос на 62.2% (1.36 МКМ) — продолжает снижаться от летнего пика. Год назад 0%.',
     },
@@ -116,19 +116,19 @@ export const getDamSummary = (damName: string, language: 'en' | 'el' | 'ru' = 'e
       ru: 'Эвретоу на 44.6% (10.71 МКМ) — устойчивое снижение в сухой сезон. +26.9пп выше прошлогодних 17.7%.',
     },
     'Argaka': {
-      en: 'Argaka at 70.8% (0.70 MCM) — extending its multi-week slide, down 2.0pp over the weekend. Up from 11.0% last year — a 6.4× year-over-year recovery.',
-      el: 'Η Αργάκα στο 70.8% (0.70 ΕΚΜ) — συνεχίζει η πολυεβδομαδιαία πτώση. Από 11.0% πέρυσι — 6.4× ανάκαμψη.',
-      ru: 'Аргака на 70.8% (0.70 МКМ) — продолжается многонедельное снижение. Год назад 11.0% — 6.4-кратный рост.',
+      en: 'Argaka at 70.8% (0.70 MCM) — extending its multi-week slide, down 1.5pp over the weekend. Up from 11.0% last year — a 6.4× year-over-year recovery.',
+      el: 'Η Αργάκα στο 70.8% (0.70 ΕΚΜ) — συνεχίζει η πολυεβδομαδιαία πτώση, -1.5μ.π. το σαββατοκύριακο. Από 11.0% πέρυσι — 6.4× ανάκαμψη.',
+      ru: 'Аргака на 70.8% (0.70 МКМ) — продолжается многонедельное снижение, -1.5пп за выходные. Год назад 11.0% — 6.4-кратный рост.',
     },
     'Pomos': {
-      en: 'Pomos at 79.4% (0.68 MCM) — down 3.0pp over the weekend, continued retreat from near-full. Up from 20.1% last year.',
-      el: 'Ο Πόμος στο 79.4% (0.68 ΕΚΜ) — υποχωρεί από το σχεδόν πλήρες. Από 20.1% πέρυσι.',
-      ru: 'Помос на 79.4% (0.68 МКМ) — отступает от почти полного уровня. Год назад 20.1%.',
+      en: 'Pomos at 79.4% (0.68 MCM) — down 1.6pp over the weekend, continued retreat from near-full. Up from 20.1% last year.',
+      el: 'Ο Πόμος στο 79.4% (0.68 ΕΚΜ) — υποχώρησε 1.6μ.π. το σαββατοκύριακο, υποχωρεί από το σχεδόν πλήρες. Από 20.1% πέρυσι.',
+      ru: 'Помос на 79.4% (0.68 МКМ) — снизился на 1.6пп за выходные, отступает от почти полного уровня. Год назад 20.1%.',
     },
     'Agia Marina': {
-      en: 'Agia Marina at 77.9% (0.23 MCM) — the steepest decline of the period, down 4.3pp over the weekend as it eases off its summer plateau. Up from 19.8% last year.',
-      el: 'Η Αγία Μαρίνα στο 77.9% (0.23 ΕΚΜ) — η μεγαλύτερη πτώση της περιόδου, καθώς υποχωρεί από το καλοκαιρινό πλατό. Από 19.8% πέρυσι.',
-      ru: 'Агия Марина на 77.9% (0.23 МКМ) — самое сильное снижение периода, отступает от летнего плато. Год назад 19.8%.',
+      en: 'Agia Marina at 77.9% (0.23 MCM) — the steepest decline of the period, down 2.6pp over the weekend as it eases off its summer plateau. Up from 19.8% last year.',
+      el: 'Η Αγία Μαρίνα στο 77.9% (0.23 ΕΚΜ) — η μεγαλύτερη πτώση της περιόδου, -2.6μ.π. το σαββατοκύριακο, καθώς υποχωρεί από το καλοκαιρινό πλατό. Από 19.8% πέρυσι.',
+      ru: 'Агия Марина на 77.9% (0.23 МКМ) — самое сильное снижение периода, -2.6пп за выходные, отступает от летнего плато. Год назад 19.8%.',
     },
     'Vyzakia': {
       en: 'Vyzakia at 85.7% (1.45 MCM) — continued slow decline below 90%. Was 0.7% last year — dramatic year-over-year recovery.',
@@ -167,16 +167,16 @@ export const getDamSummary = (damName: string, language: 'en' | 'el' | 'ru' = 'e
 export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string => {
   if (language === 'el') {
     return `
-### Πρόσφατες Αλλαγές (29 Ιουλίου — 3 Αυγούστου 2026)
+### Πρόσφατες Αλλαγές (31 Ιουλίου — 3 Αυγούστου 2026)
 
-Δελτίο Δευτέρας, μετά από κενό 5 ημερών: συνολική αποθήκευση **39.6%** (115.2 ΕΚΜ) — από 40.0% (116.3 ΕΚΜ) στις 29 Ιουλίου, μια απώλεια 1.1 ΕΚΜ. Η [Αγία Μαρίνα](/el/dam/agia-marina/) κατέγραψε τη μεγαλύτερη πτώση της περιόδου, υποχωρώντας από 82.2% σε 77.9% (-4.3μ.π.) καθώς απομακρύνεται από το καλοκαιρινό της πλατό. Ο [Αρμίνου](/el/dam/arminou/) παραμένει αμετάβλητος στο 58.9% για δεύτερη συνεχόμενη εβδομάδα. Το χάσμα με πέρυσι κρατά στο **+22.9μ.π.** Εισροή σεζόν 25/26: **115.5 ΕΚΜ**. Η μεταφορά [Αρμίνου](/el/dam/arminou/)→[Κούρης](/el/dam/kouris/) παραμένει στα **20.44 ΕΚΜ**.
+Δελτίο Δευτέρας, καλύπτοντας το σαββατοκύριακο: συνολική αποθήκευση **39.6%** (115.2 ΕΚΜ) — από 39.8% (115.8 ΕΚΜ) την Παρασκευή, μια απώλεια 0.7 ΕΚΜ. Η [Αγία Μαρίνα](/el/dam/agia-marina/) κατέγραψε τη μεγαλύτερη πτώση του σαββατοκύριακου, υποχωρώντας από 80.5% σε 77.9% (-2.6μ.π.). Η άνοδος του [Αρμίνου](/el/dam/arminou/) την Παρασκευή δεν κράτησε — υποχώρησε πάλι στο 58.9% (-0.1μ.π.). Το χάσμα με πέρυσι κρατά στο **+22.9μ.π.** Εισροή σεζόν 25/26: **115.5 ΕΚΜ**. Η μεταφορά [Αρμίνου](/el/dam/arminou/)→[Κούρης](/el/dam/kouris/) παραμένει στα **20.44 ΕΚΜ**.
 
-**Αξιοσημείωτα (έναντι 29 Ιουλίου):**
-- [Αγία Μαρίνα](/el/dam/agia-marina/) **77.9%** (-4.3μ.π.) — η μεγαλύτερη πτώση της περιόδου
-- [Πόμος](/el/dam/pomos/) **79.4%** (-3.0μ.π.) — συνεχίζει να υποχωρεί από το σχεδόν πλήρες
-- [Πολεμίδια](/el/dam/polemidia/) **46.1%** (-2.3μ.π.) — κάτω από το 50%
-- [Αργάκα](/el/dam/argaka/) **70.8%** (-2.0μ.π.) — συνεχίζει η πολυεβδομαδιαία πτώση
-- [Αρμίνου](/el/dam/arminou/) **58.9%** — αμετάβλητος για δεύτερη εβδομάδα
+**Αξιοσημείωτα (έναντι Παρασκευής):**
+- [Αγία Μαρίνα](/el/dam/agia-marina/) **77.9%** (-2.6μ.π.) — η μεγαλύτερη πτώση του σαββατοκύριακου
+- [Πολεμίδια](/el/dam/polemidia/) **46.1%** (-2.1μ.π.) — κάτω από το 50%
+- [Πόμος](/el/dam/pomos/) **79.4%** (-1.6μ.π.) — συνεχίζει να υποχωρεί από το σχεδόν πλήρες
+- [Αργάκα](/el/dam/argaka/) **70.8%** (-1.5μ.π.) — συνεχίζει να υποχωρεί
+- [Αρμίνου](/el/dam/arminou/) **58.9%** (-0.1μ.π.) — δεν κράτησε η άνοδος της Παρασκευής
 - [Καλοπαναγιώτης](/el/dam/kalopanagiotis/) **100%** — παραμένει το μόνο φράγμα σε υπερχείλιση
 - [Αχνά](/el/dam/achna/) **1.8%** — αμετάβλητη, μηδέν εισροή όλη τη σεζόν
 
@@ -185,16 +185,16 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
   }
   if (language === 'ru') {
     return `
-### Последние изменения (29 июля — 3 августа 2026)
+### Последние изменения (31 июля — 3 августа 2026)
 
-Бюллетень понедельника после 5-дневного перерыва: общий запас **39.6%** (115.2 МКМ) — против 40.0% (116.3 МКМ) на 29 июля, потеря 1.1 МКМ. [Агия Марина](/ru/dam/agia-marina/) показала крупнейшее падение периода, снизившись с 82.2% до 77.9% (-4.3пп), отступая от своего летнего плато. [Арминоу](/ru/dam/arminou/) остаётся без изменений на уровне 58.9% вторую неделю подряд. Разрыв с прошлым годом держится на **+22.9пп**. Приток сезона 25/26: **115.5 МКМ**. Перекачка [Арминоу](/ru/dam/arminou/)→[Курис](/ru/dam/kouris/) без изменений: **20.44 МКМ**.
+Бюллетень понедельника, за выходные: общий запас **39.6%** (115.2 МКМ) — против 39.8% (115.8 МКМ) в пятницу, потеря 0.7 МКМ. [Агия Марина](/ru/dam/agia-marina/) показала крупнейшее падение за выходные, снизившись с 80.5% до 77.9% (-2.6пп). Пятничный рост [Арминоу](/ru/dam/arminou/) не удержался — вернулся к 58.9% (-0.1пп). Разрыв с прошлым годом держится на **+22.9пп**. Приток сезона 25/26: **115.5 МКМ**. Перекачка [Арминоу](/ru/dam/arminou/)→[Курис](/ru/dam/kouris/) без изменений: **20.44 МКМ**.
 
-**Основные изменения (за период с 29 июля):**
-- [Агия Марина](/ru/dam/agia-marina/) **77.9%** (-4.3пп) — крупнейшее падение периода
-- [Помос](/ru/dam/pomos/) **79.4%** (-3.0пп) — продолжает отступать от почти полного уровня
-- [Полемидия](/ru/dam/polemidia/) **46.1%** (-2.3пп) — опустилась ниже 50%
-- [Аргака](/ru/dam/argaka/) **70.8%** (-2.0пп) — продолжается многонедельное снижение
-- [Арминоу](/ru/dam/arminou/) **58.9%** — без изменений вторую неделю подряд
+**Основные изменения (за выходные):**
+- [Агия Марина](/ru/dam/agia-marina/) **77.9%** (-2.6пп) — крупнейшее падение за выходные
+- [Полемидия](/ru/dam/polemidia/) **46.1%** (-2.1пп) — опустилась ниже 50%
+- [Помос](/ru/dam/pomos/) **79.4%** (-1.6пп) — продолжает отступать от почти полного уровня
+- [Аргака](/ru/dam/argaka/) **70.8%** (-1.5пп) — продолжает снижаться
+- [Арминоу](/ru/dam/arminou/) **58.9%** (-0.1пп) — пятничный рост не удержался
 - [Калопанайотис](/ru/dam/kalopanagiotis/) **100%** — по-прежнему единственное переливающееся водохранилище
 - [Ахна](/ru/dam/achna/) **1.8%** — без изменений, без притока за весь сезон
 
@@ -202,16 +202,16 @@ export const getSummaryChanges = (language: 'en' | 'el' | 'ru' = 'en'): string =
 `;
   }
   return `
-### Recent Changes (July 29 — August 3, 2026)
+### Recent Changes (July 31 — August 3, 2026)
 
-Monday bulletin, after a 5-day gap in publication: total storage at **39.6%** (115.2 MCM) — down from 40.0% (116.3 MCM) on July 29, a loss of 1.1 MCM. [Agia Marina](/dam/agia-marina/) posted the steepest decline of the period, sliding from 82.2% to 77.9% (-4.3pp) as it eases off its summer plateau. [Arminou](/dam/arminou/) remains flat at 58.9% for the second week running. The gap over last year holds at **+22.9pp**. Season total inflow: **115.5 MCM**. The [Arminou](/dam/arminou/)→[Kouris](/dam/kouris/) transfer remains at **20.44 MCM**.
+Monday bulletin, covering the weekend: total storage at **39.6%** (115.2 MCM) — down from 39.8% (115.8 MCM) on Friday, a loss of 0.7 MCM. [Agia Marina](/dam/agia-marina/) posted the largest weekend drop, sliding from 80.5% to 77.9% (-2.6pp). [Arminou](/dam/arminou/)'s Friday uptick didn't hold — it settled back to 58.9% (-0.1pp). The gap over last year holds at **+22.9pp**. Season total inflow: **115.5 MCM**. The [Arminou](/dam/arminou/)→[Kouris](/dam/kouris/) transfer remains at **20.44 MCM**.
 
-**Notable movements (vs. July 29):**
-- [Agia Marina](/dam/agia-marina/) **77.9%** (-4.3pp) — the steepest decline of the period
-- [Pomos](/dam/pomos/) **79.4%** (-3.0pp) — continues easing back from near-full
-- [Polemidia](/dam/polemidia/) **46.1%** (-2.3pp) — dropped below the 50% mark
-- [Argaka](/dam/argaka/) **70.8%** (-2.0pp) — extending its multi-week slide
-- [Arminou](/dam/arminou/) **58.9%** — flat for the second week running
+**Notable movements (vs. Friday):**
+- [Agia Marina](/dam/agia-marina/) **77.9%** (-2.6pp) — the largest weekend drop
+- [Polemidia](/dam/polemidia/) **46.1%** (-2.1pp) — dropped further below the 50% mark
+- [Pomos](/dam/pomos/) **79.4%** (-1.6pp) — continues easing from near-full
+- [Argaka](/dam/argaka/) **70.8%** (-1.5pp) — still sliding
+- [Arminou](/dam/arminou/) **58.9%** (-0.1pp) — Friday's uptick didn't hold
 - [Kalopanagiotis](/dam/kalopanagiotis/) **100%** — still the only dam overflowing
 - [Achna](/dam/achna/) **1.8%** — unchanged, zero inflow all season
 

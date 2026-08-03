@@ -2991,22 +2991,47 @@ Gap vs last year: +22.9pp.
 🔗 https://fragmata.info
 ```
 
-## August 3 — Agia Marina's steepest drop
+## July 31 — Arminou breaks its plateau
 
-📰 Major update — total storage 39.6% (115.2 MCM), down 1.1 MCM over the 5-day gap since July 29. Agia Marina posted the steepest decline of the period, easing off its summer plateau; Arminou remains flat for a second week.
+📰 Major update — total storage 39.8% (115.8 MCM), down 0.4 MCM from Wednesday. Arminou ticked up slightly, snapping its two-post plateau; Agia Marina and Pomos posted the largest two-day drops.
 
 ### Telegram
-Sent: message_id=102, chat_id=151413643, at=2026-08-03T09:21:54Z
+Sent: message_id unknown — not recorded by the run that sent it (backfilled from the actual sent text on 2026-08-03)
 ```
-📰 Cyprus Dams — August 3
+📰 Cyprus Dams — July 31
 
-Monday bulletin, after a 5-day gap in publication: total storage 39.6% (115.2 MCM) — down from 40.0% (116.3 MCM) on July 29, a loss of 1.1 MCM. Agia Marina posted the steepest decline of the period, sliding from 82.2% to 77.9% (-4.3pp) as it eases off its summer plateau. Arminou remains flat at 58.9% for the second week running. Gap over last year: +22.9pp. Season inflow: 115.5 MCM (Aug-Sep so far: 0.03 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+Friday bulletin: total storage 39.8% (115.8 MCM) — down 0.4 MCM from Wednesday, the same slow drawdown pace continuing. Arminou ticked up slightly to 59.0% (+0.1pp), snapping its two-post plateau. Gap over last year: +22.9pp. Season inflow: 115.5 MCM (July so far: 1.08 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
 
-• Agia Marina 77.9% (-4.3pp) — the steepest decline of the period
-• Pomos 79.4% (-3.0pp) — continues easing back from near-full
-• Polemidia 46.1% (-2.3pp) — dropped below the 50% mark
-• Argaka 70.8% (-2.0pp) — extending its multi-week slide
-• Arminou 58.9% — flat for the second week running
+• Agia Marina 80.5% (-1.7pp) — the largest two-day drop
+• Pomos 81.0% (-1.4pp) — continues easing from near-full
+• Mavrokolympos 63.0% (-1.0pp) — dropped below 64%
+• Arminou 59.0% (+0.1pp) — a slight uptick, snapping its plateau
+• Kalopanagiotis 100% — still the only dam overflowing
+• Achna 1.9% — unchanged, zero inflow all season
+
+Gap vs last year: +22.9pp.
+
+🔗 https://fragmata.info
+```
+
+## August 3 — Agia Marina's weekend drop
+
+📰 Major update — total storage 39.6% (115.2 MCM), down 0.7 MCM over the weekend. Agia Marina posted the largest weekend drop, easing off its summer plateau; Arminou's Friday uptick didn't hold.
+
+### Telegram
+Sent: message_id=103, chat_id=151413643, at=2026-08-03T09:29:10Z (correction — see note below)
+```
+📰 Cyprus Dams — August 3 (correction)
+
+Correction to the previous post: the last bulletin was published July 31, not July 29 — please disregard the earlier message and use this one instead.
+
+Monday bulletin, covering the weekend: total storage 39.6% (115.2 MCM) — down from 39.8% (115.8 MCM) on Friday, a loss of 0.7 MCM. Agia Marina posted the largest weekend drop, sliding from 80.5% to 77.9% (-2.6pp). Arminou's Friday uptick didn't hold — it settled back to 58.9% (-0.1pp). Gap over last year: +22.9pp. Season inflow: 115.5 MCM (Aug-Sep so far: 0.03 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Agia Marina 77.9% (-2.6pp) — the largest weekend drop
+• Polemidia 46.1% (-2.1pp) — dropped further below the 50% mark
+• Pomos 79.4% (-1.6pp) — continues easing from near-full
+• Argaka 70.8% (-1.5pp) — still sliding
+• Arminou 58.9% (-0.1pp) — Friday's uptick didn't hold
 • Kalopanagiotis 100% — still the only dam overflowing
 • Achna 1.8% — unchanged, zero inflow all season
 
@@ -3014,3 +3039,5 @@ Gap vs last year: +22.9pp.
 
 🔗 https://fragmata.info
 ```
+
+**Note:** message_id=102 (sent 2026-08-03T09:21:54Z) was an earlier, incorrect version of this post — it wrongly assumed a 5-day gap since July 29 (the July 31 post existed but wasn't recorded in this file). That message was sent to the bot DM only and was never forwarded to the public channel; message_id=103 above is the corrected replacement. Disregard message_id=102.
