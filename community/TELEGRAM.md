@@ -2990,3 +2990,27 @@ Gap vs last year: +22.9pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 3 — Agia Marina's steepest drop
+
+📰 Major update — total storage 39.6% (115.2 MCM), down 1.1 MCM over the 5-day gap since July 29. Agia Marina posted the steepest decline of the period, easing off its summer plateau; Arminou remains flat for a second week.
+
+### Telegram
+Sent: message_id=102, chat_id=151413643, at=2026-08-03T09:21:54Z
+```
+📰 Cyprus Dams — August 3
+
+Monday bulletin, after a 5-day gap in publication: total storage 39.6% (115.2 MCM) — down from 40.0% (116.3 MCM) on July 29, a loss of 1.1 MCM. Agia Marina posted the steepest decline of the period, sliding from 82.2% to 77.9% (-4.3pp) as it eases off its summer plateau. Arminou remains flat at 58.9% for the second week running. Gap over last year: +22.9pp. Season inflow: 115.5 MCM (Aug-Sep so far: 0.03 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Agia Marina 77.9% (-4.3pp) — the steepest decline of the period
+• Pomos 79.4% (-3.0pp) — continues easing back from near-full
+• Polemidia 46.1% (-2.3pp) — dropped below the 50% mark
+• Argaka 70.8% (-2.0pp) — extending its multi-week slide
+• Arminou 58.9% — flat for the second week running
+• Kalopanagiotis 100% — still the only dam overflowing
+• Achna 1.8% — unchanged, zero inflow all season
+
+Gap vs last year: +22.9pp.
+
+🔗 https://fragmata.info
+```
