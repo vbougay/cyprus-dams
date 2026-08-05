@@ -66,8 +66,23 @@ apply these overrides.
   tracked now, so the edit isn't lost when the session ends. Never write a future-dated /
   not-yet-sent draft into this file (it's a public repo); drafts belong in the still-gitignored
   `community/DRAFTS.md` until they've actually gone out.
-- **Push straight to `main`** — Vercel deploys from it, which is what closes the loop and
-  stops the cron from firing again for the same bulletin.
+- **Never push a working/run branch to origin — only `main`, once.** Vercel auto-deploys a
+  preview build for every branch pushed to the repo, so pushing an intermediate run branch
+  burns a deploy even though it's merged and deleted moments later. Do all the git work
+  locally and push exactly once, straight to `main`:
+  ```bash
+  git fetch origin main
+  git checkout -B work origin/main   # local only — never `git push` this branch
+  # ...make changes, commit(s) on `work`...
+  git checkout -B main origin/main
+  git merge --ff-only work            # or: git reset --hard work
+  git push origin main
+  git branch -D work                  # local cleanup; no remote branch was ever created
+  ```
+  If the fast-forward is refused because `main` moved during the run, rebase `work` onto the
+  refreshed `origin/main` and retry — never force-push `main`. Pushing `main` is what closes
+  the loop and stops the cron from firing again for the same bulletin; it should be the only
+  push the whole run makes.
 
 ## Best Practices to Avoid Issues
 
