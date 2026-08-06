@@ -3064,3 +3064,26 @@ Gap vs last year: +22.9pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 6 — Agia Marina's fourth straight drop
+
+📊 Minor update — total storage 39.4% (114.5 MCM), down 0.2 MCM from Wednesday. Agia Marina posted the largest drop for a fourth straight bulletin; nearly all of the day's 0.018 MCM inflow went into Kouris.
+
+### Telegram
+Sent: message_id=114, chat_id=151413643, at=2026-08-06T07:38:07Z
+```
+📊 Cyprus Dams — August 6
+
+Thursday bulletin: total storage 39.4% (114.5 MCM) — down 0.2 MCM from Wednesday, the same slow drawdown pace continuing. 24h inflow: 0.018 MCM, almost entirely into Kouris (0.015 MCM). Agia Marina posted the largest drop for a fourth straight bulletin, easing to 75.8% (-0.7pp). Gap over last year: +22.9pp. Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Agia Marina 75.8% (-0.7pp) — largest drop for a fourth straight bulletin
+• Argaka 69.7% (-0.4pp) — extending its multi-week slide
+• Mavrokolympos 60.9% (-0.4pp) — continues easing from its summer peak
+• Pomos 78.5% (-0.3pp) — continues easing from near-full
+• Kalopanagiotis 100% — still the only dam overflowing
+• Achna 1.7% — unchanged, zero inflow all season
+
+Gap vs last year: +22.9pp.
+
+🔗 https://fragmata.info
+```
