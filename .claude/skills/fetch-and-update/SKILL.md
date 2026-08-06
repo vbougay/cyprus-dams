@@ -61,28 +61,29 @@ apply these overrides.
   Write the body to a temp JSON file rather than inlining it, to avoid shell-quoting
   problems. Expect `{"ok":true,"messageId":…,"chatId":…}`; a 422 means the post exceeds
   Telegram's 4096-char limit — shorten it and retry. Retry once on a network failure.
-- **Append the sent post to `community/TELEGRAM.md`** the same way a local run does (see
-  **After a successful send** below) and commit it alongside the dataset commit — it's
-  tracked now, so the edit isn't lost when the session ends. Never write a future-dated /
-  not-yet-sent draft into this file (it's a public repo); drafts belong in the still-gitignored
-  `community/DRAFTS.md` until they've actually gone out.
-- **Never push a working/run branch to origin — only `main`, once.** Vercel auto-deploys a
-  preview build for every branch pushed to the repo, so pushing an intermediate run branch
-  burns a deploy even though it's merged and deleted moments later. Do all the git work
-  locally and push exactly once, straight to `main`:
+- **Git flow: one commit, pushed straight to `main`, after Telegram is sent.** Cloud runs
+  skip branches entirely — no local `work` branch, no run branch ever pushed to origin.
+  Every branch pushed to this repo gets its own Vercel preview deploy, so even a
+  pushed-then-deleted run branch burns a deploy for nothing; `main` is the only ref this
+  routine ever pushes, and it pushes it exactly once. The order matters — Telegram goes out
+  *before* you commit, because the `message_id` it returns has to land in the same commit as
+  the dataset:
   ```bash
   git fetch origin main
-  git checkout -B work origin/main   # local only — never `git push` this branch
-  # ...make changes, commit(s) on `work`...
-  git checkout -B main origin/main
-  git merge --ff-only work            # or: git reset --hard work
+  git checkout -B main origin/main        # start from the current tip of main
+  # ...edit data-DD-MMM-YYYY.ts, dataManager.ts, historicalStorageData.ts...
+  # ...send the Telegram post via the relay (see above), capture message_id...
+  # ...append the Sent: annotation + post to community/TELEGRAM.md (see After a successful send)...
+  git add -A
+  git commit -m "..."                     # exactly one commit for the whole run
   git push origin main
-  git branch -D work                  # local cleanup; no remote branch was ever created
   ```
-  If the fast-forward is refused because `main` moved during the run, rebase `work` onto the
-  refreshed `origin/main` and retry — never force-push `main`. Pushing `main` is what closes
-  the loop and stops the cron from firing again for the same bulletin; it should be the only
-  push the whole run makes.
+  If `git push` is rejected because `main` moved during the run, `git fetch origin main &&
+  git rebase origin/main` (still one commit) and retry — never force-push `main`. Never write
+  a future-dated / not-yet-sent draft into `community/TELEGRAM.md` (it's a public repo);
+  drafts belong in the still-gitignored `community/DRAFTS.md` until they've actually gone out.
+- **If the bulletin turns out to be no newer than the deployed dataset**: make no commits,
+  send nothing to Telegram, and say so — there's nothing to push.
 
 ## Best Practices to Avoid Issues
 
