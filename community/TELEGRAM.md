@@ -3112,3 +3112,27 @@ Gap vs last year: +22.9pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 11 — gap over last year crosses 23 points
+
+📰 Major update — total storage 39.0% (113.5 MCM), down 0.8 MCM over four days since Friday. Agia Marina is the largest mover for a second straight bulletin, down 3.3pp; Argaka, Pomos, Mavrokolympos, and Tamassos also eased. The gap over last year crossed +23pp for the first time.
+
+### Telegram
+Sent: message_id=129, chat_id=151413643, at=2026-08-11T06:28:00Z
+```
+📰 Cyprus Dams — August 11
+
+Tuesday bulletin, covering since Friday: total storage 39.0% (113.5 MCM) — down from 39.3% (114.4 MCM) on Friday, a loss of 0.8 MCM over four days, the same slow drawdown pace continuing. Agia Marina is the largest mover again, down 3.3pp since Friday to 71.5%. Gap over last year has now crossed 23 points for the first time: +23.0pp. Season inflow: 115.7 MCM. Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Agia Marina 71.5% (-3.3pp) — largest mover for a second straight bulletin
+• Argaka 67.0% (-2.3pp) — extending its multi-week slide
+• Pomos 76.2% (-1.8pp) — continues easing from near-full
+• Mavrokolympos 58.9% (-1.7pp) — continues easing from summer peak
+• Tamassos 89.1% (-1.7pp) — gradually easing from full
+• Kalopanagiotis 100% — still the only dam overflowing
+• Achna 1.6% — unchanged, zero inflow all season
+
+Gap vs last year: +23.0pp.
+
+🔗 https://fragmata.info
+```
