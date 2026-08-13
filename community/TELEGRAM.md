@@ -3136,3 +3136,26 @@ Gap vs last year: +23.0pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 13 — Kalopanagiotis stops overflowing
+
+📰 Major update — total storage 38.9% (113.1 MCM), down 0.4 MCM over two days since Tuesday. Kalopanagiotis eased off 100% for the first time in four months; Mavrokolympos and Agia Marina were the largest movers.
+
+### Telegram
+Sent: message_id=138, chat_id=151413643, at=2026-08-13T07:37:21Z
+```
+📰 Cyprus Dams — August 13
+
+Thursday bulletin, covering since Tuesday: total storage 38.9% (113.1 MCM) — down from 39.0% (113.5 MCM) on Tuesday, a loss of 0.4 MCM over two days, the same slow drawdown pace continuing. Kalopanagiotis is no longer overflowing — it eased to 99.4% after four months at 100%, the first move from the season's steadiest fixture. Mavrokolympos was the largest mover, down 1.1pp to 57.8%. Gap over last year: +23.0pp. Season inflow: 115.7 MCM. Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Kalopanagiotis 99.4% (-0.6pp) — no longer overflowing, after four months at 100%
+• Mavrokolympos 57.8% (-1.1pp) — largest mover of this bulletin
+• Agia Marina 70.5% (-1.0pp) — second-largest mover
+• Argaka 66.3% (-0.7pp) — extending its multi-week slide
+• Pomos 75.5% (-0.7pp) — continues easing from near-full
+• Achna 1.5% — unchanged, zero inflow all season
+
+Gap vs last year: +23.0pp.
+
+🔗 https://fragmata.info
+```
