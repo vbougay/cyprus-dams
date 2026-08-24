@@ -17,9 +17,9 @@ export const ARTICLES: ArticleMeta[] = [
     dataSetId: '24-AUG-2026',
     author: 'Vladimir Bugay',
     title: {
-      en: 'The Summer the Dams Barely Drained: The Slowest Drawdown of Any Water-Rich Summer Since 1988',
-      el: 'Το Καλοκαίρι που τα Φράγματα Δεν Άδειασαν: Η Πιο Αργή Πτώση από Κάθε Καλοκαίρι με Νερό μετά το 1988',
-      ru: 'Лето, когда дамбы почти не мелели: самый медленный расход воды среди полноводных лет с 1988 года',
+      en: 'The Summer the Dams Barely Drained: Cyprus Just Had Its Gentlest Drawdown in 39 Years',
+      el: 'Το Καλοκαίρι που τα Φράγματα Δεν Άδειασαν: Η Ηπιότερη Πτώση σε Τριάντα Εννέα Χρόνια',
+      ru: 'Лето, когда дамбы почти не мелели: самый медленный расход воды за 39 лет',
     },
     description: {
       en: 'Between 15 June and 24 August the 18 main dams gave up just 9.8% of their water — of the twenty-seven summers since 1988 that began with 100 mln. m³ or more, 2026 drained the slowest. Storage stands at 111.0 mln. m³ (38.2%), the seasonal peak came absurdly late in June, and the year still finishes 21st of 39, below the long-run average.',
