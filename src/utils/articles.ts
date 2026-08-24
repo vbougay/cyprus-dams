@@ -12,6 +12,22 @@ export interface ArticleMeta {
 
 export const ARTICLES: ArticleMeta[] = [
   {
+    slug: '2026-08-23-last-week-of-summer',
+    date: '2026-08-23',
+    dataSetId: '21-AUG-2026',
+    author: 'Vladimir Bugay',
+    title: {
+      en: 'The Summer the Dams Barely Drained: Cyprus Ends the Season on 2.5 Times Last Year\'s Water',
+      el: 'Το Καλοκαίρι που τα Φράγματα Δεν Άδειασαν: Η Κύπρος Κλείνει τη Σεζόν με Δυόμισι Φορές το Περσινό Νερό',
+      ru: 'Лето, когда дамбы почти не мелели: у Кипра вдвое с половиной больше воды, чем год назад',
+    },
+    description: {
+      en: 'The 18 main dams hold 111.7 mln. m³ (38.4%) — two and a half times last August. But 2026 also drained more slowly than any year on record that entered summer with 100 mln. m³, peaked absurdly late in June, and still finishes 21st of 39 years, below the long-run average.',
+      el: 'Τα 18 κύρια φράγματα συγκρατούν 111.7 εκατ. κ.μ. (38.4%) — δυόμισι φορές όσα είχαν πέρυσι τον Αύγουστο. Το 2026 όμως ξόδεψε και νερό πιο αργά από κάθε άλλη χρονιά που μπήκε στο καλοκαίρι με 100 εκατ. κ.μ., κορύφωσε απίστευτα αργά, τον Ιούνιο, κι όμως βγαίνει μόλις εικοστό πρώτο στα τριάντα εννέα χρόνια — κάτω από τον μέσο όρο.',
+      ru: 'В 18 основных дамбах 111.7 млн. м³ (38.4%) — вдвое с половиной больше, чем в августе прошлого года. Но 2026-й ещё и расходовал воду медленнее любого года, входившего в лето со 100 млн. м³, прошёл пик неприлично поздно, в июне, — и всё равно занимает лишь 21-е место из 39, ниже среднего.',
+    },
+  },
+  {
     slug: '2026-07-20-introducing-zen-mode',
     date: '2026-07-20',
     dataSetId: '20-JUL-2026',
