@@ -15,6 +15,14 @@ import { getReservoirsWithDrainDates } from "@/utils/dataManager";
 import { getAllSparklineData } from "@/utils/sparklineData";
 import { DAM_SLUG_MAP, REGION_SLUG_MAP } from "@/utils/slugs";
 import {
+  EndOfSummerChart,
+  SummerDrawdownChart,
+  PeakMonthChart,
+  SummerInflowChart,
+  DamFullnessChart,
+  TwoYearTraceChart,
+} from "@/components/ArticleSummerCharts";
+import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
@@ -110,6 +118,13 @@ function ArticleChartEmbed({ embed, dataSetId }: { embed: ChartEmbed; dataSetId:
         )}
         {type === "data-table" && <ReservoirTable />}
         {type === "zen-cta" && <ZenCtaEmbed />}
+        {/* End-of-summer analysis figures — all derived from dataSetId */}
+        {type === "end-of-summer" && <EndOfSummerChart />}
+        {type === "summer-drawdown" && <SummerDrawdownChart />}
+        {type === "peak-month" && <PeakMonthChart />}
+        {type === "summer-inflow" && <SummerInflowChart />}
+        {type === "dam-fullness" && <DamFullnessChart />}
+        {type === "two-year-trace" && <TwoYearTraceChart />}
       </DataProvider>
     </div>
   );
