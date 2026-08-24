@@ -3226,3 +3226,26 @@ Gap vs last year: +23.1pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 24 — Kalopanagiotis ticks up as Mavrokolympos leads the weekend drawdown
+
+📰 Major update — total storage 38.2% (111.0 MCM), down 0.7 MCM over the long weekend since Friday. Mavrokolympos was again the largest mover, its summer slide steepening; Argaka, Agia Marina and Vyzakia all eased 1.7pp. Kalopanagiotis broke its weeks-long drift, ticking up 0.8pp on light inflow.
+
+### Telegram
+Sent: message_id=164, chat_id=151413643, at=2026-08-24T10:16:38Z
+```
+📰 Cyprus Dams — August 24
+
+Monday bulletin, covering the weekend: total storage 38.2% (111.0 MCM) — down from 38.4% (111.7 MCM) on Friday, a loss of roughly 0.7 MCM over three days, the same slow drawdown pace. Mavrokolympos was again the largest mover, down 3.8pp to 44.4% as its summer slide steepens; Argaka, Agia Marina and Vyzakia all eased 1.7pp. Kalopanagiotis bucked the trend, up 0.8pp to 99.4% on light weekend inflow. Gap over last year: +23.1pp. Season inflow: 116.1 MCM. Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Mavrokolympos 44.4% (-3.8pp) — largest mover, steepening summer slide
+• Argaka 59.4% (-1.7pp) — continuing its multi-week slide
+• Agia Marina 62.1% (-1.7pp) — continuing its multi-week slide
+• Vyzakia 80.5% (-1.7pp) — below 82% for the first time in weeks
+• Kalopanagiotis 99.4% (+0.8pp) — ticked back up toward its 100% plateau
+• Achna 1.3% — unchanged, zero inflow all season
+
+Gap vs last year: +23.1pp.
+
+🔗 https://fragmata.info
+```
