@@ -39,8 +39,18 @@ function series(): { date: string; t: number; v: number }[] {
   return out;
 }
 
-/** Reading nearest a given month/day in `year`, within `maxDays`. */
-function nearest(year: number, month: number, day: number, maxDays = 12) {
+/**
+ * Reading nearest a given month/day in `year`, within `maxDays`.
+ *
+ * Default window is 16 days, not ~7-8: pre-2014 readings sit on a bi-monthly
+ * grid (1st and 15th), whose widest gap is ~17 days (e.g. 15th to next 1st in
+ * a 31-day month). A window anchored to today's report date must clear half
+ * that gap with margin, or it silently returns no match for older years once
+ * the report date drifts away from the 21st — as happened when a 24 August
+ * bulletin (9 days from the 15th) fell outside a 7-day window and quietly
+ * dropped every pre-2025 year from a drawdown comparison.
+ */
+function nearest(year: number, month: number, day: number, maxDays = 16) {
   const target = Date.UTC(year, month - 1, day);
   let best: { date: string; t: number; v: number } | null = null;
   let bestDiff = Infinity;
@@ -132,7 +142,7 @@ export function summerDrawdown(dataSetId?: string): DrawdownRow[] {
   const out: DrawdownRow[] = [];
   for (let y = FIRST_YEAR; y <= ref.year; y++) {
     const a = nearest(y, 6, 15, 6);
-    const b = nearest(y, ref.month, ref.day, 7);
+    const b = nearest(y, ref.month, ref.day);
     if (!a || !b) continue;
     const days = (b.t - a.t) / DAY;
     if (days < 40) continue;

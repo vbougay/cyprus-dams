@@ -14,7 +14,7 @@ export const ARTICLES: ArticleMeta[] = [
   {
     slug: '2026-08-23-last-week-of-summer',
     date: '2026-08-23',
-    dataSetId: '21-AUG-2026',
+    dataSetId: '24-AUG-2026',
     author: 'Vladimir Bugay',
     title: {
       en: 'The Summer the Dams Barely Drained: Cyprus Ends the Season on 2.5 Times Last Year\'s Water',
