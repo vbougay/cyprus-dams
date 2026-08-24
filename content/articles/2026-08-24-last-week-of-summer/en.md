@@ -49,7 +49,7 @@ Two things explain it.
 
 None of which makes 2026 a good year. It makes it an ordinary one.
 
-**111.0 mln. m³ is 6.5 mln. m³ below the thirty-nine-year average for late August**, which is 117.5 mln. m³, or 40.4%. Ranked against every year since 1988, **2026 comes twenty-first of thirty-nine** — the middle of the pack, and slightly on the dry side of it. It is the healthiest end of summer since 2023, but 2023 itself finished the season on 165.8 mln. m³, half as much again as today.
+**111.0 mln. m³ is 6.5 mln. m³ below the thirty-nine-year average for late August**, which is 117.5 mln. m³, or 40.4%. Ranked against every year since 1988, **2026 comes twenty-first of thirty-nine** — the middle of the pack, and slightly on the dry side of it. It is the healthiest end of summer since 2023, but 2023 itself finished the season on 160.3 mln. m³, about 44% more than today.
 
 The comparison survives the obvious objection. Strip out the reservoirs built since 1988 — Kannaviou and the three recharge dams — and the like-for-like figure is 103.1 mln. m³ against a like-for-like average of 112.6 mln. m³. Same verdict.
 
