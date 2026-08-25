@@ -224,7 +224,7 @@ export function ArticleClient({ markdown, title, date, dataSetId, prevArticle, n
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
-      <Header />
+      <Header hideDateNav />
 
       <main className="container mx-auto px-4 pb-16 max-w-4xl">
         <Breadcrumb className="mb-6 mt-2">
@@ -315,7 +315,7 @@ export function ArticleListClient({ articles }: ArticleListClientProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 mesh-background transition-colors duration-300">
-      <Header />
+      <Header hideDateNav />
 
       <main className="container mx-auto px-4 pb-16 max-w-4xl">
         <Breadcrumb className="mb-6 mt-2">
