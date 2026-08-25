@@ -3249,3 +3249,37 @@ Gap vs last year: +23.1pp.
 
 🔗 https://fragmata.info
 ```
+
+---
+
+## August 25 — New Article: Gentlest Summer Drawdown in 39 Years
+
+📰 New article published: **"The Summer the Dams Barely Drained: Cyprus Just Had Its Gentlest Drawdown in 39 Years"**
+
+The year-on-year comparison (2.5× last year's storage) is the story every outlet ran — Cyprus Mail included, the same day. The article leads instead on the exclusive finding: of the 27 summers since 1988 that began with 100+ MCM in storage, 2026 drained slower than every single one of them.
+
+Full article: [fragmata.info/articles/2026-08-24-last-week-of-summer](https://fragmata.info/articles/2026-08-24-last-week-of-summer)
+
+### Telegram
+Sent: message_id=142, chat_id=151413643, at=2026-08-25T04:04:58Z
+(Public link: https://t.me/fragmatainfo/142 — message_id above is per prior chat_id=151413643 log convention; the /142 in the public URL is the channel's own public numbering, a different counter than the chat-log sequence in this file, so the two numbers are not directly comparable.)
+```
+📰 New article: Cyprus just had its gentlest summer drawdown in 39 years
+
+Between 15 June and 24 August the 18 main dams gave up just 9.8% of their water. Check that against every other year since 1988 and something jumps out: of the 27 summers that started with 100+ MCM in storage, 2026 drained slower than every single one of them. The only two years that lost water more slowly (2008, 1998) were basically empty already — nothing left to lose.
+
+Storage now stands at 38.2% (111.0 MCM) — 2.5x what we had on this date last year, and more than the whole of 2025 ever saw at its wettest (77.4 MCM, back in January).
+
+Why it drained so slowly:
+• ~1,983 L/s leaving the dams now vs 2,630 L/s a year ago — 25% slower
+• Peaked June 4 — only 2009 has ever peaked that late; 35 of the last 37 refill years were done by end of May
+• Summer inflow 4.77 MCM, 2nd-wettest in 11 years — even a measurable event in mid-August (0.38 MCM, almost all into Kouris)
+
+Still not a good year though, just an ordinary one:
+• 21st of 39 years for late August, 6.5 MCM below the long-run average
+• Kouris + Asprokremmos hold 55% of everything but sit below 40% themselves; Achna (1.3%) is the only dam lower than a year ago
+• August isn't the bottom — projected floor ~89 MCM (~31%) in late November, still 3.3× last year's buffer
+
+📖 Full article: https://fragmata.info/articles/2026-08-24-last-week-of-summer
+```
+Note: sent text omitted the closing "🔗 Dashboard: https://fragmata.info" line present in the DRAFTS.md draft — minor trim, not a truncation (message was well under the plain-text length cap; the photo/preview card attached is Telegram's automatic link-preview image, not an uploaded photo with a caption limit).
