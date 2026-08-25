@@ -3283,3 +3283,24 @@ Still not a good year though, just an ordinary one:
 📖 Full article: https://fragmata.info/articles/2026-08-24-last-week-of-summer
 ```
 Note: sent text omitted the closing "🔗 Dashboard: https://fragmata.info" line present in the DRAFTS.md draft — minor trim, not a truncation (message was well under the plain-text length cap; the photo/preview card attached is Telegram's automatic link-preview image, not an uploaded photo with a caption limit).
+
+## August 25 — Klirou-Malounta leads a quiet Tuesday pullback
+
+📊 Minor update — total storage 38.1% (110.8 MCM), down 0.2 MCM in 24 hours. Klirou-Malounta was the largest mover, pulling back from near-full; Mavrokolympos's slide continued but eased off the weekend's pace.
+
+### Telegram
+Sent: message_id=167, chat_id=151413643, at=2026-08-25T06:47:03Z
+```
+📊 Cyprus Dams — August 25
+
+Tuesday bulletin: total storage 38.1% (110.8 MCM) — down from 38.2% (111.0 MCM) on Monday, a loss of roughly 0.2 MCM in 24 hours, the same slow drawdown pace continuing. 24h inflow: just 0.015 MCM total, almost all into Kouris (0.011) and Arminou (0.004). Klirou-Malounta was the largest mover, down 1.0pp to 90.1% as it pulls back from near-full; Mavrokolympos continued its slide at a gentler pace (-0.6pp to 43.8%) than over the weekend. Gap over last year: +23.1pp. Season inflow: 116.1 MCM (Aug-Sep so far: 0.60 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Klirou-Malounta 90.1% (-1.0pp) — largest mover, pulling back from near-full
+• Mavrokolympos 43.8% (-0.6pp) — slide continues at a gentler pace
+• Kalopanagiotis 99.4% — unchanged, still just under its 100% plateau
+• Achna 1.3% — unchanged, zero inflow all season
+
+Gap vs last year: +23.1pp.
+
+🔗 https://fragmata.info
+```
