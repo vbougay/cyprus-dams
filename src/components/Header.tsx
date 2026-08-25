@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import ChurchSilhouette from '@/components/ChurchSilhouette';
 
-const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
+const Header: React.FC<{ homePage?: boolean; hideDateNav?: boolean }> = ({ homePage, hideDateNav }) => {
   const { currentDataSetId, availableDataSets, setDataSet, isPlaying, setIsPlaying } = useDataContext();
   const { language } = useLanguage();
   const t = useTranslation(language);
@@ -81,7 +81,7 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying || hideDateNav) return;
 
     const interval = setInterval(() => {
       const nextIndex = currentIndex - 1;
@@ -95,10 +95,11 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
     }, 1000); // Change date every 1 second
 
     return () => clearInterval(interval);
-  }, [isPlaying, currentIndex, availableDataSets, setDataSet]);
+  }, [isPlaying, hideDateNav, currentIndex, availableDataSets, setDataSet]);
 
   // Intersection Observer to detect when mobile nav scrolls out of view
   useEffect(() => {
+    if (hideDateNav) return;
     const navElement = mobileNavRef.current;
     if (!navElement) return;
 
@@ -112,7 +113,7 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
 
     observer.observe(navElement);
     return () => observer.disconnect();
-  }, []);
+  }, [hideDateNav]);
 
   return (
     <>
@@ -198,73 +199,75 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
             <div className="flex flex-col items-center md:items-end gap-2">
               <div className="flex flex-row flex-wrap justify-center md:justify-end items-center gap-2">
                 {/* Date Navigation Controls */}
-                <div ref={mobileNavRef} className="flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleLast}
-                    disabled={currentIndex >= availableDataSets.length - 1}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-                    title="Go to oldest date"
-                  >
-                    <ChevronsLeft className="h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
+                {!hideDateNav && (
+                  <div ref={mobileNavRef} className="flex items-center gap-0.5 md:gap-1 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 md:px-3 py-1.5 md:py-2 border border-blue-100 dark:border-white/10 shadow-sm">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleLast}
+                      disabled={currentIndex >= availableDataSets.length - 1}
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title="Go to oldest date"
+                    >
+                      <ChevronsLeft className="h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
 
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handlePrevious}
-                    disabled={currentIndex >= availableDataSets.length - 1}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-                    title="Previous date"
-                  >
-                    <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handlePrevious}
+                      disabled={currentIndex >= availableDataSets.length - 1}
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title="Previous date"
+                    >
+                      <ChevronLeft className="h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
 
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={togglePlayPause}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-                    title={isPlaying ? "Pause" : "Play"}
-                  >
-                    {isPlaying ? (
-                      <Pause className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                    ) : (
-                      <Play className="h-3.5 w-3.5 md:h-4 md:w-4" />
-                    )}
-                  </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={togglePlayPause}
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title={isPlaying ? "Pause" : "Play"}
+                    >
+                      {isPlaying ? (
+                        <Pause className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                      ) : (
+                        <Play className="h-3.5 w-3.5 md:h-4 md:w-4" />
+                      )}
+                    </Button>
 
-                  <div className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 min-w-[140px] md:min-w-[200px] justify-center">
-                    <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-water-600 dark:text-water-400 flex-shrink-0" />
-                    <span className="text-xs md:text-sm font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
-                      {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
-                    </span>
+                    <div className="flex items-center gap-1.5 md:gap-2 px-2 md:px-3 min-w-[140px] md:min-w-[200px] justify-center">
+                      <Calendar className="h-3.5 w-3.5 md:h-4 md:w-4 text-water-600 dark:text-water-400 flex-shrink-0" />
+                      <span className="text-xs md:text-sm font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
+                        {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
+                      </span>
+                    </div>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleNext}
+                      disabled={currentIndex <= 0}
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title="Next date"
+                    >
+                      <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
+
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleFirst}
+                      disabled={currentIndex <= 0}
+                      className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+                      title="Go to newest date"
+                    >
+                      <ChevronsRight className="h-4 w-4 md:h-5 md:w-5" />
+                    </Button>
+
                   </div>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleNext}
-                    disabled={currentIndex <= 0}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-                    title="Next date"
-                  >
-                    <ChevronRight className="h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
-
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleFirst}
-                    disabled={currentIndex <= 0}
-                    className="h-7 w-7 md:h-8 md:w-8 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-                    title="Go to newest date"
-                  >
-                    <ChevronsRight className="h-4 w-4 md:h-5 md:w-5" />
-                  </Button>
-
-                </div>
+                )}
 
                 {/* Desktop controls - Theme toggle and Language selector */}
                 <div className="hidden md:flex items-center gap-2">
@@ -352,75 +355,77 @@ const Header: React.FC<{ homePage?: boolean }> = ({ homePage }) => {
     </header>
 
     {/* Mobile Fixed Date Navigation Bar - Only shows when original nav scrolls out of view */}
-    <div className={`md:hidden fixed top-0 left-0 right-0 z-50 py-2 px-4 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10 transition-transform duration-200 ${showFixedNav ? 'translate-y-0' : '-translate-y-full'}`}>
-      <div className="flex items-center justify-center gap-0.5 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 py-1.5 border border-blue-100 dark:border-white/10 shadow-sm">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleLast}
-          disabled={currentIndex >= availableDataSets.length - 1}
-          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-          title="Go to oldest date"
-        >
-          <ChevronsLeft className="h-4 w-4" />
-        </Button>
+    {!hideDateNav && (
+      <div className={`md:hidden fixed top-0 left-0 right-0 z-50 py-2 px-4 bg-white/90 dark:bg-gray-900/95 backdrop-blur-md border-b border-blue-100/30 dark:border-white/10 transition-transform duration-200 ${showFixedNav ? 'translate-y-0' : '-translate-y-full'}`}>
+        <div className="flex items-center justify-center gap-0.5 bg-white/50 dark:bg-white/10 backdrop-blur-sm rounded-xl px-1.5 py-1.5 border border-blue-100 dark:border-white/10 shadow-sm">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLast}
+            disabled={currentIndex >= availableDataSets.length - 1}
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title="Go to oldest date"
+          >
+            <ChevronsLeft className="h-4 w-4" />
+          </Button>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handlePrevious}
-          disabled={currentIndex >= availableDataSets.length - 1}
-          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-          title="Previous date"
-        >
-          <ChevronLeft className="h-4 w-4" />
-        </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handlePrevious}
+            disabled={currentIndex >= availableDataSets.length - 1}
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title="Previous date"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </Button>
 
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={togglePlayPause}
-          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-          title={isPlaying ? "Pause" : "Play"}
-        >
-          {isPlaying ? (
-            <Pause className="h-3.5 w-3.5" />
-          ) : (
-            <Play className="h-3.5 w-3.5" />
-          )}
-        </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={togglePlayPause}
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title={isPlaying ? "Pause" : "Play"}
+          >
+            {isPlaying ? (
+              <Pause className="h-3.5 w-3.5" />
+            ) : (
+              <Play className="h-3.5 w-3.5" />
+            )}
+          </Button>
 
-        <div className="flex items-center gap-1.5 px-2 min-w-[140px] justify-center">
-          <Calendar className="h-3.5 w-3.5 text-water-600 dark:text-water-400 flex-shrink-0" />
-          <span className="text-xs font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
-            {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
-          </span>
+          <div className="flex items-center gap-1.5 px-2 min-w-[140px] justify-center">
+            <Calendar className="h-3.5 w-3.5 text-water-600 dark:text-water-400 flex-shrink-0" />
+            <span className="text-xs font-medium text-water-800 dark:text-water-200 whitespace-nowrap">
+              {currentDataSet ? formatDataSetDate(currentDataSet.id, language) : ''}
+            </span>
+          </div>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleNext}
+            disabled={currentIndex <= 0}
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title="Next date"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleFirst}
+            disabled={currentIndex <= 0}
+            className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
+            title="Go to newest date"
+          >
+            <ChevronsRight className="h-4 w-4" />
+          </Button>
+
         </div>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleNext}
-          disabled={currentIndex <= 0}
-          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-          title="Next date"
-        >
-          <ChevronRight className="h-4 w-4" />
-        </Button>
-
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleFirst}
-          disabled={currentIndex <= 0}
-          className="h-7 w-7 p-0 hover:bg-water-100 dark:hover:bg-water-900/50 rounded-lg transition-colors"
-          title="Go to newest date"
-        >
-          <ChevronsRight className="h-4 w-4" />
-        </Button>
-
       </div>
-    </div>
+    )}
     </>
   );
 };
