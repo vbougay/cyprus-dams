@@ -62,17 +62,30 @@ function Frame({ title, subtitle, source, height, children, legend, minWidth = 6
             ))}
           </div>
         )}
-        <div className="mt-3 overflow-x-auto">
-          <svg
-            viewBox={`0 0 1000 ${height}`}
-            className="block h-auto w-full"
-            style={{ minWidth }}
-            role="img"
-            aria-label={`${title}. ${subtitle}`}
+        {/* Below ~640px the chart is wider than the viewport (minWidth keeps axis
+            text legible rather than shrinking it below ~4px) and needs a horizontal
+            swipe to see in full. Without any cue for that, a mobile reader hits a
+            chart that looks cut off and reaches for pinch-zoom instead — which
+            distorts the whole page rather than just revealing the chart. The edge
+            fade and hint below exist to make "swipe right" obvious instead. */}
+        <div className="relative mt-3">
+          <div
+            className="overflow-x-auto [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] sm:[mask-image:none]"
           >
-            {children}
-          </svg>
+            <svg
+              viewBox={`0 0 1000 ${height}`}
+              className="block h-auto w-full"
+              style={{ minWidth }}
+              role="img"
+              aria-label={`${title}. ${subtitle}`}
+            >
+              {children}
+            </svg>
+          </div>
         </div>
+        <p className="mt-1.5 text-[11px] text-gray-400 dark:text-gray-500 sm:hidden">
+          ← swipe to see the full chart →
+        </p>
         <p className="mt-3 border-t border-gray-200 pt-2 text-[11px] leading-relaxed text-gray-500 dark:border-gray-700 dark:text-gray-500">
           {source}
         </p>
