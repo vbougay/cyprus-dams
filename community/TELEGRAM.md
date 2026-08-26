@@ -3304,3 +3304,25 @@ Gap vs last year: +23.1pp.
 
 🔗 https://fragmata.info
 ```
+
+## August 26 — Agia Marina leads a quiet Wednesday pullback
+
+📰 Major update — total storage 38.0% (110.6 MCM), down 0.2 MCM in 24 hours. Agia Marina was the largest mover, extending its multi-week slide; Kalopanagiotis eased back from Monday's uptick, receding further from its 100% plateau.
+
+### Telegram
+Sent: message_id=171, chat_id=151413643, at=2026-08-26T08:01:05Z
+```
+📰 Cyprus Dams — August 26
+
+Wednesday bulletin: total storage 38.0% (110.6 MCM) — down from 38.1% (110.8 MCM) on Tuesday, a loss of roughly 0.2 MCM in 24 hours, the same slow drawdown pace continuing. Agia Marina was the largest mover, down 0.6pp to 61.1% as its multi-week slide continues; Kalopanagiotis eased 0.5pp to 98.9%, receding again from its 100% plateau after Monday's uptick. Gap over last year: +23.1pp. Season inflow: 116.1 MCM (Aug-Sep so far: 0.62 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Agia Marina 61.1% (-0.6pp) — largest mover, continuing its multi-week slide
+• Kalopanagiotis 98.9% (-0.5pp) — receding again after Monday's uptick
+• Mavrokolympos 43.3% (-0.5pp) — slide continues
+• Xyliatos 83.1% (-0.4pp) — easing further
+• Achna 1.3% — unchanged, zero inflow all season
+
+Gap vs last year: +23.1pp.
+
+🔗 https://fragmata.info
+```
