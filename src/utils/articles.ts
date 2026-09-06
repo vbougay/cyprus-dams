@@ -12,11 +12,10 @@ export interface ArticleMeta {
 
 export const ARTICLES: ArticleMeta[] = [
   {
-    slug: '2026-09-07-el-nino-cyprus-dams',
-    date: '2026-09-07',
+    slug: '2026-09-06-el-nino-cyprus-dams',
+    date: '2026-09-06',
     dataSetId: '24-AUG-2026',
     author: 'Vladimir Bugay',
-    hidden: true, // draft — EN only so far
     title: {
       en: "The Strongest El Niño Since 1950 Is Coming. Cyprus's Dams Won't Notice.",
       el: "Έρχεται το Ισχυρότερο Ελ Νίνιο από το 1950. Τα Φράγματα της Κύπρου Δεν θα το Προσέξουν.",
