@@ -23,6 +23,12 @@ import {
   TwoYearTraceChart,
 } from "@/components/ArticleSummerCharts";
 import {
+  EnsoScatterChart,
+  StrongNinoChart,
+  EnsoTimelineChart,
+  EnsoRefillChart,
+} from "@/components/ArticleEnsoCharts";
+import {
   Breadcrumb,
   BreadcrumbList,
   BreadcrumbItem,
@@ -125,6 +131,11 @@ function ArticleChartEmbed({ embed, dataSetId }: { embed: ChartEmbed; dataSetId:
         {type === "summer-inflow" && <SummerInflowChart />}
         {type === "dam-fullness" && <DamFullnessChart />}
         {type === "two-year-trace" && <TwoYearTraceChart />}
+        {/* El Niño article figures */}
+        {type === "enso-scatter" && <EnsoScatterChart />}
+        {type === "enso-strong-ninos" && <StrongNinoChart />}
+        {type === "enso-timeline" && <EnsoTimelineChart />}
+        {type === "enso-refill" && <EnsoRefillChart />}
       </DataProvider>
     </div>
   );

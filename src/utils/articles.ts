@@ -12,6 +12,23 @@ export interface ArticleMeta {
 
 export const ARTICLES: ArticleMeta[] = [
   {
+    slug: '2026-09-07-el-nino-cyprus-dams',
+    date: '2026-09-07',
+    dataSetId: '24-AUG-2026',
+    author: 'Vladimir Bugay',
+    hidden: true, // draft — EN only so far
+    title: {
+      en: "The Strongest El Niño Since 1950 Is Coming. Cyprus's Dams Won't Notice.",
+      el: "Έρχεται το Ισχυρότερο Ελ Νίνιο από το 1950. Τα Φράγματα της Κύπρου Δεν θα το Προσέξουν.",
+      ru: 'Идёт сильнейший Эль-Ниньо с 1950 года. Кипрские дамбы этого не заметят.',
+    },
+    description: {
+      en: 'NOAA gives a better than 90% chance of a very strong El Niño this winter. Seventy-six winters of Cyprus rainfall and thirty-nine of dam data say it makes no difference: the correlation is 0.05, the eight strongest El Niños averaged 82% of normal rain, and the two worst dam refills of the past decade were El Niño years.',
+      el: 'Η NOAA δίνει πάνω από 90% πιθανότητα για πολύ ισχυρό Ελ Νίνιο αυτόν τον χειμώνα. Εβδομήντα έξι χειμώνες βροχοπτώσεων και τριάντα εννέα χρόνια δεδομένων φραγμάτων λένε ότι δεν κάνει διαφορά: συσχέτιση 0.05, τα οκτώ ισχυρότερα Ελ Νίνιο έφεραν κατά μέσο όρο 82% της κανονικής βροχής.',
+      ru: 'NOAA даёт более 90% вероятности очень сильного Эль-Ниньо этой зимой. Семьдесят шесть зим осадков и тридцать девять лет данных по дамбам говорят, что разницы нет: корреляция 0.05, восемь сильнейших Эль-Ниньо принесли в среднем 82% нормы осадков.',
+    },
+  },
+  {
     slug: '2026-08-24-last-week-of-summer',
     date: '2026-08-24',
     dataSetId: '24-AUG-2026',
