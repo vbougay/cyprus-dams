@@ -46,5 +46,9 @@ scripts/*
 .claude/skills/google-search-console/gsc-credentials.json
 .claude/skills/google-search-console/gsc-data.sqlite
 .claude/skills/google-search-console/gsc-data.sqlite-*
+
+# DataForSEO SERP skill: kept entirely local — scripts, index and raw-response
+# archive alike. Credentials live in .env.local, already ignored below.
+.claude/skills/dataforseo-serp/
 .vercel
 .env*
