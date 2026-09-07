@@ -3379,3 +3379,26 @@ If this winter is wet, El Niño will get the credit. If it's dry, it'll be forgo
 
 📖 Full article (EN/EL/RU): https://fragmata.info/articles/2026-09-06-el-nino-cyprus-dams
 ```
+
+## September 7 — Mavrokolympos leads the slide for a second week, Arminou the lone riser
+
+📰 Major update (6-day gap) — total storage 37.4% (108.6 MCM), down 1.1 MCM since September 1. Mavrokolympos led the drop again for a second straight week; Arminou was the only one of the 21 dams to rise.
+
+### Telegram
+Sent: message_id=217, chat_id=151413643, at=2026-09-07T11:47:39Z
+```
+📰 Cyprus Dams — September 7
+
+Monday's bulletin, covering the past week: total storage 37.4% (108.6 MCM) — down from 37.7% (109.7 MCM) on September 1, a loss of roughly 1.1 MCM over six days, a similar slow drawdown pace to last week. Mavrokolympos led the slide again, down 4.8pp to 34.2%, extending last week's steepest-drop title into a second week. Arminou was the only riser among the 21 dams, up 0.6pp to 58.8%. Gap over last year held nearly steady at +23.2pp. Season inflow: 116.6 MCM (Aug-Sep so far: 1.13 MCM). Arminou→Kouris transfer unchanged at 20.44 MCM.
+
+• Mavrokolympos 34.2% (-4.8pp) — steepest drop for a second straight week
+• Agia Marina 56.0% (-2.7pp) — multi-week slide continues
+• Argaka 54.1% (-2.0pp) — continuing to slide
+• Arminou 58.8% (+0.6pp) — the only one of the 21 dams to rise
+• Kalopanagiotis 100% — still the only dam overflowing
+• Achna 1.2% — unchanged, zero inflow all season
+
+Gap vs last year: +23.2pp.
+
+🔗 https://fragmata.info
+```
