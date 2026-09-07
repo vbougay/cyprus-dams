@@ -3348,3 +3348,34 @@ Gap vs last year: +23.3pp.
 
 🔗 https://fragmata.info
 ```
+
+## September 7 — New Article: Will El Niño Save Our Dams?
+
+📰 New article published: **"The Strongest El Niño Since 1950 Is Coming. Cyprus's Dams Won't Notice."** (EN/EL/RU)
+
+Prompted by a reader question under the previous Reddit post. NOAA's ONI joined to the DoM island rainfall series for 76 winters (1950–2026) and WDD storage since 1988: no link between El Niño and Cyprus rain or dam refill; six of the eight strongest El Niños were dry winters here.
+
+Full article: [fragmata.info/articles/2026-09-06-el-nino-cyprus-dams](https://fragmata.info/articles/2026-09-06-el-nino-cyprus-dams)
+Reddit: https://www.reddit.com/r/cyprus/s/KCv5ItJAUo
+
+### Telegram
+Sent by Vlad, 2026-09-07. Public link: https://t.me/fragmatainfo/146 (message_id not captured; sent manually, not via the pipeline).
+```
+📰 New article: Will El Niño save our dams? 76 winters of data say it has never made a difference
+
+NOAA expects a very strong El Niño this winter, possibly the strongest since records began. A reader asked whether that means a wet winter for Cyprus. Nobody seemed to know — Politis asked in May, Phileleftheros asked the Met Office director in June, both got careful non-answers. So we checked.
+
+We lined up NOAA's El Niño index (from 1950) with the Met Office's island-wide rainfall for every winter since then: 76 winters in total.
+
+What came out:
+• El Niño, La Niña and neutral winters all average about the same rainfall here. The link is statistically zero.
+• Of the eight strongest El Niños since 1950, six were dry winters in Cyprus — including 1982-83, 1997-98 and 2015-16.
+• The driest year in the whole 125-year record, 1972-73, was an El Niño year. So was 2023-24, the winter that started the drought we just came out of.
+• The dams agree: the two worst refills of the past decade were the two strongest El Niños. The winter that just refilled everything was a La Niña.
+
+Why? Cyprus rain comes from the low-pressure systems that form over the eastern Mediterranean, and those are steered from the North Atlantic, not the Pacific. The research literature has said so for years.
+
+If this winter is wet, El Niño will get the credit. If it's dry, it'll be forgotten like 2015 and 2023. Neither proves anything. For a real early signal, watch the North Atlantic Oscillation outlooks from October and the season tracker on kairika.info.
+
+📖 Full article (EN/EL/RU): https://fragmata.info/articles/2026-09-06-el-nino-cyprus-dams
+```
