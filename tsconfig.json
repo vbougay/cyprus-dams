@@ -21,7 +21,6 @@
     "noUnusedParameters": false,
     "strictNullChecks": false,
     "allowJs": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
